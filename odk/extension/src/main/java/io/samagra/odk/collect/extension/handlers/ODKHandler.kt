@@ -22,10 +22,12 @@ import org.odk.collect.android.activities.FormHierarchyActivity
 import org.odk.collect.android.external.InstancesContract
 import org.odk.collect.android.injection.config.DaggerAppDependencyComponent
 import org.odk.collect.android.utilities.ApplicationConstants
+import org.odk.collect.forms.Form
 import org.odk.collect.forms.instances.Instance
 import org.odk.collect.forms.instances.InstancesRepository
 import java.io.File
 import javax.inject.Inject
+import javax.xml.parsers.DocumentBuilderFactory
 
 class ODKHandler @Inject constructor(
     private val application: Application
@@ -78,19 +80,13 @@ class ODKHandler @Inject constructor(
             }
             else {
                 val xmlFile = File(requiredForm.formFilePath)
-                // Media Files check removed since the database always returns a media path
-                // even if there may be no media related to the form itself.
-                // TODO: ODK UPGRADE: Find a workaround, maybe try modifying the database
-                // during download by reading the xml media attachment content.
-//                val mediaPath = requiredForm.formMediaPath ?: ""
-//                val mediaFolder = File(mediaPath)
-                if (xmlFile.exists()) {
+                if (xmlFile.exists() && (requiredForm.formMediaPath == null || mediaExists(requiredForm))) {
                     listener.onProcessed()
                     formsInteractor.openFormWithFormId(formId, context)
                 }
                 else {
+                    requiredForm.formMediaPath?.let { File(it).deleteRecursively() }
                     xmlFile.delete()
-//                    mediaFolder.deleteRecursively()
                     formsDatabaseInteractor.deleteByFormId(formId)
                     downloadAndOpenForm(formId, context, listener)
                 }
@@ -135,5 +131,26 @@ class ODKHandler @Inject constructor(
                 listener.onProcessingError(exception)
             }
         })
+    }
+
+    private fun mediaExists(form: Form): Boolean {
+        val document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(File(form.formFilePath))
+        val values = document.getElementsByTagName("value")
+        for (index in 0 until values.length) {
+            val attributes = values.item(index).attributes
+            if (attributes.length > 0) {
+                val nodeValue = attributes.item(0).nodeValue
+                if (nodeValue == "image" || nodeValue == "audio" || nodeValue == "video") {
+                    var mediaFileName = values.item(index).firstChild.nodeValue
+                    if (mediaFileName.isNotBlank()) {
+                        mediaFileName = mediaFileName.substring(mediaFileName.lastIndexOf("/") + 1)
+                        val mediaFile = File(form.formMediaPath + "/" + mediaFileName)
+                        if (!mediaFile.exists())
+                            return false
+                    }
+                }
+            }
+        }
+        return true
     }
 }
