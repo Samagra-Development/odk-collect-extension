@@ -1,0 +1,72 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+apply from: '../../config/dependencies.gradle'
+apply from: '../../config/quality.gradle'
+
+android {
+    compileSdkVersion versions.android_compile_sdk
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    defaultConfig {
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+    namespace 'org.odk.collect.androidshared'
+}
+
+dependencies {
+    coreLibraryDesugaring packages.desugar
+
+    implementation project(':odk:collect:icons')
+    implementation project(':odk:collect:strings')
+    implementation project(':odk:collect:shared')
+    implementation project(':odk:collect:async')
+    implementation packages.kotlin_stdlib
+    implementation packages.androidx_core_ktx
+    implementation packages.androidx_lifecycle_livedata_ktx
+    implementation packages.android_material
+    implementation packages.androidx_fragment_ktx
+    implementation packages.androidx_preference_ktx
+    implementation packages.timber
+
+    testImplementation project(':odk:collect:testshared')
+    testImplementation packages.junit
+    testImplementation packages.androidx_test_ext_junit
+    testImplementation packages.androidx_test_espresso_core
+    testImplementation packages.robolectric
+    testImplementation packages.mockito_kotlin
+
+    debugImplementation project(':odk:collect:fragmentstest')
+}

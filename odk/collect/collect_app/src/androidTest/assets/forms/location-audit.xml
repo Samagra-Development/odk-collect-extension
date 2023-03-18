@@ -1,0 +1,39 @@
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa" xmlns:orx="http://openrosa.org/xforms" xmlns:odk="http://www.opendatakit.org/xforms">
+  <h:head>
+    <h:title>Audit with Location</h:title>
+    <model>
+      <instance>
+        <data id="location_audit">
+          <orx:meta>
+            <instanceID/>
+            <orx:audit/>
+          </orx:meta>
+          <text1/>
+          <text2/>
+        </data>
+      </instance>
+      <itext>
+        <translation lang="English">
+          <text id="/data/text1:label">
+            <value>Text1</value>
+          </text>
+          <text id="/data/text2:label">
+            <value>Text2</value>
+          </text>
+        </translation>
+      </itext>
+      <bind nodeset="/data/orx:meta/instanceID" type="string" readonly="true()" calculate="concat('uuid:', uuid())"/>
+      <bind nodeset="/data/orx:meta/audit" type="binary" odk:location-priority="high_priority" odk:location-min-interval="10" odk:location-max-age="60" />
+      <bind nodeset="/data/text1" type="string"/>
+      <bind nodeset="/data/text2" type="string"/>
+    </model>
+  </h:head>
+  <h:body>
+    <input ref="/data/text1">
+      <label ref="jr:itext('/data/text1:label')"/>
+    </input>
+    <input ref="/data/text2">
+      <label ref="jr:itext('/data/text2:label')"/>
+    </input>
+  </h:body>
+</h:html>

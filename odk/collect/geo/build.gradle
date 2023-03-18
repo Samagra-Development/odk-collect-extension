@@ -1,0 +1,82 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+apply from: '../../config/dependencies.gradle'
+apply from: '../../config/quality.gradle'
+
+android {
+    compileSdkVersion versions.android_compile_sdk
+
+    defaultConfig {
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+    namespace 'org.odk.collect.geo'
+}
+
+dependencies {
+    coreLibraryDesugaring packages.desugar
+
+    implementation packages.kotlin_stdlib
+    implementation packages.androidx_appcompat
+    implementation packages.android_material
+    implementation packages.timber
+    implementation packages.play_services_location
+    implementation packages.dagger
+    kapt packages.dagger_compiler
+    implementation packages.androidx_fragment_ktx
+    implementation project(path: ':odk:collect:shared')
+    implementation project(path: ':odk:collect:icons')
+    implementation project(path: ':odk:collect:strings')
+    implementation project(path: ':odk:collect:location')
+    implementation project(path: ':odk:collect:androidshared')
+    implementation project(path: ':odk:collect:externalapp')
+    implementation project(path: ':odk:collect:async')
+    implementation project(path: ':odk:collect:analytics')
+    implementation project(path: ':odk:collect:permissions')
+    implementation project(path: ':odk:collect:maps')
+    implementation project(path: ':odk:collect:material')
+
+    debugImplementation project(path: ':odk:collect:fragmentstest')
+    testImplementation project(path: ':odk:collect:androidtest')
+    testImplementation project(path: ':odk:collect:testshared')
+    testImplementation packages.junit
+    testImplementation packages.hamcrest
+    testImplementation packages.androidx_test_ext_junit
+    testImplementation packages.mockito_kotlin
+    testImplementation packages.robolectric
+    testImplementation packages.androidx_test_espresso_core
+    testImplementation packages.androidx_arch_core_testing
+}

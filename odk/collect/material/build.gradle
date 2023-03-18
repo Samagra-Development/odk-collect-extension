@@ -1,0 +1,60 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+apply from: '../../config/dependencies.gradle'
+apply from: '../../config/quality.gradle'
+
+android {
+    compileSdkVersion versions.android_compile_sdk
+
+    defaultConfig {
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+    namespace 'org.odk.collect.material'
+}
+
+dependencies {
+    coreLibraryDesugaring packages.desugar
+
+    implementation packages.androidx_appcompat
+    implementation packages.android_material
+    implementation packages.androidx_fragment
+    implementation packages.kotlin_stdlib
+    implementation project(':odk:collect:androidshared')
+    implementation project(':odk:collect:strings')
+
+    debugImplementation project(':odk:collect:fragmentstest')
+
+    testImplementation project(':odk:collect:testshared')
+
+    testImplementation packages.junit
+    testImplementation packages.androidx_test_ext_junit
+    testImplementation packages.androidx_test_espresso_core
+    testImplementation packages.hamcrest
+    testImplementation packages.mockito_core
+    testImplementation packages.robolectric
+}

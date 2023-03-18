@@ -1,0 +1,82 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+apply from: '../config/dependencies.gradle'
+apply from: '../config/quality.gradle'
+
+android {
+    compileSdk = versions.android_compile_sdk
+
+    defaultConfig {
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+            )
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    
+    api project(":odk:collect:collect_app")
+    api project(":odk:collect:forms")
+    api project(":odk:collect:projects")
+    api project(":odk:collect:settings")
+    api project(":odk:collect:permissions")
+    api project(":odk:collect:strings")
+    implementation project(":odk:collect:analytics")
+
+    implementation packages.androidx_core_ktx
+    implementation packages.androidx_appcompat
+    implementation packages.android_material
+    implementation packages.dagger
+    implementation packages.androidx_preference_ktx
+    implementation packages.androidx_lifecycle_viewmodel_ktx
+    implementation packages.commons_io
+    implementation packages.kotlinx_coroutines_android
+    implementation packages.rx_java
+    implementation packages.rx_android
+    implementation(packages.javarosa) {
+        exclude group: 'commons-io'
+        exclude group: 'joda-time'
+        exclude group: 'org.slf4j'
+        exclude group: 'org.hamcrest', module: 'hamcrest-all'
+    }
+    implementation project(path: ':odk:collect:entities')
+    compileOnly packages.firebase_analytics
+    compileOnly packages.firebase_storage
+    compileOnly packages.firebase_config
+    kapt packages.dagger_compiler
+    testImplementation packages.junit
+    androidTestImplementation packages.androidx_test_ext_junit
+    androidTestImplementation packages.androidx_test_espresso_core
+}
+
+ext {
+    // Provide your own coordinates here
+    PUBLISH_GROUP_ID = 'io.samagra'
+    PUBLISH_VERSION = '0.0.1'
+    PUBLISH_ARTIFACT_ID = 'odk-collect-extension'
+}
+
+apply from: '../../scripts/publish-module.gradle'

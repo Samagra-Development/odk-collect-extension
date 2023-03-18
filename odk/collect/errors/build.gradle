@@ -1,0 +1,61 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+apply from: '../../config/dependencies.gradle'
+apply from: '../../config/quality.gradle'
+
+android {
+    compileSdkVersion versions.android_compile_sdk
+
+    defaultConfig {
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+    namespace 'org.odk.collect.errors'
+}
+
+dependencies {
+    implementation project(path: ':odk:collect:strings')
+    implementation project(path: ':odk:collect:androidshared')
+
+    implementation packages.androidx_core_ktx
+    implementation packages.androidx_appcompat
+    implementation packages.androidx_recyclerview
+    implementation packages.android_material
+
+    testImplementation project(path: ':odk:collect:androidtest')
+    testImplementation project(path: ':odk:collect:testshared')
+
+    testImplementation packages.androidx_test_ext_junit
+    testImplementation packages.androidx_test_espresso_core
+}

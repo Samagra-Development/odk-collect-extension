@@ -1,0 +1,49 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+apply from: '../../config/quality.gradle'
+apply from: '../../config/dependencies.gradle'
+
+android {
+    compileSdkVersion versions.android_compile_sdk
+
+    defaultConfig {
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    namespace 'org.odk.collect.audioclips'
+}
+
+dependencies {
+    coreLibraryDesugaring packages.desugar
+
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(':odk:collect:async')
+    implementation packages.kotlin_stdlib
+    implementation packages.androidx_core_ktx
+    implementation packages.androidx_lifecycle_viewmodel_ktx
+    implementation packages.androidx_lifecycle_livedata_ktx
+
+    testImplementation project(path: ':odk:collect:androidtest')
+    testImplementation project(path: ':odk:collect:testshared')
+    testImplementation packages.junit
+    testImplementation packages.mockito_core
+    testImplementation packages.androidx_test_ext_junit
+    testImplementation packages.androidx_arch_core_testing
+    testImplementation packages.hamcrest
+}

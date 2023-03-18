@@ -1,0 +1,64 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+apply from: '../../config/quality.gradle'
+apply from: '../../config/dependencies.gradle'
+
+android {
+    compileSdkVersion versions.android_compile_sdk
+
+    defaultConfig {
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
+    namespace 'org.odk.collect.audiorecorder'
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(':odk:collect:icons')
+    implementation project(':odk:collect:strings')
+    implementation project(path: ':odk:collect:async')
+    implementation project(path: ':odk:collect:androidshared')
+    implementation packages.kotlin_stdlib
+    implementation packages.androidx_core_ktx
+    implementation packages.androidx_appcompat
+    implementation packages.androidx_lifecycle_livedata_ktx
+    implementation packages.dagger
+    kapt packages.dagger_compiler
+    implementation packages.timber
+
+    testImplementation project(path: ':odk:collect:androidtest')
+    testImplementation project(path: ':odk:collect:testshared')
+    testImplementation project(path: ':odk:collect:servicetest')
+    testImplementation packages.junit
+    testImplementation packages.robolectric
+    testImplementation packages.androidx_test_ext_junit
+    testImplementation packages.androidx_test_core_ktx
+    testImplementation packages.androidx_test_rules
+    testImplementation packages.androidx_arch_core_testing
+    testImplementation packages.mockito_core
+    testImplementation packages.hamcrest
+}

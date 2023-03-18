@@ -1,0 +1,57 @@
+plugins {
+    id "com.android.library"
+    id "kotlin-android"
+}
+
+
+apply from: '../../config/quality.gradle'
+apply from: '../../config/dependencies.gradle'
+
+android {
+    namespace = "org.odk.collect.crashhandler"
+
+    compileSdk = versions.android_compile_sdk
+
+    defaultConfig {
+        minSdk = versions.android_min_sdk
+        targetSdk = versions.android_target_sdk
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources true
+        }
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    implementation(project(":odk:collect:androidshared"))
+    implementation packages.android_material
+    testImplementation packages.junit
+    testImplementation packages.hamcrest
+    testImplementation packages.mockito_kotlin
+    testImplementation packages.androidx_test_ext_junit
+    testImplementation packages.robolectric
+}

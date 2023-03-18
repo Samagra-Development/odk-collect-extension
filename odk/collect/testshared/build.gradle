@@ -1,0 +1,53 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+apply from: '../../config/quality.gradle'
+apply from: '../../config/dependencies.gradle'
+
+android {
+    compileSdkVersion versions.android_compile_sdk
+
+    defaultConfig {
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    namespace 'org.odk.collect.testshared'
+}
+
+dependencies {
+    coreLibraryDesugaring packages.desugar
+
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(path: ':odk:collect:async')
+    implementation project(path: ':odk:collect:shared')
+    implementation project(path: ':odk:collect:androidshared')
+    implementation project(path: ':odk:collect:androidtest')
+    implementation project(path: ':odk:collect:servicetest')
+    implementation packages.androidx_recyclerview
+    implementation packages.kotlin_stdlib
+    implementation packages.androidx_core_ktx
+    implementation packages.androidx_work_runtime
+    implementation packages.androidx_appcompat
+    implementation packages.robolectric
+    implementation packages.junit
+    implementation packages.androidx_test_espresso_intents
+    implementation packages.android_material
+    implementation(packages.androidx_fragment_testing) {
+        exclude group: 'androidx.test', module: 'monitor' //fixes issue https://github.com/android/android-test/issues/731
+    }
+}

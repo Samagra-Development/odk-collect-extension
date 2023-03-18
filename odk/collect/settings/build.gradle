@@ -1,0 +1,57 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+apply from: '../../config/dependencies.gradle'
+apply from: '../../config/quality.gradle'
+
+android {
+    compileSdkVersion versions.android_compile_sdk
+
+    defaultConfig {
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    packagingOptions {
+        resources {
+            // These library licenses will be referenced in-app
+            excludes += ['META-INF/ASL-2.0.txt', 'META-INF/LGPL-3.0.txt']
+
+            // Pick first occurrence of any files that cause conflicts
+            pickFirsts += ['draftv4/schema', 'draftv3/schema']
+        }
+    }
+
+    namespace 'org.odk.collect.settings'
+}
+
+dependencies {
+    implementation project(':odk:collect:shared')
+    implementation project(':odk:collect:projects')
+
+    implementation packages.json_schema_validator
+
+    testImplementation packages.junit
+    testImplementation packages.hamcrest
+    testImplementation packages.mockito_kotlin
+}

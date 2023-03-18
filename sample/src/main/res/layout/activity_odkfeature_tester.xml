@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ODKFeatureTesterActivity">
+
+    <EditText
+        android:id="@+id/open_form_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/open_form_button"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:paddingStart="10dp"
+        android:text="monthlyform_v1"
+        android:hint="Form Id"/>
+
+    <Button
+        android:id="@+id/open_form_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="Open Form"
+        android:layout_margin="5dp"/>
+
+    <EditText
+        android:id="@+id/open_saved_form_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/open_saved_form_button"
+        android:layout_below="@+id/open_form_button"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:paddingStart="10dp"
+        android:text="monthlyform_v1"
+        android:hint="Form Id"/>
+
+    <Button
+        android:id="@+id/open_saved_form_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/open_form_button"
+        android:text="Open Saved Form"
+        android:layout_margin="5dp"/>
+
+    <EditText
+        android:id="@+id/download_form_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/download_form_button"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:paddingStart="10dp"
+        android:layout_below="@+id/open_saved_form_button"
+        android:hint="Form Id"/>
+
+    <Button
+        android:id="@+id/download_form_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="Download Form"
+        android:layout_below="@+id/open_saved_form_button"
+        android:layout_margin="5dp"/>
+
+    <EditText
+        android:id="@+id/delete_form_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/open_form_button"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:paddingStart="10dp"
+        android:layout_below="@+id/download_form_button"
+        android:hint="Form Id"/>
+
+    <Button
+        android:id="@+id/delete_form_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/download_form_button"
+        android:text="Delete Form"
+        android:layout_margin="5dp"/>
+
+    <Button
+        android:id="@+id/download_all_forms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/delete_form_button"
+        android:text="Download all Forms"
+        android:layout_margin="5dp"/>
+
+    <Button
+        android:id="@+id/clear_all_forms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/download_all_forms"
+        android:text="Delete all Forms"
+        android:layout_margin="5dp"/>
+
+    <Button
+        android:id="@+id/show_all_forms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/clear_all_forms"
+        android:text="Show all Forms"
+        android:layout_margin="5dp"/>
+
+    <ProgressBar
+        android:id="@+id/form_progress"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:translationZ="10dp"
+        android:visibility="invisible"/>
+</RelativeLayout>

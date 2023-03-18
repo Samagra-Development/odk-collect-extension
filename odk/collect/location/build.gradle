@@ -1,0 +1,63 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+apply from: '../../config/dependencies.gradle'
+apply from: '../../config/quality.gradle'
+
+android {
+    compileSdkVersion versions.android_compile_sdk
+
+    defaultConfig {
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+    namespace 'org.odk.collect.location'
+}
+
+dependencies {
+    coreLibraryDesugaring packages.desugar
+
+    implementation project(':odk:collect:androidshared')
+    implementation project(':odk:collect:icons')
+    implementation project(':odk:collect:strings')
+    implementation packages.kotlin_stdlib
+    implementation packages.androidx_core_ktx
+    implementation packages.play_services_location
+    implementation packages.timber
+    implementation packages.androidx_appcompat
+
+    testImplementation project(':odk:collect:androidtest')
+    testImplementation project(':odk:collect:testshared')
+    testImplementation project(':odk:collect:servicetest')
+    testImplementation packages.junit
+    testImplementation packages.mockito_core
+    testImplementation packages.hamcrest
+    testImplementation packages.androidx_test_ext_junit
+}
