@@ -32,5 +32,7 @@ interface ODKInteractor {
     /** Opens a saved form. If no saved instance is found, opens a new form. */
     fun openSavedForm(formId: String, context: Context)
 
+    /** This method pre-fills a form with data from a given map of key-value pairs, 
+     * and then opens the form in a given Android context. */
     fun prefillAndOpenForm(formId: String, tagValueMap: HashMap<String, String>, context: Context)
 }
