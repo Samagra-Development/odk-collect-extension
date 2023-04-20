@@ -44,6 +44,16 @@ This method opens a saved instance of a form with a given form ID, or creates a 
 
 <br><br>
 
+`fun prefillAndOpenForm(formId: String, tagValueMap: HashMap<String, String>, context: Context)`
+
+This method pre-fills a form with data from a given map of key-value pairs, and then opens the form in a given Android context. \
+***Parameters:*** \
+`formId` - A string representing the ID of the form to be opened. \
+`tagValueMap` - A HashMap containing the key-value pairs representing the data to pre-fill the form with. \
+`context` - A Context object representing the Android application context. 
+
+<br><br>
+
 ## FormsDatabaseInteractor Interface
 
 The FormsDatabaseInteractor interface provides a set of methods to interact with the local forms database. This interface enables developers to manage the forms that are stored on the device, including retrieving, adding, and deleting forms.
@@ -260,22 +270,22 @@ Note: This creates a separate form instance of the original form and does not al
 
 <br>
 
-`updateForm(form: Form, tag: String, tagValue: String, listener: FormsProcessListener)`
+`updateForm(formPath: String, tag: String, tagValue: String, listener: FormsProcessListener?)`
 
 Prefills the values of a form given a tag and value or a list of tags and values. \
 ***Parameters:*** \
-`form`- The form to update. This is an ODK Form object. \
+`formPath`- A string that represents the path of the form. \
 `tag`- The tag of the form element to update. This is a string value. \
 `tagValue`- The new value to set for the form element. This is a string value. \
 `listener`- An optional listener to handle the update process. This is a FormsProcessListener object.
 
 <br>
 
-`updateForm(form: Form, values: HashMap<String, String>, listener: FormsProcessListener)`
+`updateForm(formPath: String, values: HashMap<String, String>, listener: FormsProcessListener?)`
 
 Prefills the values of a form based on a list of a tags and values. \
 ***Parameters:*** \
-`form`- The form to update. This is an ODK Form object. \
+`formPath`- A string that represents the path of the form. \
 `values`- A HashMap containing tag-value pairs to update the form with. This is a map from string keys to string values. \
 `listener`- An optional listener to handle the update process. This is a FormsProcessListener object.
 
