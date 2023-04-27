@@ -1,23 +1,26 @@
 Closes #
 
-<!-- 
-Thank you for contributing to ODK Collect!
+## Description
 
-Before sending this PR, please read
-https://github.com/getodk/collect/blob/master/CONTRIBUTING.md
--->
+Please provide a brief description of the changes in this PR.
 
-#### What has been done to verify that this works as intended?
+### Changes
 
-#### Why is this the best possible solution? Were any other approaches considered?
+List the changes done to fix a bug or introduce a new feature.
 
-#### How does this change affect users? Describe intentional changes to behavior and behavior that could have accidentally been affected by code changes. In other words, what are the regression risks?
+## Checklist
 
-#### Do we need any specific form for testing your changes? If so, please attach one.
+Please check the boxes below that apply:
 
-#### Does this change require updates to documentation? If so, please file an issue [here]( https://github.com/getodk/docs/issues/new) and include the link below.
+- [ ] All tests pass locally OR confirm CircleCI build passes.
+- [ ] Documentation has been updated or created, if applicable.
 
-#### Before submitting this PR, please make sure you have:
-- [ ] run `./gradlew checkAll` and confirmed all checks still pass OR confirm CircleCI build passes and run `./gradlew connectedDebugAndroidTest` locally.
-- [ ] verified that any code or assets from external sources are properly credited in comments and/or in the [about file](https://github.com/getodk/collect/blob/master/collect_app/src/main/assets/open_source_licenses.html).
-- [ ] verified that any new UI elements use theme colors. [UI Components Style guidelines](https://github.com/getodk/collect/blob/master/docs/CODE-GUIDELINES.md#ui-components-style-guidelines)
+## How to Test
+Please include any additional information or notes about testing here, if applicable.
+
+## For UI-specific PRs only
+If your PR includes UI-related changes, then:
+
+Add screenshots for portrait/landscape for both a tablet & phone of the before & after UI changes.   
+Add a video showing the full UX flow.
+

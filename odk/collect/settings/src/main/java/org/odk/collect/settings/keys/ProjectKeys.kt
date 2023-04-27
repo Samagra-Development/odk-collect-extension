@@ -82,5 +82,10 @@ object ProjectKeys {
     const val FORM_ACTIVITY_NAVIGATION_BACKGROUND_COLOR = "form_activity_navigation_button_background_color"
     const val FORM_ACTIVITY_NAVIGATION_FOREGROUND_COLOR = "form_activity_navigation_button_foreground_color"
 
+
     const val APP_PROVIDER = "";
+
+    // Set this variable the same as applicationId
+    const val APP_PROVIDER = "com.example.odkshellapp";
+
 }

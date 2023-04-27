@@ -20,6 +20,10 @@ import android.net.Uri;
 
 import org.odk.collect.android.database.forms.DatabaseFormColumns;
 
+
+import org.odk.collect.settings.keys.ProjectKeys;
+
+
 /**
  * Contract between the forms provider and applications. Contains definitions for the supported
  * URIs. Data columns are defined at {@link DatabaseFormColumns}.
@@ -29,7 +33,11 @@ import org.odk.collect.android.database.forms.DatabaseFormColumns;
  */
 public final class FormsContract {
 
+
     static final String AUTHORITY = "org.odk.collect.android.provider.odk.forms";
+
+    static final String AUTHORITY = String.format("%s.android.provider.odk.forms", ProjectKeys.APP_PROVIDER);
+
     public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.odk.form";
     public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.odk.form";
 

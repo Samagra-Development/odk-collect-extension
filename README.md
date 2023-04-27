@@ -2,11 +2,20 @@
 
 ## Introduction
 
+
+
+### ODK Collect
+
+
 ODK Collect is an open source Android app that replaces paper forms used in survey-based data
 gathering. It supports a wide range of question and answer types, and is designed to work well
 without network connectivity.
 
 You can read more about ODK Collect [here](https://docs.getodk.org/collect-intro/).
+
+
+
+### ODK Collect Extension
 
 ODK Collect Extension is a suite of tools built on top of ODK Collect that enable developers to
 seamlessly integrate ODK Collect into their own Android applications. With this module, developers
@@ -36,6 +45,7 @@ We have also built a bunch of additional features on top of ODK collect:
 * **Notification integration**: This feature allows the module to modify ODK notifications based on
   the user's needs, such as changing the notification sound or adding custom text to the
   notification.
+
 
 ## Integration
 
@@ -83,11 +93,114 @@ TBA
    data collection workflows. They can assign tasks to specific users or teams, monitor progress,
    and generate reports and analytics.
 
+ODK Collect is a standalone Android application which can be communicated via intents and providers.
+ODK Collect Extension is a library which can be integrated into any existing Android application to
+embed ODK directly into them.
+
+## Versions
+
+* Current version: 0.0.1
+    * Based on ODK Release: [v2022.4.4](https://github.com/getodk/collect/releases/tag/v2022.4.4)
+
+## Integration
+
+### via Module
+
+1. Download
+   the [ODK module](https://github.com/Samagra-Development/odk-collect-extension/tree/main/odk).
+2. Copy the directory in your project folder.
+3. Update your app's `settings.gradle` to include the ODK modules.
+
+  ```gradle
+  include ':odk:collect:projects'
+  include ':odk:collect:formstest'
+  include ':odk:collect:shared'
+  include ':odk:collect:forms'
+  include ':odk:collect:analytics'
+  include ':odk:collect:androidshared'
+  include ':odk:collect:audiorecorder'
+  include ':odk:collect:testshared'
+  include ':odk:collect:audioclips'
+  include ':odk:collect:strings'
+  include ':odk:collect:async'
+  include ':odk:collect:collect_app'
+  include ':odk:collect:nbistubs'
+  include ':odk:collect:material'
+  include ':odk:collect:fragmentstest'
+  include ':odk:collect:location'
+  include ':odk:collect:geo'
+  include ':odk:collect:errors'
+  include ':odk:collect:externalapp'
+  include ':odk:collect:upgrade'
+  include ':odk:collect:permissions'
+  include ':odk:collect:imageloader'
+  include ':odk:collect:glide'
+  include ':odk:collect:androidtest'
+  include ':odk:collect:settings'
+  include ':odk:collect:servicetest'
+  include ':odk:collect:maps'
+  include ':odk:collect:osmdroid'
+  include ':odk:collect:icons'
+  include ':odk:collect:crash-handler'
+  include ':odk:collect:entities'
+  include ':odk:collect:selfie-camera'
+  include ':odk:extension'
+  ```
+
+4. Add `odk:extension` module dependency to your app's module
+
+```gradle
+implementation project(':odk:extension')
+```
+
+5. Build your project
+
+### via Gradle dependency
+
+**Coming soon**
+
+## Usage
+
+Wiki coming soon
+
+## Need
+
+* **Integration** - ODK Collect is a standalone Android app which can connect to a self hosted ODK
+  Central instance. For developers with existing Android applications ODK Collect exposes content
+  providers and intents to open forms and collect data. This requires user's of the apps to download
+  2 different apps to use ODK. ODK Collect Extension makes it extremely easy to integrate ODK
+  Collect's application inside existing Android apps via a single gradle dependency.
+
+* **Customization** - Embedding ODK Collect in their own application allows organizations to
+  customize the app's user interface and functionality to better suit their specific needs. They can
+  also incorporate their own branding and design elements to maintain a consistent user experience
+  across their entire suite of applications.
+
+* **Integration with other systems** - Organizations may need to integrate data collection with
+  other systems or workflows, and embedding ODK Collect in their own application allows them to do
+  this seamlessly. By embedding the app, data can be automatically transferred to other systems or
+  databases, reducing the need for manual data entry and minimizing errors.
+
+* **User experience** - Embedding ODK Collect in an existing application can improve the user
+  experience, as users don't have to switch between different apps to collect and manage data. This
+  can result in increased productivity and efficiency.
+
+* **Access control and security** - Embedding ODK Collect in their own application allows
+  organizations to enforce strict access controls and security measures to protect sensitive data.
+  They can also store data on their own servers or in their own cloud storage, giving them more
+  control over how data is managed and secured.
+
+* **Workflow management** - By embedding ODK Collect in their own application, organizations can
+  more easily manage and track data collection workflows. They can assign tasks to specific users or
+  teams, monitor progress, and generate reports and analytics.
+
+
 ## Git
 
 We closely follow the stable releases of ODK Collect and build extensions on top of them.
 
 ![Git Versioning](./GitFlowOdkCollectExtension.png)
+
 
 ***collect-stable-release:*** This branch tracks the stable releases of the original getodk/collect
 repository. This branch is updated only when a new stable release is made available in the original
@@ -104,6 +217,23 @@ work is completed, they are merged back into develop.
 ***main:*** This branch is used to build releases derived from the develop branch. All completed
 work in the develop branch is merged 33into this branch for release. This branch is intended to be
 used for stable and production-ready releases.
+
+* **collect-stable-release**  - This branch tracks the stable releases of the original
+  getodk/collect repository. This branch is updated only when a new stable release is made available
+  in the original repository. No active development is done in this branch.
+
+* **develop** - This branch is used for active development. All feature branches are merged into
+  this branch, and it is updated regularly. This branch is intended to be used for experimental and
+  ongoing development work.
+
+* **feature/$FEATURE_NAME** - These branches are used for active development work, with each branch
+  focusing on a specific feature or functionality. They are created from the develop branch, and
+  when work is completed, they are merged back into develop.
+
+* **main** - This branch is used to build releases derived from the develop branch. All completed
+  work in the develop branch is merged 33into this branch for release. This branch is intended to be
+  used for stable and production-ready releases.
+
 
 ## Versioning
 
