@@ -23,7 +23,13 @@ if (secretsFile.exists()) {
 }
 def googleMapsApiKey = secrets.getProperty('GOOGLE_MAPS_API_KEY', '')
 def mapboxAccessToken = secrets.getProperty('MAPBOX_ACCESS_TOKEN', '')
-
+def googleServicesFile = rootProject.file('google-services.json')
+if (googleServicesFile.exists()) {
+    apply plugin: 'com.google.gms.google-services'
+    apply plugin: 'com.google.firebase.crashlytics'
+} else {
+    println("google-services.json not found .Firebase services will not be availabe ")
+}
 android {
     namespace 'io.samagra.oce_sample'
     compileSdk Versions.android_compile_sdk
@@ -170,14 +176,16 @@ dependencies {
     implementation Dependencies.android_material
     implementation Dependencies.android_flexbox
 
-    implementation Dependencies.play_services_auth
-    implementation Dependencies.play_services_maps
-    implementation Dependencies.play_services_location
+    if (googleServicesFile.exists()) {
+        implementation Dependencies.play_services_auth
+        implementation Dependencies.play_services_maps
+        implementation Dependencies.play_services_location
 
-    implementation Dependencies.firebase_analytics
-    implementation Dependencies.firebase_crashlytics
-    implementation Dependencies.firebase_storage
-    implementation Dependencies.firebase_config
+        implementation Dependencies.firebase_analytics
+        implementation Dependencies.firebase_crashlytics
+        implementation Dependencies.firebase_storage
+        implementation Dependencies.firebase_config
+    }
 
     implementation Dependencies.guava
 
@@ -190,7 +198,7 @@ dependencies {
     implementation Dependencies.bikram_sambat
     implementation Dependencies.rarepebble_colorpicker
     implementation Dependencies.commons_io
-    implementation (Dependencies.opencsv) {
+    implementation(Dependencies.opencsv) {
         exclude group: 'commons-logging'
     }
     implementation(Dependencies.javarosa) {
@@ -287,5 +295,3 @@ dependencies {
 //    debugImplementation Dependencies.leakcanary
 }
 
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
