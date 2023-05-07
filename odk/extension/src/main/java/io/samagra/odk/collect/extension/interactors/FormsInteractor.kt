@@ -2,7 +2,6 @@ package io.samagra.odk.collect.extension.interactors
 
 import android.content.Context
 import io.samagra.odk.collect.extension.listeners.FormsProcessListener
-import org.odk.collect.forms.Form
 
 /** FormsInteractor Interface provides methods to interact with ODK forms. Developers can use this
  * interface to open a form with a specific form ID or MD5 hash and also pre-fill form values.
@@ -48,4 +47,14 @@ interface FormsInteractor {
      * Note: This modifies the original form described by the form path.
      */
     fun updateForm(formPath: String, values: HashMap<String, String>,listener: FormsProcessListener?)
+
+
+    /** Opens the latest version related to the formId. Deletes any
+     *  saved instance of a form with this particular formId. */
+    fun openForm(formId: String, context: Context)
+
+    /** Opens a saved form. If no saved instance is found, opens a new form. */
+    fun openSavedForm(formId: String, context: Context)
+
+    fun prefillAndOpenForm(formId: String, tagValueMap: HashMap<String, String>, context: Context)
 }
