@@ -72,8 +72,6 @@ class ODKFormsHandler @Inject constructor(
         }
         openForm(form, context)
     }
-    /** This method pre-fills a form with data from a given map of key-value pairs,
-     * and then opens the form in a given Android context. */
     override fun prefillForm(formId: String, tagValueMap: HashMap<String, String>) {
         CoroutineScope(Job()).launch {
             val form = formsDatabaseInteractor.getLatestFormById(formId)
