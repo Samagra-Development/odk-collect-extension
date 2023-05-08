@@ -10,7 +10,6 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.samagra.odk.collect.extension.annotations.ODKFormsInteractor
 
 import io.samagra.odk.collect.extension.interactors.FormsDatabaseInteractor
 import io.samagra.odk.collect.extension.interactors.FormsInteractor
@@ -70,7 +69,6 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
 
         ODKProvider.init(application)
         odkInteractor = ODKProvider.getOdkInteractor()
-        formsInteractor = ODKProvider.getFormsInteractor()
         progressBar.visibility = View.VISIBLE
         odkInteractor.setupODK(IOUtils.toString(resources.openRawResource(R.raw.settings)), false, object :
             ODKProcessListener {
@@ -79,6 +77,8 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                 currentProjectProvider.getCurrentProject().name
                 formsDatabaseInteractor = ODKProvider.getFormsDatabaseInteractor()
                 networkInteractor = ODKProvider.getFormsNetworkInteractor()
+                formsInteractor = ODKProvider.getFormsInteractor()
+
                 progressBar.visibility = View.INVISIBLE
             }
             override fun onProcessingError(exception: Exception) {
