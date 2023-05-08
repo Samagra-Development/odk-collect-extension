@@ -33,20 +33,11 @@ class ODKHandler @Inject constructor(
 ): ODKInteractor {
 
     private lateinit var formsNetworkInteractor: FormsNetworkInteractor
-    private lateinit var formsDatabaseInteractor: FormsDatabaseInteractor
-    private lateinit var formsInteractor: FormsInteractor
-    private lateinit var instancesRepository: InstancesRepository
-    private lateinit var formInstanceInteractor: FormInstanceInteractor
 
     override fun setupODK(settingsJson: String, lazyDownload: Boolean, listener: ODKProcessListener) {
         try {
             ConfigHandler(application).configure(settingsJson)
             formsNetworkInteractor = DaggerFormsNetworkInteractorComponent.factory().create(application).getFormsNetworkInteractor()
-            formsDatabaseInteractor = DaggerFormsDatabaseInteractorComponent.factory().create(application).getFormsDatabaseInteractor()
-            formsInteractor = DaggerFormsInteractorComponent.factory().create(application).getFormsInteractor()
-            instancesRepository = DaggerAppDependencyComponent.builder().application(application).build().instancesRepositoryProvider().get()
-            formInstanceInteractor = DaggerFormInstanceInteractorComponent.factory().create(application).getFormInstanceInteractor()
-
             if (!lazyDownload) {
                 formsNetworkInteractor.downloadRequiredForms(object: FileDownloadListener {
                     override fun onProgress(progress: Int) { listener.onProgress(progress) }

@@ -70,13 +70,13 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
 
         ODKProvider.init(application)
         odkInteractor = ODKProvider.getOdkInteractor()
-        formsInteractor = ODKProvider.getFormsInteractor()
         progressBar.visibility = View.VISIBLE
         odkInteractor.setupODK(IOUtils.toString(resources.openRawResource(R.raw.settings)), false, object :
             ODKProcessListener {
             override fun onProcessComplete() {
                 val currentProjectProvider = DaggerAppDependencyComponent.builder().application(application).build().currentProjectProvider()
                 currentProjectProvider.getCurrentProject().name
+                formsInteractor = ODKProvider.getFormsInteractor()
                 formsDatabaseInteractor = ODKProvider.getFormsDatabaseInteractor()
                 networkInteractor = ODKProvider.getFormsNetworkInteractor()
                 progressBar.visibility = View.INVISIBLE
