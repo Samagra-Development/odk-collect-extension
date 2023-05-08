@@ -77,47 +77,62 @@ class ODKFormsHandler @Inject constructor(
     override fun prefillForm(formId: String, tagValueMap: HashMap<String, String>) {
         CoroutineScope(Job()).launch {
             val form = formsDatabaseInteractor.getLatestFormById(formId)
-            val formInstanceUri = FormsContract.getUri(currentProjectProvider.getCurrentProject().uuid, form?.dbId)
+            val formInstanceUri =
+                FormsContract.getUri(currentProjectProvider.getCurrentProject().uuid, form?.dbId)
             if (form != null && formInstanceUri != null) {
                 val formLoaderTask = FormLoaderTask(null, null, null)
-                formLoaderTask.setFormLoaderListener(object: FormLoaderListener {
+                formLoaderTask.setFormLoaderListener(object : FormLoaderListener {
                     override fun onProgressStep(stepMessage: String?) {}
-                    override fun loadingComplete(task: FormLoaderTask?, fd: FormDef?, warningMsg: String?) {
+                    override fun loadingComplete(
+                        task: FormLoaderTask?,
+                        fd: FormDef?,
+                        warningMsg: String?
+                    ) {
                         val formController = formLoaderTask.formController
                         if (formController != null) {
                             val formInstanceFileCreator = FormInstanceFileCreator(
                                 storagePathProvider
                             ) { System.currentTimeMillis() }
-                            val instanceFile = formInstanceFileCreator.createInstanceFile(form.formFilePath)
+                            val instanceFile =
+                                formInstanceFileCreator.createInstanceFile(form.formFilePath)
                             if (instanceFile != null) {
                                 formController.setInstanceFile(instanceFile)
                                 val saveToDiskResult = DiskFormSaver().save(
-                                    formInstanceUri, formController, mediaUtils, false,
-                                    false, null, {}, null, arrayListOf(),
-                                    currentProjectProvider.getCurrentProject().uuid, entitiesRepository
+                                    formInstanceUri,
+                                    formController,
+                                    mediaUtils,
+                                    false,
+                                    false,
+                                    null,
+                                    {},
+                                    null,
+                                    arrayListOf(),
+                                    currentProjectProvider.getCurrentProject().uuid,
+                                    entitiesRepository
                                 )
                                 if (saveToDiskResult.saveResult == SaveFormToDisk.SAVED) {
                                     updateForm(instanceFile.absolutePath, tagValueMap, null)
                                     FormEventBus.formSaved(formId, instanceFile.absolutePath)
-                                }
-                                else {
+                                } else {
                                     FormEventBus.formSaveError(formId, "Form could not be saved!")
                                 }
                             } else {
-                                FormEventBus.formOpenFailed(formId, "Form instance could not be created!")
+                                FormEventBus.formOpenFailed(
+                                    formId,
+                                    "Form instance could not be created!"
+                                )
                             }
-                        }
-                        else {
+                        } else {
                             FormEventBus.formOpenFailed(formId, "FormController is null!")
                         }
                     }
+
                     override fun loadingError(errorMsg: String?) {
                         FormEventBus.formOpenFailed(formId, errorMsg ?: "Form cannot be loaded!")
                     }
                 })
                 formLoaderTask.execute(form.formFilePath)
-            }
-            else {
+            } else {
                 FormEventBus.formOpenFailed(formId, "Form does not exist in database!")
             }
         }
@@ -128,18 +143,23 @@ class ODKFormsHandler @Inject constructor(
     }
 
     private fun openForm(form: Form, context: Context) {
-        val contentUri = FormsContract.getUri(currentProjectProvider.getCurrentProject().uuid, form.dbId)
+        val contentUri =
+            FormsContract.getUri(currentProjectProvider.getCurrentProject().uuid, form.dbId)
         val formEntryIntent = Intent(context, FormEntryActivity::class.java)
         formEntryIntent.action = Intent.ACTION_EDIT
         formEntryIntent.data = contentUri
         formEntryIntent.putExtra(
-            ApplicationConstants.BundleKeys.FORM_MODE,
-            ApplicationConstants.FormModes.EDIT_SAVED
+            ApplicationConstants.BundleKeys.FORM_MODE, ApplicationConstants.FormModes.EDIT_SAVED
         )
         context.startActivity(formEntryIntent)
     }
 
-    override fun updateForm(formPath: String, tag: String, tagValue: String, listener: FormsProcessListener?) {
+    override fun updateForm(
+        formPath: String,
+        tag: String,
+        tagValue: String,
+        listener: FormsProcessListener?
+    ) {
         var fos: FileOutputStream? = null
         try {
             val factory = DocumentBuilderFactory.newInstance()
@@ -169,15 +189,19 @@ class ODKFormsHandler @Inject constructor(
         }
     }
 
-    override fun updateForm(formPath: String, values: HashMap<String, String>, listener: FormsProcessListener?) {
+    override fun updateForm(
+        formPath: String,
+        values: HashMap<String, String>,
+        listener: FormsProcessListener?
+    ) {
         var progress = 0
         for (entry in values.entries) {
             updateForm(formPath, entry.key, entry.value, object : FormsProcessListener {
                 override fun onProcessed() {
                     progress++
-                    if (progress == values.size)
-                        listener?.onProcessed()
+                    if (progress == values.size) listener?.onProcessed()
                 }
+
                 override fun onProcessingError(e: Exception) {
                     listener?.onProcessingError(e)
                 }
@@ -185,16 +209,17 @@ class ODKFormsHandler @Inject constructor(
         }
     }
 
-    private fun updateDocumentBasedOnTag(document: Document, tag: String, tagValue: String): Document {
+    private fun updateDocumentBasedOnTag(
+        document: Document,
+        tag: String,
+        tagValue: String
+    ): Document {
         try {
-            if (document.getElementsByTagName(tag).item(0).childNodes.length > 0)
-                document.getElementsByTagName(tag)
-                    .item(0)
-                    .childNodes
-                    .item(0)
-                    .nodeValue = tagValue
-            else
-                document.getElementsByTagName(tag).item(0).appendChild(document.createTextNode(tagValue))
+            if (document.getElementsByTagName(tag)
+                    .item(0).childNodes.length > 0
+            ) document.getElementsByTagName(tag).item(0).childNodes.item(0).nodeValue = tagValue
+            else document.getElementsByTagName(tag).item(0)
+                .appendChild(document.createTextNode(tagValue))
         } catch (e: java.lang.Exception) {
             return document
         }
@@ -213,13 +238,14 @@ class ODKFormsHandler @Inject constructor(
             val requiredForm = formsDatabaseInteractor.getLatestFormById(formId)
             if (requiredForm == null) {
                 downloadAndOpenForm(formId, context)
-            }
-            else {
+            } else {
                 val xmlFile = File(requiredForm.formFilePath)
-                if (xmlFile.exists() && (requiredForm.formMediaPath == null || mediaExists(requiredForm))) {
+                if (xmlFile.exists() && (requiredForm.formMediaPath == null || mediaExists(
+                        requiredForm
+                    ))
+                ) {
                     formsInteractor.openFormWithFormId(formId, context)
-                }
-                else {
+                } else {
                     requiredForm.formMediaPath?.let { File(it).deleteRecursively() }
                     xmlFile.delete()
                     formsDatabaseInteractor.deleteByFormId(formId)
@@ -232,43 +258,47 @@ class ODKFormsHandler @Inject constructor(
     override fun openSavedForm(formId: String, context: Context) {
         CoroutineScope(Job()).launch {
             val compositeDisposable = CompositeDisposable()
-            compositeDisposable.add(
-                FormEventBus.getState()
-                    .subscribe { event ->
-                        when (event) {
-                            is FormStateEvent.OnFormOpenFailed -> {
-                                if (event.formId == formId) {
-                                    compositeDisposable.clear()
-                                    openForm(formId, context)
-                                }
+            compositeDisposable.add(FormEventBus.getState().subscribe { event ->
+                    when (event) {
+                        is FormStateEvent.OnFormOpenFailed -> {
+                            if (event.formId == formId) {
+                                compositeDisposable.clear()
+                                openForm(formId, context)
                             }
-                            is FormStateEvent.OnFormOpened -> {
-                                if (event.formId == formId) {
-                                    compositeDisposable.clear()
-                                }
-                            }
-                            else -> {}
                         }
+                        is FormStateEvent.OnFormOpened -> {
+                            if (event.formId == formId) {
+                                compositeDisposable.clear()
+                            }
+                        }
+                        else -> {}
                     }
-            )
+                })
 
             formInstanceInteractor.openLatestSavedInstanceWithFormId(formId, context)
         }
     }
 
-    override fun prefillAndOpenForm(formId: String, tagValueMap: HashMap<String, String>, context: Context) {
+    override fun prefillAndOpenForm(
+        formId: String,
+        tagValueMap: HashMap<String, String>,
+        context: Context
+    ) {
         CoroutineScope(Job()).launch {
             val compositeDisposable = CompositeDisposable()
             compositeDisposable.add(FormEventBus.getState().subscribe { event ->
                 when (event) {
                     is FormStateEvent.OnFormSaved -> {
                         if (event.formId == formId) {
-                            val prefilledInstance = formInstanceInteractor.getInstanceByPath(event.instancePath)
+                            val prefilledInstance =
+                                formInstanceInteractor.getInstanceByPath(event.instancePath)
                             if (prefilledInstance != null) {
                                 formInstanceInteractor.openInstance(prefilledInstance, context)
-                            }
-                            else {
-                                FormEventBus.formOpenFailed(formId, "Form instance cannot be found!")
+                            } else {
+                                FormEventBus.formOpenFailed(
+                                    formId,
+                                    "Form instance cannot be found!"
+                                )
                             }
                             compositeDisposable.clear()
                         }
@@ -283,7 +313,6 @@ class ODKFormsHandler @Inject constructor(
     }
 
 
-
     private fun downloadAndOpenForm(formId: String, context: Context) {
         formsNetworkInteractor.downloadFormById(formId, object : FileDownloadListener {
             override fun onComplete(downloadedFile: File) {
@@ -293,7 +322,8 @@ class ODKFormsHandler @Inject constructor(
     }
 
     private fun mediaExists(form: Form): Boolean {
-        val document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(File(form.formFilePath))
+        val document =
+            DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(File(form.formFilePath))
         val values = document.getElementsByTagName("value")
         for (index in 0 until values.length) {
             val attributes = values.item(index).attributes
@@ -304,8 +334,7 @@ class ODKFormsHandler @Inject constructor(
                     if (mediaFileName.isNotBlank()) {
                         mediaFileName = mediaFileName.substring(mediaFileName.lastIndexOf("/") + 1)
                         val mediaFile = File(form.formMediaPath + "/" + mediaFileName)
-                        if (!mediaFile.exists())
-                            return false
+                        if (!mediaFile.exists()) return false
                     }
                 }
             }
