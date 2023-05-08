@@ -22,5 +22,4 @@ interface ODKInteractor {
 
     /** Resets everything in odk and deletes all data. */
     fun resetODK(listener: ODKProcessListener)
-
 }

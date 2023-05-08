@@ -72,6 +72,7 @@ class ODKFormsHandler @Inject constructor(
         }
         openForm(form, context)
     }
+
     override fun prefillForm(formId: String, tagValueMap: HashMap<String, String>) {
         CoroutineScope(Job()).launch {
             val form = formsDatabaseInteractor.getLatestFormById(formId)
@@ -147,7 +148,8 @@ class ODKFormsHandler @Inject constructor(
         formEntryIntent.action = Intent.ACTION_EDIT
         formEntryIntent.data = contentUri
         formEntryIntent.putExtra(
-            ApplicationConstants.BundleKeys.FORM_MODE, ApplicationConstants.FormModes.EDIT_SAVED
+            ApplicationConstants.BundleKeys.FORM_MODE,
+            ApplicationConstants.FormModes.EDIT_SAVED
         )
         context.startActivity(formEntryIntent)
     }
@@ -197,7 +199,8 @@ class ODKFormsHandler @Inject constructor(
             updateForm(formPath, entry.key, entry.value, object : FormsProcessListener {
                 override fun onProcessed() {
                     progress++
-                    if (progress == values.size) listener?.onProcessed()
+                    if (progress == values.size)
+                        listener?.onProcessed()
                 }
 
                 override fun onProcessingError(e: Exception) {
@@ -213,11 +216,15 @@ class ODKFormsHandler @Inject constructor(
         tagValue: String
     ): Document {
         try {
-            if (document.getElementsByTagName(tag)
-                    .item(0).childNodes.length > 0
-            ) document.getElementsByTagName(tag).item(0).childNodes.item(0).nodeValue = tagValue
-            else document.getElementsByTagName(tag).item(0)
-                .appendChild(document.createTextNode(tagValue))
+            if (document.getElementsByTagName(tag).item(0).childNodes.length > 0)
+                document.getElementsByTagName(tag)
+                    .item(0)
+                    .childNodes
+                    .item(0)
+                    .nodeValue = tagValue
+            else
+                document.getElementsByTagName(tag).item(0)
+                    .appendChild(document.createTextNode(tagValue))
         } catch (e: java.lang.Exception) {
             return document
         }
@@ -277,11 +284,7 @@ class ODKFormsHandler @Inject constructor(
         }
     }
 
-    override fun prefillAndOpenForm(
-        formId: String,
-        tagValueMap: HashMap<String, String>,
-        context: Context
-    ) {
+    override fun prefillAndOpenForm(formId: String,tagValueMap: HashMap<String, String>,context: Context) {
         CoroutineScope(Job()).launch {
             val compositeDisposable = CompositeDisposable()
             compositeDisposable.add(FormEventBus.getState().subscribe { event ->

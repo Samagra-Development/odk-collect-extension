@@ -29,19 +29,12 @@ class ODKHandler @Inject constructor(
             formsNetworkInteractor = DaggerFormsNetworkInteractorComponent.factory().create(application).getFormsNetworkInteractor()
             if (!lazyDownload) {
                 formsNetworkInteractor.downloadRequiredForms(object : FileDownloadListener {
-                    override fun onProgress(progress: Int) {
-                        listener.onProgress(progress)
-                    }
-
-                    override fun onComplete(downloadedFile: File) {
-                        listener.onProcessComplete()
-                    }
-
-                    override fun onCancelled(exception: Exception) {
-                        listener.onProcessingError(exception)
-                    }
+                    override fun onProgress(progress: Int) { listener.onProgress(progress) }
+                    override fun onComplete(downloadedFile: File) { listener.onProcessComplete() }
+                    override fun onCancelled(exception: Exception) { listener.onProcessingError(exception) }
                 })
-            } else {
+            }
+            else {
                 listener.onProcessComplete()
             }
         } catch (e: IllegalStateException) {
@@ -50,7 +43,7 @@ class ODKHandler @Inject constructor(
     }
 
     override fun resetODK(listener: ODKProcessListener) {
-        CoroutineScope(Job()).launch { ConfigHandler(application).reset(listener) }
+        CoroutineScope(Job()).launch{ ConfigHandler(application).reset(listener) }
     }
 
 }

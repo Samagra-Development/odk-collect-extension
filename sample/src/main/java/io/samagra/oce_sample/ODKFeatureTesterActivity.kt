@@ -79,7 +79,6 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                 formsDatabaseInteractor = ODKProvider.getFormsDatabaseInteractor()
                 networkInteractor = ODKProvider.getFormsNetworkInteractor()
                 formsInteractor = ODKProvider.getFormsInteractor()
-
                 progressBar.visibility = View.INVISIBLE
             }
             override fun onProcessingError(exception: Exception) {
