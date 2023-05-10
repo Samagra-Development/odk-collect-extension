@@ -124,15 +124,21 @@ class ODKHandler @Inject constructor(
     override fun prefillAndOpenForm(formId: String, tagValueMap: HashMap<String, String>, context: Context) {
         CoroutineScope(Job()).launch {
             val compositeDisposable = CompositeDisposable()
+            //subscribe is used to register a new event listener
             compositeDisposable.add(FormEventBus.getState().subscribe { event ->
                 when (event) {
+                    //FormStateEvent.OnFormSaved is only emitted when a form has been successfully saved.
                     is FormStateEvent.OnFormSaved -> {
+                        //If the event.formId matches the formId parameter passed to the function,
+                        //the function retrieves the prefilled instance of the form and opens it using the
+                        //formInstanceInteractor.openInstance() method.
                         if (event.formId == formId) {
                             val prefilledInstance = formInstanceInteractor.getInstanceByPath(event.instancePath)
                             if (prefilledInstance != null) {
                                 formInstanceInteractor.openInstance(prefilledInstance, context)
                             }
                             else {
+                                //method to emit an event indicating that the form could not be opened.
                                 FormEventBus.formOpenFailed(formId, "Form instance cannot be found!")
                             }
                             compositeDisposable.clear()
