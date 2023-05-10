@@ -68,7 +68,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
         ODKProvider.init(application)
         odkInteractor = ODKProvider.getOdkInteractor()
         progressBar.visibility = View.VISIBLE
-        odkInteractor.setupODK(IOUtils.toString(resources.openRawResource(R.raw.settings)), false, object :
+        odkInteractor.setupODK(IOUtils.toString(resources.openRawResource(R.raw.firebase_common_keep)), false, object :
             ODKProcessListener {
             override fun onProcessComplete() {
                 val currentProjectProvider = DaggerAppDependencyComponent.builder().application(application).build().currentProjectProvider()

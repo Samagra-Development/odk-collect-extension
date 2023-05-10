@@ -42,6 +42,16 @@ This method opens a saved instance of a form with a given form ID, or creates a 
 `context` - A Context object representing the Android application context. \
 `listener` - A FormsProcessListener object to receive callbacks during the form opening process.
 
+<br>
+
+`fun prefillAndOpenForm(formId: String, tagValueMap: HashMap<String, String>, context: Context)`
+
+This method is to prefill a form with data and then open it for the user to interact with. \
+***Parameters:*** \
+`formId` - A string representing the ID of the form to be opened and prefilled. \
+`tagValueMap` - A HashMap here contains the value to be prefilled in the form. \
+`context` - A Context object representing the Android application context used to open the prefilled form. \
+
 <br><br>
 
 ## FormsDatabaseInteractor Interface
@@ -354,3 +364,114 @@ This method retrieves an ODK Collect form instance by its path. \
 `instancePath`- The path of the form instance to retrieve. \
 ***Returns:*** \
 `Instance`- An Instance object representing the form instance if it exists, null otherwise.
+
+<br><br>
+
+## NetworkStorageInteractor Interface
+
+This interface is responsible for handling all the storage utilities over the network. \
+
+***Methods:***
+
+`fun getUpdatedZipHash(downloadPath: String?): String?`
+
+This method fetches the updated hash of the forms zip from the server. \
+***Parameters:*** \
+`downloadPath` - This represents the path to download the zip file from the server.
+
+<br>
+
+`fun downloadFormsZip(downloadPath: String, fileDownloadListener: FileDownloadListener)`
+
+The purpose of this method is to download the forms zip from the server. \
+***Parameters:*** \
+`downloadPath` - It specifies the path where the forms zip should be downloaded to. \
+`fileDownloadListener` - It is used to monitor the progress of the file download and handle any errors that may occur during the download. \
+
+<br><br>
+
+## StorageInteractor Interface
+
+An interface for basic storage utility tasks. \
+
+***Methods:***
+
+`fun setPreference(key: String, value: String)`
+
+Sets a key->value preference in the default shared preference file. Replaces a given key if it already exists. \
+***Parameters:*** \
+`key` - To hold the key as a unique indentifier to store a specific value. \
+`value` - To hold the value to be used. \
+
+<br>
+
+`fun getPreference(key: String): String?`
+
+Gets a preference from default shared preference file given a key. Returns null, if key is not present. \
+***Parameters:*** \
+`key` - To hold the key as a unique indentifier to store a specific value. \
+
+<br>
+
+`fun clearPreference(key: String)`
+
+Clears a preference from default shared preferences, given a key. \
+***Parameters:*** \
+`key` - To hold the key as a unique indentifier to store a specific value. \
+
+<br>
+
+`fun clearPreferences()`
+
+Clears all preferences from default shared preferences. \
+
+<br>
+
+`fun createTempFile(): File`
+
+Create a file in internal storage given a path. Does nothing if the file already exists. \
+
+<br>
+
+`fun createFile(path: String): File`
+
+Create a file in internal storage given a path. Does nothing if the file already exists. \
+***Parameters:*** \
+`path` - Contains the path of the file being created in the internal storage. \
+
+<br>
+
+`fun deleteFile(path: String): Boolean`
+
+Delete a file from internal storage given a path.Returns true if the file is successfully deleted or it does not exist, otherwise returns false. \
+***Parameters:*** \
+`path` - Contains the path of the file being deleted from the internal storage. \
+
+<br>
+
+`fun createFolder(path: String): File`
+
+Creates a folder in the app internal storage. Does not do anything if the folder already exists. \
+***Parameters:*** \
+`path` - Contains the path of the folder being created in the app internal storage. \
+
+<br>
+
+`fun deleteFolder(path: String): Boolean`
+
+Delete a file from internal storage given a path. Returns true if the folder is successfully deleted or it does not exist, otherwise returns false. \
+***Parameters:*** \
+`path` - Contains the path of the file being deleted from the folder in the internal storage. \
+
+<br>
+
+`fun checkIfEnoughSpace(requiredSpace: Long): Boolean`
+
+Checks if there is 'requiredSpace' amount of free space available on the device. \
+***Parameters:*** \
+`requiredSpace` - Contains a boolean value either True or False if there is any free space available on the device. \
+
+<br><br>
+
+
+
