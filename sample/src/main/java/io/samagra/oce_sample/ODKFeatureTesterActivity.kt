@@ -68,6 +68,9 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
         ODKProvider.init(application)
         odkInteractor = ODKProvider.getOdkInteractor()
         progressBar.visibility = View.VISIBLE
+        downloadFormsButton.isEnabled=false
+        downloadAllFormsButton.isEnabled=false
+        clearAllFormsButton.isEnabled=false
         odkInteractor.setupODK(IOUtils.toString(resources.openRawResource(R.raw.settings)), false, object :
             ODKProcessListener {
             override fun onProcessComplete() {
@@ -75,6 +78,9 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                 currentProjectProvider.getCurrentProject().name
                 formsDatabaseInteractor = ODKProvider.getFormsDatabaseInteractor()
                 networkInteractor = ODKProvider.getFormsNetworkInteractor()
+                downloadFormsButton.isEnabled=true
+                downloadAllFormsButton.isEnabled=true
+                clearAllFormsButton.isEnabled=true
                 progressBar.visibility = View.INVISIBLE
             }
             override fun onProcessingError(exception: Exception) {
