@@ -101,12 +101,6 @@ the specific language governing permissions and limitations under the License.
             android:name=".activities.MainMenuActivity"
             android:exported="true"
             android:theme="@style/Theme.Collect.SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity android:name="org.odk.collect.android.activities.CrashHandlerActivity" />
