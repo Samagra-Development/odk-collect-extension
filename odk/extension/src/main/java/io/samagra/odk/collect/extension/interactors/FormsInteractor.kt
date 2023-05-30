@@ -11,6 +11,15 @@ import org.odk.collect.forms.Form
  */
 interface FormsInteractor {
 
+    /** Opens the latest version related to the formId. Deletes any
+     *  saved instance of a form with this particular formId. */
+    fun openForm(formId: String, context: Context)
+
+    /** Opens a saved form. If no saved instance is found, opens a new form. */
+    fun openSavedForm(formId: String, context: Context)
+
+    fun prefillAndOpenForm(formId: String, tagValueMap: HashMap<String, String>, context: Context)
+
     /** Opens the latest version related to the formId. */
     fun openFormWithFormId(formId: String, context: Context)
 

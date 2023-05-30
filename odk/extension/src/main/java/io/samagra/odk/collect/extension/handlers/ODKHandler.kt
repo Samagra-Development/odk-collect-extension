@@ -13,6 +13,7 @@ import io.samagra.odk.collect.extension.interactors.FormsInteractor
 import io.samagra.odk.collect.extension.interactors.FormsNetworkInteractor
 import io.samagra.odk.collect.extension.interactors.ODKInteractor
 import io.samagra.odk.collect.extension.listeners.FileDownloadListener
+import io.samagra.odk.collect.extension.listeners.FormsProcessListener
 import io.samagra.odk.collect.extension.listeners.ODKProcessListener
 import io.samagra.odk.collect.extension.utilities.ConfigHandler
 import kotlinx.coroutines.CoroutineScope
@@ -30,7 +31,7 @@ import javax.xml.parsers.DocumentBuilderFactory
 
 class ODKHandler @Inject constructor(
     private val application: Application
-): ODKInteractor {
+): ODKInteractor, FormsInteractor {
 
     private lateinit var formsNetworkInteractor: FormsNetworkInteractor
     private lateinit var formsDatabaseInteractor: FormsDatabaseInteractor
@@ -145,6 +146,39 @@ class ODKHandler @Inject constructor(
             })
             formsInteractor.prefillForm(formId, tagValueMap)
         }
+    }
+
+    override fun openFormWithFormId(formId: String, context: Context) {
+        TODO("Not yet implemented")
+    }
+
+    override fun openFormWithMd5Hash(md5Hash: String, context: Context) {
+        TODO("Not yet implemented")
+    }
+
+    override fun prefillForm(formId: String, tag: String, value: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun prefillForm(formId: String, tagValueMap: HashMap<String, String>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun updateForm(
+        formPath: String,
+        tag: String,
+        tagValue: String,
+        listener: FormsProcessListener?
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun updateForm(
+        formPath: String,
+        values: HashMap<String, String>,
+        listener: FormsProcessListener?
+    ) {
+        TODO("Not yet implemented")
     }
 
     private fun downloadAndOpenForm(formId: String, context: Context) {
