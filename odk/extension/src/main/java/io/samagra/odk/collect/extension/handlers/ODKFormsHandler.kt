@@ -278,6 +278,7 @@ class ODKFormsHandler @Inject constructor(
             prefillForm(formId, tagValueMap)
         }
     }
+
     private fun downloadAndOpenForm(formId: String, context: Context) {
         formsNetworkInteractor.downloadFormById(formId, object : FileDownloadListener {
             override fun onComplete(downloadedFile: File) {
@@ -285,6 +286,7 @@ class ODKFormsHandler @Inject constructor(
             }
         })
     }
+
     private fun mediaExists(form: Form): Boolean {
         val document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(File(form.formFilePath))
         val values = document.getElementsByTagName("value")

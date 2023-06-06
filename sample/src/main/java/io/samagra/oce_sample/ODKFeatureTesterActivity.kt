@@ -41,7 +41,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var progressBar: ProgressBar
 
     private lateinit var odkInteractor: ODKInteractor
-    private lateinit var formsInterctor: FormsInteractor
+    private lateinit var formsInteractor: FormsInteractor
     private lateinit var networkInteractor: FormsNetworkInteractor
     private lateinit var formsDatabaseInteractor: FormsDatabaseInteractor
 
@@ -80,7 +80,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                 currentProjectProvider.getCurrentProject().name
                 formsDatabaseInteractor = ODKProvider.getFormsDatabaseInteractor()
                 networkInteractor = ODKProvider.getFormsNetworkInteractor()
-                formsInterctor = ODKProvider.getFormsInteractor()
+                formsInteractor = ODKProvider.getFormsInteractor()
                 downloadFormsButton.isEnabled=true
                 downloadAllFormsButton.isEnabled=true
                 clearAllFormsButton.isEnabled=true
@@ -127,7 +127,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                 val formId: String = openFormsInput.text.toString().trim()
                 if (formId.isNotBlank()) {
                     progressBar.visibility = View.VISIBLE
-                    formsInterctor.openForm(formId, context)
+                    formsInteractor.openForm(formId, context)
                 }
             }
             R.id.download_form_button -> {
@@ -193,7 +193,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                 val formId: String = openSavedInput.text.toString().trim()
                 if (formId.isNotBlank()) {
                     progressBar.visibility = View.VISIBLE
-                    formsInterctor.openSavedForm(formId, context)
+                    formsInteractor.openSavedForm(formId, context)
                 }
             }
         }
