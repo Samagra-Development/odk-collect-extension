@@ -354,3 +354,88 @@ This method retrieves an ODK Collect form instance by its path. \
 `instancePath`- The path of the form instance to retrieve. \
 ***Returns:*** \
 `Instance`- An Instance object representing the form instance if it exists, null otherwise.
+
+<br><br>
+
+## StorageInteractor Interface
+
+An interface for basic storage utility tasks. \
+
+***Methods:***
+
+`fun setPreference(key: String, value: String)`
+
+Sets a key->value preference in the default shared preference file. Replaces a given key if it already exists. \
+***Parameters:*** \
+`key` - To hold the key as a unique indentifier to store a specific value. \
+`value` - To hold the value to be used. \
+
+<br>
+
+`fun getPreference(key: String): String?`
+
+Gets a preference from default shared preference file given a key. Returns null, if key is not present. \
+***Parameters:*** \
+`key` - To hold the key as a unique indentifier to store a specific value. \
+
+<br>
+
+`fun clearPreference(key: String)`
+
+Clears a preference from default shared preferences, given a key. \
+***Parameters:*** \
+`key` - To hold the key as a unique indentifier to store a specific value. \
+
+<br>
+
+`fun clearPreferences()`
+
+Clears all preferences from default shared preferences. \
+
+<br>
+
+`fun createTempFile(): File`
+
+Create a file in internal storage given a path. Does nothing if the file already exists. \
+
+<br>
+
+`fun createFile(path: String): File`
+
+Create a file in internal storage given a path. Does nothing if the file already exists. \
+***Parameters:*** \
+`path` - Contains the path of the file being created in the internal storage. \
+
+<br>
+
+`fun deleteFile(path: String): Boolean`
+
+Delete a file from internal storage given a path.Returns true if the file is successfully deleted or it does not exist, otherwise returns false. \
+***Parameters:*** \
+`path` - Contains the path of the file being deleted from the internal storage. \
+
+<br>
+
+`fun createFolder(path: String): File`
+
+Creates a folder in the app internal storage. Does not do anything if the folder already exists. \
+***Parameters:*** \
+`path` - Contains the path of the folder being created in the app internal storage. \
+
+<br>
+
+`fun deleteFolder(path: String): Boolean`
+
+Delete a file from internal storage given a path. Returns true if the folder is successfully deleted or it does not exist, otherwise returns false. \
+***Parameters:*** \
+`path` - Contains the path of the file being deleted from the folder in the internal storage. \
+
+<br>
+
+`fun checkIfEnoughSpace(requiredSpace: Long): Boolean`
+
+Checks if there is 'requiredSpace' amount of free space available on the device. \
+***Parameters:*** \
+`requiredSpace` - Contains a boolean value either True or False if there is any free space available on the device. \
+
+<br><br>
