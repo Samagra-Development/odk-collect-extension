@@ -23,12 +23,13 @@ if (secretsFile.exists()) {
 }
 def googleMapsApiKey = secrets.getProperty('GOOGLE_MAPS_API_KEY', '')
 def mapboxAccessToken = secrets.getProperty('MAPBOX_ACCESS_TOKEN', '')
-def googleServicesFile = rootProject.file('google-services.json')
+def googleServicesFile = file("$rootDir/sample/google-services.json")
 if (googleServicesFile.exists()) {
+    project.logger.lifecycle("google-services.json found. Firebase services will be availabe")
     apply plugin: 'com.google.gms.google-services'
     apply plugin: 'com.google.firebase.crashlytics'
 } else {
-    println("google-services.json not found .Firebase services will not be availabe ")
+    project.logger.lifecycle("google-services.json not found. Firebase services will not be availabe")
 }
 android {
     namespace 'io.samagra.oce_sample'
@@ -198,7 +199,7 @@ dependencies {
     implementation Dependencies.bikram_sambat
     implementation Dependencies.rarepebble_colorpicker
     implementation Dependencies.commons_io
-    implementation(Dependencies.opencsv) {
+    implementation (Dependencies.opencsv) {
         exclude group: 'commons-logging'
     }
     implementation(Dependencies.javarosa) {

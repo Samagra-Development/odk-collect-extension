@@ -26,7 +26,13 @@ class FormsNetworkInteractorModule {
     fun getFirebaseStorageHandler(application: Application): NetworkStorageInteractor {
         val storageInteractor = DaggerStorageInteractorComponent.factory().create(application.applicationContext).getStorageInteractor()
         val storagePathProvider = DaggerAppDependencyComponent.builder().application(application).build().storagePathProvider()
-        return FirebaseStorageHandler(storageInteractor, storagePathProvider)
+        application.applicationContext.resources.getIdentifier("google_app_id", "string", application.packageName).apply {
+           return if (this != 0) {
+               FirebaseStorageHandler(storageInteractor, storagePathProvider)
+           } else {
+               GenericNetworkStorageHandler(storageInteractor, storagePathProvider)
+           }
+        }
     }
 
     @Provides
