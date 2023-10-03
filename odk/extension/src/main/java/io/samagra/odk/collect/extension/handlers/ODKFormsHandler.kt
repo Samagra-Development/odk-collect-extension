@@ -207,21 +207,11 @@ class ODKFormsHandler @Inject constructor(
                     instancesRepository.delete(instance.dbId)
                 }
             }
-            val requiredForm = formsDatabaseInteractor.getLatestFormById(formId)
-            if (requiredForm == null) {
-                downloadAndOpenForm(formId, context)
+            if (isFormReady(formId)) {
+                openFormWithFormId(formId, context)
             }
             else {
-                val xmlFile = File(requiredForm.formFilePath)
-                if (xmlFile.exists() && (requiredForm.formMediaPath == null || mediaExists(requiredForm))) {
-                    openFormWithFormId(formId, context)
-                }
-                else {
-                    requiredForm.formMediaPath?.let { File(it).deleteRecursively() }
-                    xmlFile.delete()
-                    formsDatabaseInteractor.deleteByFormId(formId)
-                    downloadAndOpenForm(formId, context)
-                }
+                downloadAndOpenForm(formId, context)
             }
         }
     }
@@ -275,7 +265,25 @@ class ODKFormsHandler @Inject constructor(
                     else -> {}
                 }
             })
-            prefillForm(formId, tagValueMap)
+            if (isFormReady(formId)) {
+                prefillForm(formId, tagValueMap)
+            }
+            else {
+                formsNetworkInteractor.downloadFormById(formId, object : FileDownloadListener {
+                    override fun onCancelled(exception: Exception) {
+                        super.onCancelled(exception)
+                        FormEventBus.formOpenFailed(
+                                formId,
+                                "Error downloading form: ${exception.message}"
+                        )
+                    }
+
+                    override fun onComplete(downloadedFile: File) {
+                        super.onComplete(downloadedFile)
+                        prefillForm(formId, tagValueMap)
+                    }
+                });
+            }
         }
     }
 
@@ -304,6 +312,18 @@ class ODKFormsHandler @Inject constructor(
                     }
                 }
             }
+        }
+        return true
+    }
+
+    private fun isFormReady(formId: String): Boolean {
+        val requiredForm = formsDatabaseInteractor.getLatestFormById(formId) ?: return false
+        val xmlFile = File(requiredForm.formFilePath)
+        if (!xmlFile.exists() || (requiredForm.formMediaPath != null && !mediaExists(requiredForm))) {
+            requiredForm.formMediaPath?.let { File(it).deleteRecursively() }
+            xmlFile.delete()
+            formsDatabaseInteractor.deleteByFormId(requiredForm.formId)
+            return false
         }
         return true
     }

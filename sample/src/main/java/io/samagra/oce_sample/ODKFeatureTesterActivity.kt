@@ -31,6 +31,9 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var downloadFormsInput: EditText
     private lateinit var deleteFormsInput: EditText
     private lateinit var openSavedInput: EditText
+    private lateinit var prefillFormInput: EditText
+    private lateinit var prefillTagInput: EditText
+    private lateinit var prefillValueInput: EditText
     private lateinit var openSavedButton: Button
     private lateinit var openFormsButton: Button
     private lateinit var downloadFormsButton: Button
@@ -38,6 +41,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var downloadAllFormsButton: Button
     private lateinit var clearAllFormsButton: Button
     private lateinit var showAllForms: Button
+    private lateinit var prefillButton: Button
     private lateinit var progressBar: ProgressBar
 
     private lateinit var odkInteractor: ODKInteractor
@@ -66,6 +70,10 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
         progressBar = findViewById(R.id.form_progress)
         openSavedInput = findViewById(R.id.open_saved_form_input)
         openSavedButton = findViewById(R.id.open_saved_form_button)
+        prefillButton = findViewById(R.id.prefill_and_open_form_button)
+        prefillFormInput = findViewById(R.id.prefill_and_open_form_input)
+        prefillTagInput = findViewById(R.id.prefill_and_open_tag_input)
+        prefillValueInput = findViewById(R.id.prefill_and_open_value_input)
 
         ODKProvider.init(application)
         odkInteractor = ODKProvider.getOdkInteractor()
@@ -99,6 +107,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
         clearAllFormsButton.setOnClickListener(this)
         showAllForms.setOnClickListener(this)
         openSavedButton.setOnClickListener(this)
+        prefillButton.setOnClickListener(this)
 
         setListeners()
     }
@@ -179,6 +188,21 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                     }
 
                 })
+            }
+            R.id.prefill_and_open_form_button -> {
+                progressBar.visibility = View.VISIBLE
+                val formId = prefillFormInput.text.toString().trim()
+                val formTag = prefillTagInput.text.toString().trim()
+                val formValue = prefillValueInput.text.toString().trim()
+                if (formId.isNotBlank() && formTag.isNotBlank() && formValue.isNotBlank()) {
+                    formsInteractor.prefillAndOpenForm(
+                            formId,
+                            hashMapOf(
+                                    formTag to formValue,
+                            ),
+                            context
+                    )
+                }
             }
             R.id.clear_all_forms -> {
                 progressBar.visibility = View.VISIBLE

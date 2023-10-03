@@ -86,13 +86,60 @@
         android:text="Delete Form"
         android:layout_margin="5dp"/>
 
+    <EditText
+        android:id="@+id/prefill_and_open_form_input"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:paddingStart="10dp"
+        android:layout_below="@+id/delete_form_input"
+        android:text="elem2_sept23"
+        android:hint="Form Id"/>
+
+    <EditText
+        android:id="@+id/prefill_and_open_tag_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/prefill_and_open_form_input"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:paddingStart="10dp"
+        android:layout_below="@+id/delete_form_input"
+        android:text="block"
+        android:hint="Tag"/>
+
+    <EditText
+        android:id="@+id/prefill_and_open_value_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/prefill_and_open_tag_input"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:paddingStart="10dp"
+        android:layout_below="@+id/delete_form_input"
+        android:text="val"
+        android:hint="Value"/>
+
+    <Button
+        android:id="@+id/prefill_and_open_form_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/delete_form_input"
+        android:text="Prefill Form"
+        android:layout_margin="5dp"/>
+
     <Button
         android:id="@+id/download_all_forms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/delete_form_button"
+        android:layout_below="@+id/prefill_and_open_form_button"
         android:text="Download all Forms"
-        android:layout_margin="5dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        />
 
     <Button
         android:id="@+id/clear_all_forms"
