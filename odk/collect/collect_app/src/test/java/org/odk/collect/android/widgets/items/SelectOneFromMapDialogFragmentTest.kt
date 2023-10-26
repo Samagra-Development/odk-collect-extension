@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentDialog
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -24,16 +26,16 @@ import org.mockito.kotlin.whenever
 import org.odk.collect.android.R
 import org.odk.collect.android.databinding.SelectOneFromMapDialogLayoutBinding
 import org.odk.collect.android.formentry.FormEntryViewModel
-import org.odk.collect.android.formentry.FormSessionRepository
 import org.odk.collect.android.injection.config.AppDependencyModule
 import org.odk.collect.android.support.CollectHelpers
 import org.odk.collect.android.support.MockFormEntryPromptBuilder
 import org.odk.collect.android.utilities.Appearances
 import org.odk.collect.android.widgets.items.SelectOneFromMapDialogFragment.Companion.ARG_FORM_INDEX
 import org.odk.collect.android.widgets.items.SelectOneFromMapDialogFragment.Companion.ARG_SELECTED_INDEX
-import org.odk.collect.android.widgets.support.FormFixtures.selectChoice
-import org.odk.collect.android.widgets.support.FormFixtures.treeElement
+import org.odk.collect.android.widgets.support.FormElementFixtures.selectChoice
+import org.odk.collect.android.widgets.support.FormElementFixtures.treeElement
 import org.odk.collect.android.widgets.support.NoOpMapFragment
+import org.odk.collect.androidshared.ui.FragmentFactoryBuilder
 import org.odk.collect.async.Scheduler
 import org.odk.collect.fragmentstest.FragmentScenarioLauncherRule
 import org.odk.collect.geo.selection.MappableSelectItem
@@ -42,6 +44,7 @@ import org.odk.collect.geo.selection.SelectionMapFragment
 import org.odk.collect.geo.selection.SelectionMapFragment.Companion.REQUEST_SELECT_ITEM
 import org.odk.collect.maps.MapFragment
 import org.odk.collect.maps.MapFragmentFactory
+import org.odk.collect.maps.MapPoint
 import org.odk.collect.settings.SettingsProvider
 import org.odk.collect.testshared.FakeScheduler
 
@@ -79,9 +82,21 @@ class SelectOneFromMapDialogFragmentTest {
     private val application = ApplicationProvider.getApplicationContext<Application>()
     private val scheduler = FakeScheduler()
 
+    private val viewModelFactory = object : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+            return formEntryViewModel as T
+        }
+    }
+
     @get:Rule
     val launcherRule =
-        FragmentScenarioLauncherRule(defaultThemeResId = R.style.Theme_MaterialComponents)
+        FragmentScenarioLauncherRule(
+            defaultThemeResId = R.style.Theme_MaterialComponents,
+            FragmentFactoryBuilder()
+                .forClass(SelectOneFromMapDialogFragment::class.java) {
+                    SelectOneFromMapDialogFragment(viewModelFactory)
+                }.build()
+        )
 
     @Before
     fun setup() {
@@ -90,15 +105,6 @@ class SelectOneFromMapDialogFragmentTest {
                 return object : MapFragmentFactory {
                     override fun createMapFragment(): MapFragment {
                         return NoOpMapFragment()
-                    }
-                }
-            }
-
-            override fun providesFormEntryViewModelFactory(scheduler: Scheduler, formSessionStore: FormSessionRepository): FormEntryViewModel.Factory {
-                return object : FormEntryViewModel.Factory(System::currentTimeMillis, scheduler, formSessionStore) {
-                    @Suppress("UNCHECKED_CAST")
-                    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                        return formEntryViewModel as T
                     }
                 }
             }
@@ -166,26 +172,41 @@ class SelectOneFromMapDialogFragmentTest {
 
             assertThat(data.getMapTitle().value, equalTo(prompt.longText))
             assertThat(data.getItemCount().value, equalTo(prompt.selectChoices.size))
+            val firstFeatureGeometry = selectChoices[0].getChild("geometry")!!.split(" ")
+            val secondFeatureGeometry = selectChoices[1].getChild("geometry")!!.split(" ")
             assertThat(
                 data.getMappableItems().value,
                 equalTo(
                     listOf(
                         MappableSelectItem.WithAction(
                             0,
-                            selectChoices[0].getChild("geometry")!!.split(" ")[0].toDouble(),
-                            selectChoices[0].getChild("geometry")!!.split(" ")[1].toDouble(),
+                            listOf(
+                                MapPoint(
+                                    firstFeatureGeometry[0].toDouble(),
+                                    firstFeatureGeometry[1].toDouble(),
+                                    firstFeatureGeometry[2].toDouble(),
+                                    firstFeatureGeometry[3].toDouble()
+                                )
+                            ),
                             R.drawable.ic_map_marker_with_hole_small,
                             R.drawable.ic_map_marker_with_hole_big,
                             "A",
                             emptyList(),
                             IconifiedText(
-                                R.drawable.ic_save, application.getString(R.string.select_item)
+                                R.drawable.ic_save,
+                                application.getString(R.string.select_item)
                             )
                         ),
                         MappableSelectItem.WithAction(
                             1,
-                            selectChoices[1].getChild("geometry")!!.split(" ")[0].toDouble(),
-                            selectChoices[1].getChild("geometry")!!.split(" ")[1].toDouble(),
+                            listOf(
+                                MapPoint(
+                                    secondFeatureGeometry[0].toDouble(),
+                                    secondFeatureGeometry[1].toDouble(),
+                                    secondFeatureGeometry[2].toDouble(),
+                                    secondFeatureGeometry[3].toDouble()
+                                )
+                            ),
                             R.drawable.ic_map_marker_with_hole_small,
                             R.drawable.ic_map_marker_with_hole_big,
                             "B",

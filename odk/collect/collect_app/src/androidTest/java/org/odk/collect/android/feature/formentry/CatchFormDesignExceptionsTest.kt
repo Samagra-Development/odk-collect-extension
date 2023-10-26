@@ -25,13 +25,13 @@ class CatchFormDesignExceptionsTest {
             .clickFillBlankForm()
             .clickOnForm("Relevance and calculate loop")
             .answerQuestion(1, "B")
-            .scrollToAndAssertText("third")
+            .assertText("third")
             .answerQuestion(2, "C")
             // Answering C above triggers a recomputation round which resets fullName to name.
             // They're then equal which makes the third question non-relevant. Trying to change the
             // value of a non-relevant node throws an exception.
             .answerQuestion(2, "D")
-            .assertText(R.string.update_widgets_error)
+            .assertTextInDialog(R.string.update_widgets_error)
             .clickOKOnDialog()
             .assertOnPage(MainMenuPage())
     }

@@ -1,25 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Text for the topmost button on the main screen. It should be short and action-oriented.-->
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data">নতুন খালি ফরম পূরণ করুন</string>
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">নতুন খালি ফরম পূরণ করুন</string>
   <!--Text for an action button on the main screen.-->
-  <string name="review_data">সংরক্ষিত ফরম পুনরায় সম্পাদনা করুন</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="review_data_button">সংরক্ষিত ফরম %s সম্পাদনা করুন </string>
   <!--Text for an action button on the main screen.-->
-  <string name="send_data">চূড়ান্ত ফরম পাঠান</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="send_data_button">চূড়ান্ত ফরম (%s) পাঠান</string>
   <!--Text for an action button on the main screen.-->
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms"> খালি ফরম  নামিয়ে নিন</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">সংরক্ষিত ফরম মুছে দিন </string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="added_on_date_at_time">নিদিষ্ট সময় তারিখ যোগ করেন</string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="saved_on_date_at_time">নিদিষ্ট সময় তারিখ সংরক্ষিত করেন</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -34,7 +23,6 @@
   <!--Displayed in search boxes for form lists or question types that involve search-->
   <string name="no_items_display">প্রদর্শন করার মত কিছু পাওয়া যায়নি।</string>
   <string name="no_items_display_forms">প্রদর্শন করার মত কিছু পাওয়া যায়নি।\n\nTry নতুন ফরম নামিয়ে আবার পুরন করে চেষ্টা করে দেখুন।</string>
-  <string name="no_items_display_instances">প্রদর্শন করার মত কিছু পাওয়া যায়নি।\n\nTry ফরম পাঠানের পূর্বে চূড়ান্ত ফরম নিশ্চিত করে নিন।</string>
   <!--Starting in Android 12, Android makes it possible to give precise or approximate location permissions to an application. ODK Collect only captures location if the precise location permission is granted.-->
   <!--##############################################
     # FILL BLANK FORM
@@ -49,7 +37,6 @@
   <!--Text for button displayed in the form filling menu to see the form's table of contents-->
   <string name="view_hierarchy">অনুক্রম  অনুসারে দেখা</string>
   <!--Text for button displayed in the form filling menu to save the form-->
-  <string name="save_all_answers">সকল উত্তর সংরক্ষণ করুন </string>
   <!--Text of button from the form's table of contents to jump to the beginning of the form-->
   <string name="jump_to_beginning">ফরম শুরুর স্থানে যান</string>
   <!--Text of button from the form's table of contents to jump to the end of the form-->
@@ -73,17 +60,12 @@
   <string name="invalid_answer_error">দুঃখিত,উত্তর গ্রহণযোগ্য নয়।</string>
   <string name="required_answer_error">দুঃখিত, এই উত্তরটি অপরিহার্য ।</string>
   <string name="save_enter_data_description">আপনি %s ফরম শেষে দিকে রয়েছে </string>
-  <string name="save_form_as">এই ফর্মের নাম</string>
-  <string name="save_as_error">সংরক্ষিত নাম খালি রাখা যাবে না।</string>
-  <string name="mark_finished">ফরম চূড়ান্ত হিসেবে চিন্হিত করুন </string>
-  <string name="quit_entry">ফরম সংরক্ষন করুন  এবং প্রস্থান করুন </string>
   <string name="data_saved_error">দু:খিত, ফরম সংরক্ষিত হয়নি</string>
   <string name="data_saved_ok">ফরম সংরক্ষিত হয়েছে</string>
   <string name="save_point_error">ত্রুটি সংরক্ষণ উদ্ধার পয়েন্টঃ %s</string>
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <string name="quit_application">%s প্রস্থান</string>
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
-  <string name="do_not_save">সংরক্ষণ করবেন না?</string>
   <string name="keep_changes">পরিবর্তন সংরক্ষণকরুন</string>
   <string name="saving_form">ফরম সংরক্ষন করা হচ্ছে।</string>
   <!--Displayed when form filling is attempted to be launched by intent but the intent URI is incorrect-->
@@ -173,6 +155,7 @@
   <string name="provider_disabled_error">দুঃখিত, অবস্থান প্রদানকারী সেবা বন্ধ আছে!</string>
   <!--Action to go to Android settings. Displayed when location providers are disabled.-->
   <!--Label for a menu item that can be toggled to turn background location tracking on and off during form filling-->
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <!--%1$s is the time taken so far in hh:mm:ss-->
   <!--%1$s is the accuracy required for a point to be automatically saved-->
   <!--%1$s is the number of satellites being used to get location-->
@@ -302,8 +285,6 @@
   <!--Frequency for requesting blank form updates from the server-->
   <!--Frequency for requesting blank form updates from the server-->
   <!--Name of setting that defines whether form updates should be automatically downloaded when in "previously downloaded forms only" download mode-->
-  <string name="default_completed">ডিফল্ট থেকে চূড়ান্ত করন</string>
-  <string name="default_completed_summary">ডিফল্ট ভাবে চূড়ান্ত ফর্ম চিন্হিত করে রাখা</string>
   <string name="constraint_behavior">constraint_behavior</string>
   <!--Name of setting for enabling guidance hints while filling forms. Guidance hints are meant for training or other specialized contexts.-->
   <!--Guidance hints can be displayed behind an icon that must be tapped to reveal the hint.-->
@@ -323,7 +304,6 @@
   <string name="reset_project_settings_title">রিসেট</string>
   <!--Name of a setting that determines whether users can navigate backwards in a form-->
   <!--Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end-->
-  <string name="save_mid">সংরক্ষণ করুন ফরম </string>
   <!--##############################################
      # GOOGLE DRIVE, GOOGLE SHEETS
      ##############################################-->
@@ -368,8 +348,6 @@
     select the wording and where to put the \n for maximum impact in your language.-->
   <!--Text for the button that allows for configuring a project by scanning a QR code. Should be short-->
   <!--Text for the button that allows for manually entering project details. Should be short-->
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <!--Preceded by "Don't have a project yet?" question-->
   <!--Error shown when a user tries to open a form that's in a different project-->
@@ -385,9 +363,15 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

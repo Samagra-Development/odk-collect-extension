@@ -9,75 +9,109 @@ the specific language governing permissions and limitations under the License.
 -->
 
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:id="@+id/scroll_view"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0" />
+        android:padding="@dimen/margin_standard">
 
         <TextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
             android:lineSpacingMultiplier="1.2"
-            android:paddingTop="10dp"
-            android:paddingBottom="20dp"
             android:textColor="?colorOnSurface"
             android:textSize="21sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/form_edits_warning"
+            app:layout_constraintStart_toStartOf="@id/buttons_container"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="You are at the end of All widgets" />
 
-        <TextView
-            android:id="@+id/save_form_as"
-            android:layout_width="wrap_content"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/form_edits_warning"
+            style="@style/Widget.Material3.CardView.Filled"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:lineSpacingMultiplier="1.2"
-            android:text="@string/save_form_as"
-            android:textColor="?colorOnSurface"
-            android:textSize="21sp" />
+            android:layout_marginTop="@dimen/margin_large"
+            app:cardBackgroundColor="?colorSurfaceContainerHighest"
+            app:layout_constraintBottom_toTopOf="@+id/buttons_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/description"
+            app:layout_constraintWidth_max="@dimen/max_content_width">
 
-        <EditText
-            android:id="@+id/save_name"
-            android:layout_width="match_parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin">
+
+                <ImageView
+                    android:id="@+id/instance_name_info_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_outline_info_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="?colorPrimary" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/form_edits_warning_message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin"
+                    android:textAppearance="?textAppearanceBodyLarge"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/instance_name_info_icon"
+                    app:layout_constraintTop_toTopOf="@id/instance_name_info_icon"
+                    tools:text="@string/form_edits_warning_save_as_draft_and_finalize_enabled"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/buttons_container"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:textSize="21sp" />
+            android:layout_marginTop="64dp"
+            app:layout_constraintWidth_max="640dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/form_edits_warning">
 
-        <CheckBox
-            android:id="@+id/mark_finished"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginBottom="10dp"
-            android:text="@string/mark_finished"
-            android:textSize="21sp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save_as_draft"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/save_as_draft"
+                android:layout_marginEnd="@dimen/margin_small"
+                app:layout_goneMarginEnd="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/finalize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/save_exit_button"
-            style="@style/Widget.Collect.Button.FullWidth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/quit_entry" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0" />
-    </LinearLayout>
-
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/finalize"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/finalize"
+                android:layout_marginStart="@dimen/margin_small"
+                app:layout_goneMarginStart="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/save_as_draft"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

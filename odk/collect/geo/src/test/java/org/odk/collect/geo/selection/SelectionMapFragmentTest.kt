@@ -129,8 +129,8 @@ class SelectionMapFragmentTest {
     @Test
     fun `updates markers when items update`() {
         val items: List<MappableSelectItem> = listOf(
-            Fixtures.actionMappableSelectItem().copy(id = 0, latitude = 40.0),
-            Fixtures.actionMappableSelectItem().copy(id = 1, latitude = 41.0)
+            Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(40.0, 0.0))),
+            Fixtures.actionMappableSelectItem().copy(id = 1, points = listOf(MapPoint(41.0, 0.0)))
         )
         val itemsLiveData = MutableLiveData(items)
         whenever(data.getMappableItems()).thenReturn(itemsLiveData)
@@ -166,10 +166,58 @@ class SelectionMapFragmentTest {
     }
 
     @Test
+    fun `shows polyline when item has multiple points`() {
+        val items: List<MappableSelectItem> = listOf(
+            Fixtures.actionMappableSelectItem().copy(
+                id = 0,
+                points = listOf(
+                    MapPoint(40.0, 0.0),
+                    MapPoint(41.0, 0.0)
+                )
+            )
+        )
+
+        val itemsLiveData = MutableLiveData(items)
+        whenever(data.getMappableItems()).thenReturn(itemsLiveData)
+
+        launcherRule.launchInContainer(SelectionMapFragment::class.java)
+        map.ready()
+
+        assertThat(map.getPolyLines(), equalTo(itemsLiveData.value?.map { it.points }))
+        assertThat(map.isPolyDraggable(0), equalTo(false))
+        onView(withText(application.getString(R.string.select_item_count, "Things", 0, 1)))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun `shows polygon when item has multiple closed points`() {
+        val items: List<MappableSelectItem> = listOf(
+            Fixtures.actionMappableSelectItem().copy(
+                id = 0,
+                points = listOf(
+                    MapPoint(40.0, 0.0),
+                    MapPoint(41.0, 0.0),
+                    MapPoint(40.0, 0.0)
+                )
+            )
+        )
+
+        val itemsLiveData = MutableLiveData(items)
+        whenever(data.getMappableItems()).thenReturn(itemsLiveData)
+
+        launcherRule.launchInContainer(SelectionMapFragment::class.java)
+        map.ready()
+
+        assertThat(map.getPolygons(), equalTo(itemsLiveData.value?.map { it.points }))
+        onView(withText(application.getString(R.string.select_item_count, "Things", 0, 1)))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
     fun `zooms to fit all items`() {
         val items = listOf(
-            Fixtures.actionMappableSelectItem().copy(id = 0, latitude = 40.0),
-            Fixtures.actionMappableSelectItem().copy(id = 1, latitude = 41.0)
+            Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(40.0, 0.0))),
+            Fixtures.actionMappableSelectItem().copy(id = 1, points = listOf(MapPoint(41.0, 0.0)))
         )
 
         whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
@@ -182,9 +230,24 @@ class SelectionMapFragmentTest {
     }
 
     @Test
+    fun `zooms to fit all points in for item with multiple points`() {
+        val points = listOf(MapPoint(40.0, 0.0), MapPoint(41.0, 0.0))
+        val items: List<MappableSelectItem> = listOf(
+            Fixtures.actionMappableSelectItem().copy(id = 0, points = points)
+        )
+
+        whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
+
+        launcherRule.launchInContainer(SelectionMapFragment::class.java)
+        map.ready()
+
+        assertThat(map.getZoomBoundingBox(), equalTo(Pair(points, 0.8)))
+    }
+
+    @Test
     fun `does not zoom to fit all items again when they change`() {
         val originalItems =
-            listOf(Fixtures.actionMappableSelectItem().copy(id = 0, latitude = 40.0))
+            listOf(Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(40.0, 0.0))))
         val itemsLiveData: MutableLiveData<List<MappableSelectItem>?> =
             MutableLiveData(originalItems)
         whenever(data.getMappableItems()).thenReturn(itemsLiveData)
@@ -193,7 +256,7 @@ class SelectionMapFragmentTest {
         map.ready()
 
         itemsLiveData.value =
-            listOf(Fixtures.actionMappableSelectItem().copy(id = 0, latitude = 52.0))
+            listOf(Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(52.0, 0.0))))
 
         val points = originalItems.map { it.toMapPoint() }
         assertThat(map.getZoomBoundingBox(), equalTo(Pair(points, 0.8)))
@@ -201,7 +264,7 @@ class SelectionMapFragmentTest {
 
     @Test
     fun `does not zoom to fit all items if map already has center`() {
-        val items = listOf(Fixtures.actionMappableSelectItem().copy(id = 0, latitude = 40.0))
+        val items = listOf(Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(40.0, 0.0))))
         val itemsLiveData: MutableLiveData<List<MappableSelectItem>?> =
             MutableLiveData(items)
         whenever(data.getMappableItems()).thenReturn(itemsLiveData)
@@ -216,8 +279,8 @@ class SelectionMapFragmentTest {
     @Test
     fun `zooms to current location when zoomToFitItems is false`() {
         val items = listOf(
-            Fixtures.actionMappableSelectItem().copy(id = 0, latitude = 40.0),
-            Fixtures.actionMappableSelectItem().copy(id = 1, latitude = 41.0)
+            Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(40.0, 0.0))),
+            Fixtures.actionMappableSelectItem().copy(id = 1, points = listOf(MapPoint(41.0, 0.0)))
         )
         whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
 
@@ -273,7 +336,7 @@ class SelectionMapFragmentTest {
     @Test
     fun `does not zoom to current location when items change`() {
         val originalItems =
-            listOf(Fixtures.actionMappableSelectItem().copy(id = 0, latitude = 40.0))
+            listOf(Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(40.0, 0.0))))
         val itemsLiveData: MutableLiveData<List<MappableSelectItem>?> =
             MutableLiveData(originalItems)
         whenever(data.getMappableItems()).thenReturn(itemsLiveData)
@@ -283,14 +346,14 @@ class SelectionMapFragmentTest {
         map.setLocation(MapPoint(67.0, 48.0))
 
         itemsLiveData.value =
-            listOf(Fixtures.actionMappableSelectItem().copy(id = 0, latitude = 52.0))
+            listOf(Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(52.0, 0.0))))
 
         val points = originalItems.map { it.toMapPoint() }
         assertThat(map.getZoomBoundingBox(), equalTo(Pair(points, 0.8)))
     }
 
     @Test
-    fun `tapping current location button zooms to gps location`() {
+    fun `clicking current location button zooms to gps location`() {
         launcherRule.launchInContainer(SelectionMapFragment::class.java)
         map.ready()
 
@@ -302,10 +365,10 @@ class SelectionMapFragmentTest {
     }
 
     @Test
-    fun `tapping zoom to fit button zooms to fit all items`() {
+    fun `clicking zoom to fit button zooms to fit all items`() {
         val items = listOf(
-            Fixtures.actionMappableSelectItem().copy(id = 0, latitude = 40.0),
-            Fixtures.actionMappableSelectItem().copy(id = 1, latitude = 41.0)
+            Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(40.0, 0.0))),
+            Fixtures.actionMappableSelectItem().copy(id = 1, points = listOf(MapPoint(41.0, 0.0)))
         )
         whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
 
@@ -319,7 +382,22 @@ class SelectionMapFragmentTest {
     }
 
     @Test
-    fun `tapping layers button navigates to layers settings`() {
+    fun `clicking zoom to fit button zooms to fit all polys`() {
+        val points = listOf(MapPoint(40.0, 0.0), MapPoint(41.0, 0.0))
+        val items: List<MappableSelectItem> = listOf(
+            Fixtures.actionMappableSelectItem().copy(id = 0, points = points)
+        )
+        whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
+
+        launcherRule.launchInContainer(SelectionMapFragment::class.java)
+        map.ready()
+
+        onView(withId(R.id.zoom_to_bounds)).perform(click())
+        assertThat(map.getZoomBoundingBox(), equalTo(Pair(points, 0.8)))
+    }
+
+    @Test
+    fun `clicking layers button navigates to layers settings`() {
         val scenario = launcherRule.launchInContainer(SelectionMapFragment::class.java)
         map.ready()
 
@@ -331,10 +409,10 @@ class SelectionMapFragmentTest {
     }
 
     @Test
-    fun `tapping on item centers on that item with current zoom level`() {
+    fun `clicking on item centers on that item with current zoom level`() {
         val items = listOf(
-            Fixtures.actionMappableSelectItem().copy(id = 0, latitude = 40.0),
-            Fixtures.actionMappableSelectItem().copy(id = 1, latitude = 41.0)
+            Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(40.0, 0.0))),
+            Fixtures.actionMappableSelectItem().copy(id = 1, points = listOf(MapPoint(41.0, 0.0)))
         )
         whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
 
@@ -349,7 +427,42 @@ class SelectionMapFragmentTest {
     }
 
     @Test
-    fun `tapping on item switches item marker to large icon`() {
+    fun `clicking on item with multiple points zooms to fit all item points`() {
+        val itemPoints = listOf(MapPoint(40.0, 0.0), MapPoint(41.0, 0.0))
+        val items = listOf(
+            Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(40.0, 0.0))),
+            Fixtures.actionMappableSelectItem().copy(id = 1, points = itemPoints)
+        )
+        whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
+
+        launcherRule.launchInContainer(SelectionMapFragment::class.java)
+        map.ready()
+
+        map.clickOnFeature(1)
+        assertThat(map.getZoomBoundingBox(), equalTo(Pair(itemPoints, 0.8)))
+    }
+
+    /**
+     * This looks like a duplicated test, but it's easy to write an implementation that will work
+     * for everything else and break for interleaved points and traces.
+     */
+    @Test
+    fun `clicking on item always selects correct item`() {
+        val items = listOf(
+            Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(40.0, 0.0), MapPoint(41.0, 0.0))),
+            Fixtures.actionMappableSelectItem().copy(id = 1, points = listOf(MapPoint(45.0, 0.0)))
+        )
+        whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
+
+        launcherRule.launchInContainer(SelectionMapFragment::class.java)
+        map.ready()
+
+        map.clickOnFeatureId(map.getFeatureId(items[1].points))
+        assertThat(map.center, equalTo(items[1].points[0]))
+    }
+
+    @Test
+    fun `clicking on item switches item marker to large icon`() {
         val items = listOf(
             Fixtures.actionMappableSelectItem().copy(
                 id = 0,
@@ -364,7 +477,7 @@ class SelectionMapFragmentTest {
                 largeIcon = android.R.drawable.ic_lock_idle_alarm,
                 symbol = "B",
                 color = "#000000"
-            ),
+            )
         )
         whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
 
@@ -385,7 +498,7 @@ class SelectionMapFragmentTest {
     }
 
     @Test
-    fun `tapping on item when another has been tapped switches the first one back to its small icon`() {
+    fun `clicking on item when another has been tapped switches the first one back to its small icon`() {
         val items = listOf(
             Fixtures.actionMappableSelectItem().copy(
                 id = 0,
@@ -400,7 +513,7 @@ class SelectionMapFragmentTest {
                 largeIcon = android.R.drawable.ic_lock_idle_alarm,
                 symbol = "B",
                 color = "#000000"
-            ),
+            )
         )
         whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
 
@@ -422,10 +535,10 @@ class SelectionMapFragmentTest {
     }
 
     @Test
-    fun `tapping on item sets item on summary sheet`() {
+    fun `clicking on item sets item on summary sheet`() {
         val items = listOf(
             Fixtures.actionMappableSelectItem().copy(id = 0, name = "Blah1"),
-            Fixtures.actionMappableSelectItem().copy(id = 1, name = "Blah2"),
+            Fixtures.actionMappableSelectItem().copy(id = 1, name = "Blah2")
         )
         whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
 
@@ -438,10 +551,10 @@ class SelectionMapFragmentTest {
     }
 
     @Test
-    fun `tapping on item returns item ID as result when skipSummary is true`() {
+    fun `clicking on item returns item ID as result when skipSummary is true`() {
         val items = listOf(
             Fixtures.actionMappableSelectItem().copy(id = 0),
-            Fixtures.actionMappableSelectItem().copy(id = 1),
+            Fixtures.actionMappableSelectItem().copy(id = 1)
         )
         whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
 
@@ -549,7 +662,7 @@ class SelectionMapFragmentTest {
     }
 
     @Test
-    fun `tapping action hides summary sheet`() {
+    fun `clicking action hides summary sheet`() {
         val items = listOf(
             Fixtures.actionMappableSelectItem().copy(
                 id = 0,
@@ -570,8 +683,8 @@ class SelectionMapFragmentTest {
     @Test
     fun `centers on already selected item`() {
         val items = listOf(
-            Fixtures.actionMappableSelectItem().copy(id = 0, latitude = 40.0),
-            Fixtures.actionMappableSelectItem().copy(id = 1, latitude = 41.0, selected = true)
+            Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(40.0, 0.0))),
+            Fixtures.actionMappableSelectItem().copy(id = 1, points = listOf(MapPoint(40.1, 0.0)), selected = true)
         )
         whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
 
@@ -585,8 +698,8 @@ class SelectionMapFragmentTest {
     @Test
     fun `does not move when location changes when centered on already selected item`() {
         val items = listOf(
-            Fixtures.actionMappableSelectItem().copy(id = 0, latitude = 40.0),
-            Fixtures.actionMappableSelectItem().copy(id = 1, latitude = 41.0, selected = true)
+            Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(40.0, 0.0))),
+            Fixtures.actionMappableSelectItem().copy(id = 1, points = listOf(MapPoint(41.0, 0.0)), selected = true)
         )
         whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
 
@@ -620,15 +733,15 @@ class SelectionMapFragmentTest {
         launcherRule.launchInContainer(SelectionMapFragment::class.java)
         map.ready()
 
-        map.clickOnFeature(-1)
-        map.clickOnFeature(-2) // First click is fine but second could use the ID and crash
+        map.clickOnFeatureId(-1)
+        map.clickOnFeatureId(-2) // First click is fine but second could use the ID and crash
     }
 
     @Test
     fun `recreating maintains selection`() {
         val items = listOf(
-            Fixtures.actionMappableSelectItem().copy(id = 0, latitude = 40.0, name = "Point1"),
-            Fixtures.actionMappableSelectItem().copy(id = 1, latitude = 41.0, name = "Point2")
+            Fixtures.actionMappableSelectItem().copy(id = 0, points = listOf(MapPoint(40.0, 0.0)), name = "Point1"),
+            Fixtures.actionMappableSelectItem().copy(id = 1, points = listOf(MapPoint(41.0, 0.0)), name = "Point2")
         )
         whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
 
@@ -648,8 +761,8 @@ class SelectionMapFragmentTest {
     fun `recreating with initial selection maintains new selection`() {
         val items = listOf(
             Fixtures.actionMappableSelectItem()
-                .copy(id = 0, latitude = 40.0, name = "Point1", selected = true),
-            Fixtures.actionMappableSelectItem().copy(id = 1, latitude = 41.0, name = "Point2")
+                .copy(id = 0, points = listOf(MapPoint(40.0, 0.0)), name = "Point1", selected = true),
+            Fixtures.actionMappableSelectItem().copy(id = 1, points = listOf(MapPoint(41.0, 0.0)), name = "Point2")
         )
         whenever(data.getMappableItems()).thenReturn(MutableLiveData(items))
 
@@ -693,6 +806,6 @@ class SelectionMapFragmentTest {
     }
 
     private fun MappableSelectItem.toMapPoint(): MapPoint {
-        return MapPoint(this.latitude, this.longitude)
+        return MapPoint(this.points[0].latitude, this.points[0].longitude)
     }
 }

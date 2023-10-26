@@ -34,7 +34,6 @@ import androidx.annotation.NonNull;
 import org.javarosa.core.reference.InvalidReferenceException;
 import org.javarosa.core.reference.ReferenceManager;
 import org.javarosa.form.api.FormEntryPrompt;
-import org.odk.collect.analytics.Analytics;
 import org.odk.collect.android.R;
 import org.odk.collect.android.audio.AudioHelper;
 import org.odk.collect.android.formentry.media.AudioHelperFactory;
@@ -59,7 +58,6 @@ import org.odk.collect.settings.SettingsProvider;
 import org.odk.collect.settings.keys.ProjectKeys;
 
 import java.io.File;
-import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Inject;
@@ -89,9 +87,6 @@ public abstract class QuestionWidget extends FrameLayout implements Widget {
 
     @Inject
     public AudioHelperFactory audioHelperFactory;
-
-    @Inject
-    public Analytics analytics;
 
     @Inject
     public ScreenUtils screenUtils;
@@ -261,19 +256,6 @@ public abstract class QuestionWidget extends FrameLayout implements Widget {
         return guidanceTextView;
     }
 
-    //source::https://stackoverflow.com/questions/18996183/identifying-rtl-language-in-android/23203698#23203698
-    public static boolean isRTL() {
-        return isRTL(Locale.getDefault());
-    }
-
-    private static boolean isRTL(Locale locale) {
-        if (locale.getDisplayName().isEmpty()) {
-            return false;
-        }
-        final int directionality = Character.getDirectionality(locale.getDisplayName().charAt(0));
-        return directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
-    }
-
     public TextView getHelpTextView() {
         return helpTextView;
     }
@@ -358,13 +340,11 @@ public abstract class QuestionWidget extends FrameLayout implements Widget {
 
     private void hideAnswerContainerIfNeeded() {
         if (questionDetails.isReadOnly() && formEntryPrompt.getAnswerValue() == null) {
-            findViewById(R.id.space_box).setVisibility(VISIBLE);
             findViewById(R.id.answer_container).setVisibility(GONE);
         }
     }
 
     public void showAnswerContainer() {
-        findViewById(R.id.space_box).setVisibility(GONE);
         findViewById(R.id.answer_container).setVisibility(VISIBLE);
     }
 

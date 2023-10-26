@@ -1,28 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Text for the topmost button on the main screen. It should be short and action-oriented.-->
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data">กรอกแบบสำรวจใหม่</string>
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">กรอกแบบสำรวจใหม่</string>
   <!--Text for an action button on the main screen.-->
-  <string name="review_data">แก้ไขแบบสำรวจที่บันทึกไว้แล้ว</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="review_data_button">แก้ไขแบบสำรวจที่บันทึกไว้ (%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="send_data">ส่งแบบสำรวจที่ทำเสร็จแล้ว</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="send_data_button">ส่งแบบสำรวจที่เสร็จสมบูรณ์แล้ว (%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="view_sent_forms">แสดงแบบสำรวจที่ส่งแล้ว</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="view_sent_forms_button">แสดงแบบสำรวจ(%s) ที่ส่งแล้ว </string>
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms">ดาวน์โหลดแบบสำรวจเปล่า</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">ลบแบบสำรวจที่บันทึกไว้</string>
   <string name="version_number">เวอร์ชั่น: %s</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="added_on_date_at_time">\'เพิ่มเมื่อ\' EEE, MMM dd, yyyy \'เวลา\' HH:mm</string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="saved_on_date_at_time">\'บันทึกเมื่อ\' EEE, MMM dd, yyyy \'เวลา\' HH:mm</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -42,7 +29,6 @@
   <!--Displayed in search boxes for form lists or question types that involve search-->
   <string name="no_items_display">ไม่มีอะไรให้แสดง</string>
   <string name="no_items_display_forms">ไม่มีข้อมูลให้แสดง \n\n ลองเปิดและกรอกแบบฟอร์มเปล่าอีกครั้ง</string>
-  <string name="no_items_display_instances">ไม่มีข้อมูลให้แสดง \n\n ลองยืนยันข้อมูลที่บันทึกไว้ก่อนส่ง</string>
   <!--Starting in Android 12, Android makes it possible to give precise or approximate location permissions to an application. ODK Collect only captures location if the precise location permission is granted.-->
   <!--##############################################
     # FILL BLANK FORM
@@ -54,7 +40,6 @@
   <string name="survey_loading_reading_data_message">กำลังอ่านข้อมูลการสำรวจ</string>
   <string name="survey_loading_reading_csv_message">กำลังอ่านไฟล์ CSV</string>
   <string name="parse_error">ขออภัย ไม่สามารถเปิดแบบสำรวจได้</string>
-  <string name="parent_form_not_present">ไม่สามารถแก้ไขฟอร์มที่บันทึกไว้ได้ เนื่องจากฟอร์มเปล่าไม่มีอยู่หรือถูกลบไปแล้ว \n\nForm ID: %1$s</string>
   <!--Displayed when loading a form if that form was previously filled but closed because of a crash or system failure-->
   <string name="savepoint_used">กู้คืนข้อมูลจากจุดที่บันทึกไว้</string>
   <!--Displayed in the form filling menu when a form definition specifies multiple languages-->
@@ -62,7 +47,6 @@
   <!--Text for button displayed in the form filling menu to see the form's table of contents-->
   <string name="view_hierarchy">ข้ามไปที่</string>
   <!--Text for button displayed in the form filling menu to save the form-->
-  <string name="save_all_answers">บันทึกแบบสำรวจ</string>
   <!--Text of button from the form's table of contents to jump to the beginning of the form-->
   <string name="jump_to_beginning">ไปที่จุดเริ่มต้น</string>
   <!--Text of button from the form's table of contents to jump to the end of the form-->
@@ -87,17 +71,12 @@
   <string name="invalid_answer_error">ขออภัย คำตอบไม่ถูกต้อง</string>
   <string name="required_answer_error">ขออภัย โปรดตอบคำถามนี้</string>
   <string name="save_enter_data_description">ท่านอยู่ที่จุดสิ้นสุดของ %s.</string>
-  <string name="save_form_as">ตั้งชื่อแบบสำรวจนี้</string>
-  <string name="save_as_error">Saved name must not be blank!</string>
-  <string name="mark_finished">ทำเครื่องหมายแบบสำรวจว่าเสร็จเรียบร้อยแล้ว</string>
-  <string name="quit_entry">บันทึกและออก</string>
   <string name="data_saved_error">ขออภัย ไม่สามารถบันทึกแบบสำรวจได้</string>
   <string name="data_saved_ok">บันทึกแบบสำรวจเรียบร้อยแล้ว</string>
   <string name="save_point_error">มีข้อผิดพลาดในการบันทึกจุดย้อนคืน : %s</string>
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <string name="quit_application">ออกจาก %s</string>
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
-  <string name="do_not_save">ยกเลิกการเปลี่ยนแปลง</string>
   <string name="keep_changes">บันทึกการเปลี่ยนแปลง</string>
   <string name="saving_form">กำลังบันทึกแบบสำรวจ</string>
   <string name="survey_saving_validating_message">กำลังตรวจความถูกต้องของคำตอบ</string>
@@ -226,6 +205,7 @@
   <string name="provider_disabled_error">ขออภัย GPS ถูกปิดการใช้งานไว้</string>
   <!--Action to go to Android settings. Displayed when location providers are disabled.-->
   <!--Label for a menu item that can be toggled to turn background location tracking on and off during form filling-->
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <string name="get_point">เริ่มต้นจุดพิกัด</string>
   <string name="geopoint_view_read_only">แสดงจุดพิกัด</string>
   <string name="get_shape">เริ่มต้น GeoShape</string>
@@ -386,8 +366,6 @@
   <string name="autosend">ส่งอัตโนมัติ</string>
   <string name="delete_after_send">ลบหลังจากส่งแล้ว</string>
   <string name="delete_after_send_summary">ลบฟอร์มที่ตรวจสอบแล้วและไฟล์ภาพและเสียงหลังจากส่งไปที่เซิร์ฟเวอร์แล้ว</string>
-  <string name="default_completed">Default to finalized</string>
-  <string name="default_completed_summary">ตั้งค่าเริ่มต้นให้ทำเครื่องหมายแบบสำรวจว่าเสร็จสมบูรณ์แล้ว</string>
   <string name="constraint_behavior">ลักษณะการประมวลผลแบบมีเงื่อนไข</string>
   <string name="constraint_behavior_on_swipe">ตรวจสอบเมื่อปัดเลื่อนไปข้างหน้า</string>
   <string name="constraint_behavior_on_finalize">เลื่อนการตรวจสอบไปจนกว่าการสำรวจสิ้นสุด</string>
@@ -438,7 +416,6 @@
   <string name="reset_layers_result">ชั้นข้อมูลแผนที่ :: %s</string>
   <!--Name of a setting that determines whether users can navigate backwards in a form-->
   <!--Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end-->
-  <string name="save_mid">บันทึกแบบสำรวจ</string>
   <!--##############################################
      # GOOGLE DRIVE, GOOGLE SHEETS
      ##############################################-->
@@ -498,8 +475,6 @@
     select the wording and where to put the \n for maximum impact in your language.-->
   <!--Text for the button that allows for configuring a project by scanning a QR code. Should be short-->
   <!--Text for the button that allows for manually entering project details. Should be short-->
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <!--Preceded by "Don't have a project yet?" question-->
   <!--Error shown when a user tries to open a form that's in a different project-->
@@ -515,9 +490,15 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

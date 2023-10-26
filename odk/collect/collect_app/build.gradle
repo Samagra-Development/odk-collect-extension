@@ -1,8 +1,20 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
+apply from: '../config/quality.gradle'
 apply plugin: 'kotlin-android'
-apply from: '../../config/quality.gradle'
-apply from: '../../config/jacoco.gradle'
-apply from: '../../config/dependencies.gradle'
+apply plugin: "com.google.android.gms.oss-licenses-plugin"
+
+import com.android.ddmlib.DdmPreferences
+import dependencies.Dependencies
+import dependencies.Versions
+
+DdmPreferences.setTimeOut(60000)
+
+ant.condition(property: 'os', value: 'windows') {
+    os(family: 'windows')
+}
+ant.condition(property: 'os', value: 'unix') {
+    os(family: 'unix')
+}
 
 // Build numbers were manually set until 1067
 def LEGACY_BUILD_NUMBER_OFFSET = 1067
@@ -53,15 +65,16 @@ def googleMapsApiKey = secrets.getProperty('GOOGLE_MAPS_API_KEY', '')
 def mapboxAccessToken = secrets.getProperty('MAPBOX_ACCESS_TOKEN', '')
 
 android {
-    compileSdkVersion versions.android_compile_sdk
+    compileSdkVersion Versions.android_compile_sdk
 
     buildFeatures {
         viewBinding true
     }
 
     defaultConfig {
-        minSdkVersion versions.android_min_sdk
-        targetSdkVersion versions.android_target_sdk
+        applicationId('org.odk.collect.android')
+        minSdkVersion Versions.android_min_sdk
+        targetSdkVersion Versions.android_target_sdk
         versionCode LEGACY_BUILD_NUMBER_OFFSET + getMasterCommitCount()
         versionName getVersionName()
         testInstrumentationRunner('androidx.test.runner.AndroidJUnitRunner')
@@ -101,18 +114,130 @@ android {
             resValue("string", "mapbox_access_token", mapboxAccessToken)
         }
 
+        // Release build for the official ODK Collect app
+        odkCollectRelease {
+            if (secrets.getProperty('RELEASE_STORE_FILE')) {
+                signingConfig signingConfigs.release
+            }
+            minifyEnabled(true)
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            resValue("string", "GOOGLE_MAPS_API_KEY", googleMapsApiKey)
+            resValue("string", "mapbox_access_token", mapboxAccessToken)
+
+            matchingFallbacks = ['release'] // So other modules use release build type for this
+        }
+
+        selfSignedRelease {
+            signingConfig signingConfigs.selfSignedRelease
+
+            minifyEnabled(true)
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            resValue("string", "GOOGLE_MAPS_API_KEY", googleMapsApiKey)
+            resValue("string", "mapbox_access_token", mapboxAccessToken)
+
+            matchingFallbacks = ['release'] // So other modules use release build type for this
+        }
+
         debug {
             debuggable(true)
-            testCoverageEnabled((findProperty("enableJacoco") ?: "false").toBoolean())
             resValue("string", "GOOGLE_MAPS_API_KEY", googleMapsApiKey)
             resValue("string", "mapbox_access_token", mapboxAccessToken)
         }
     }
+
+    // https://stackoverflow.com/a/27119543/152938
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = new File(outputFileName.replace(".apk", "-${defaultConfig.versionName}.apk"))
+        }
+    }
+    testVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = new File(outputFileName.replace(".apk", "-${defaultConfig.versionName}.apk"))
+        }
+    }
+
+    packagingOptions {
+        resources {
+            // These library licenses will be referenced in-app
+            excludes += ['META-INF/ASL-2.0.txt', 'META-INF/LGPL-3.0.txt']
+
+            // Pick first occurrence of any files that cause conflicts
+            pickFirsts += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE', 'META-INF/LICENSE.txt', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/services/com.fasterxml.jackson.core.JsonFactory', 'META-INF/services/com.fasterxml.jackson.core.ObjectCodec', 'META-INF/services/javax.ws.rs.ext.MessageBodyReader', 'META-INF/services/javax.ws.rs.ext.MessageBodyWriter', 'draftv4/schema', 'draftv3/schema']
+        }
+
+        // To ensure that ODK Collect is installable on all devices, we don't use
+        // abiFilters to exclude any ABIs; but to keep the APK slim, we include
+        // the Mapbox native library only for 32-bit and 64-bit ARM devices and
+        // omit it for all X86 devices.
+        if (!project.hasProperty("x86Libs")) {
+            exclude 'lib/x86/libmapbox-maps.so'
+            exclude 'lib/x86/libmapbox-common.so'
+            exclude 'lib/x86/libc++_shared.so'
+            exclude 'lib/x86_64/libmapbox-maps.so'
+            exclude 'lib/x86_64/libmapbox-common.so'
+            exclude 'lib/x86_64/libc++_shared.so'
+        }
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            returnDefaultValues = true
+
+            all {
+                minHeapSize = '512m'
+                maxHeapSize = project.properties['test.heap.max']
+            }
+        }
+    }
+
+
+    sourceSets {
+        androidTest {
+            java.srcDirs += "src/commonTest/java"
+        }
+        test {
+            java.srcDirs += "src/commonTest/java"
+        }
+    }
+    lint {
+        abortOnError true
+        checkDependencies true
+        checkGeneratedSources true
+        htmlReport true
+        lintConfig file("$rootDir/config/lint.xml")
+        xmlReport true
+    }
     namespace 'org.odk.collect.android'
 }
 
+configurations.all {
+    resolutionStrategy {
+        cacheDynamicVersionsFor(0, 'seconds')
+        cacheChangingModulesFor(0, 'seconds')
+
+        force 'org.objenesis:objenesis:2.6'
+
+        // Newer Jackson versions cannot be ued until Collect minSDK >= 26 (https://github.com/FasterXML/jackson-databind#android)
+        force 'com.fasterxml.jackson.core:jackson-databind:2.13.5'
+    }
+    
+    transitive = true
+}
+
 dependencies {
-    coreLibraryDesugaring packages.desugar
+    repositories {
+        mavenLocal() // Only used for javarosa_local dependency
+    }
+
+    coreLibraryDesugaring Dependencies.desugar
 
     implementation project(':odk:collect:shared')
     implementation project(':odk:collect:androidshared')
@@ -132,7 +257,7 @@ dependencies {
     implementation project(':odk:collect:errors')
     implementation project(':odk:collect:upgrade')
     implementation project(':odk:collect:permissions')
-    implementation(project(path: ':odk:collect:settings')) {
+    implementation(project(':odk:collect:settings')) {
         exclude group: 'joda-time'
     }
     implementation project(':odk:collect:externalapp')
@@ -141,159 +266,157 @@ dependencies {
     implementation project(':odk:collect:entities')
     implementation project(':odk:collect:crash-handler')
     implementation project(':odk:collect:selfie-camera')
+    implementation project(':odk:collect:qr-code')
+    implementation project(':odk:collect:metadata')
 
     if (getSecrets().getProperty('MAPBOX_DOWNLOADS_TOKEN', '') != '') {
         implementation project(':odk:collect:mapbox')
     }
 
-    implementation packages.androidx_startup
-    implementation packages.androidx_core_ktx
-    implementation packages.androidx_browser
-    implementation packages.androidx_appcompat
-    implementation packages.androidx_work_runtime
+    implementation Dependencies.androidx_startup
+    implementation Dependencies.androidx_core_ktx
+    implementation Dependencies.androidx_browser
+    implementation Dependencies.androidx_appcompat
+    implementation Dependencies.androidx_work_runtime
 
-    implementation packages.androidx_cardview
-    implementation packages.androidx_exinterface
-    implementation packages.androidx_multidex
-    implementation packages.androidx_preference_ktx
-    implementation packages.androidx_fragment_ktx
+    implementation Dependencies.androidx_cardview
+    implementation Dependencies.androidx_multidex
+    implementation Dependencies.androidx_preference_ktx
+    implementation Dependencies.androidx_fragment_ktx
 
-    implementation packages.android_material
-    implementation packages.android_flexbox
+    implementation Dependencies.android_material
+    implementation Dependencies.android_flexbox
 
-    implementation packages.play_services_auth
-    implementation packages.play_services_maps
-    implementation packages.play_services_location
+    implementation Dependencies.play_services_auth
+    implementation Dependencies.play_services_maps
+    implementation Dependencies.play_services_location
+    implementation Dependencies.play_services_oss_licenses
 
-    implementation packages.firebase_analytics
-    implementation packages.firebase_crashlytics
+    implementation Dependencies.firebase_analytics
+    implementation Dependencies.firebase_crashlytics
 
-    implementation packages.guava
+    implementation Dependencies.guava
 
-    implementation packages.squareup_okhttp
-    implementation packages.squareup_okhttp_tls
-    implementation packages.burgstaller_okhttp_digest
-
-    implementation packages.persian_joda_time
-    implementation packages.myanmar_calendar
-    implementation packages.bikram_sambat
-    implementation packages.rarepebble_colorpicker
-    implementation packages.commons_io
-    implementation packages.rx_java
-    implementation packages.rx_android
-    implementation(packages.opencsv) {
+    implementation Dependencies.squareup_okhttp
+    implementation Dependencies.squareup_okhttp_tls
+    implementation Dependencies.burgstaller_okhttp_digest
+    
+    implementation Dependencies.persian_joda_time
+    implementation Dependencies.myanmar_calendar
+    implementation Dependencies.bikram_sambat
+    implementation Dependencies.rarepebble_colorpicker
+    implementation Dependencies.commons_io
+    implementation (Dependencies.opencsv) {
         exclude group: 'commons-logging'
     }
-    implementation(packages.javarosa) {
+    implementation(Dependencies.javarosa) {
         exclude group: 'commons-io'
         exclude group: 'joda-time'
         exclude group: 'org.slf4j'
         exclude group: 'org.hamcrest', module: 'hamcrest-all'
     }
-    implementation(packages.google_api_client_android) {
+    implementation(Dependencies.google_api_client_android) {
         exclude group: 'org.apache.httpcomponents'
         exclude group: 'com.google.guava'
     }
-    implementation(packages.google_api_services_drive) {
+    implementation(Dependencies.google_api_services_drive) {
         exclude group: 'org.apache.httpcomponents'
         exclude group: 'com.google.guava'
     }
-    implementation(packages.google_api_services_sheets) {
+    implementation(Dependencies.google_api_services_sheets) {
         exclude group: 'org.apache.httpcomponents'
         exclude group: 'com.google.guava'
     }
 
-    implementation packages.timber
-    implementation packages.slf4j_api
-    implementation packages.slf4j_timber
+    implementation Dependencies.timber
+    implementation Dependencies.slf4j_api
+    implementation Dependencies.slf4j_timber
 
-    implementation packages.zxing_android_embedded
+    implementation Dependencies.zxing_android_embedded
 
-    implementation packages.danlew_android_joda
+    implementation Dependencies.danlew_android_joda
 
     // Android Architecture Components:
-    implementation packages.androidx_lifecycle_extensions
-    implementation packages.androidx_lifecycle_runtime_ktx
-    implementation packages.androidx_viewpager2
+    implementation Dependencies.androidx_lifecycle_runtime_ktx
+    implementation Dependencies.androidx_lifecycle_livedata_ktx
+    implementation Dependencies.androidx_viewpager2
 
     // Dagger:
-    implementation packages.dagger
-    annotationProcessor packages.dagger_compiler
+    implementation Dependencies.dagger
+    annotationProcessor Dependencies.dagger_compiler
 
     // Needed for injection into Robolectric tests
-    testAnnotationProcessor packages.dagger_compiler
+    testAnnotationProcessor Dependencies.dagger_compiler
 
     // Dagger Android:
-    implementation packages.dagger_android
-    annotationProcessor packages.dagger_android_processor
+    implementation Dependencies.dagger_android
+    annotationProcessor Dependencies.dagger_android_processor
 
-    implementation packages.armen101_audio_recorder_view
+    implementation Dependencies.armen101_audio_recorder_view
 
-    implementation(packages.mp4parser_muxer) {
+    implementation(Dependencies.mp4parser_muxer) {
         exclude group: 'org.hamcrest'
     }
 
-    implementation packages.splashscreen
+    implementation Dependencies.splashscreen
 
     testImplementation project(':odk:collect:formstest')
 
     // Testing-only dependencies
-    testImplementation packages.junit
-    testImplementation packages.mockito_core
-    testImplementation packages.mockito_inline
-    testImplementation packages.mockito_kotlin
+    testImplementation Dependencies.junit
+    testImplementation Dependencies.mockito_inline
+    testImplementation Dependencies.mockito_kotlin
 
     testImplementation project(':odk:collect:androidtest')
     testImplementation(project(path: ':odk:collect:testshared')) {
-        exclude group: 'org.robolectric'
-        // Some tests in `collect_app` don't work with newer Robolectric
+        exclude group: 'org.robolectric' // Some tests in `collect_app` don't work with newer Robolectric
     }
+    testImplementation(project(":odk:collect:shadows"))
 
-    testImplementation packages.robolectric
+    testImplementation Dependencies.robolectric
 
-    testImplementation packages.androidx_test_ext_junit
-    testImplementation packages.androidx_arch_core_testing
-    testImplementation packages.robolectric_shadows_multidex
-    testImplementation packages.okhttp3_mockwebserver
-    testImplementation packages.squareup_okhttp_tls
+    testImplementation Dependencies.androidx_test_ext_junit
+    testImplementation Dependencies.androidx_arch_core_testing
+    testImplementation Dependencies.robolectric_shadows_multidex
+    testImplementation Dependencies.okhttp3_mockwebserver
+    testImplementation Dependencies.squareup_okhttp_tls
 
-    testImplementation packages.hamcrest
+    testImplementation Dependencies.hamcrest
 
-    testImplementation packages.androidx_test_espresso_core
-    testImplementation packages.androidx_test_espresso_intents
-    testImplementation packages.androidx_test_core_ktx
+    testImplementation Dependencies.androidx_test_espresso_core
+    testImplementation Dependencies.androidx_test_espresso_intents
+    testImplementation Dependencies.androidx_test_core_ktx
 
     androidTestImplementation project(':odk:collect:androidtest')
 
     // Used to generate documentation screenshots.
-    androidTestImplementation packages.fastlane_screengrab
-    androidTestImplementation packages.mockito_android
-    androidTestImplementation packages.androidx_test_ext_junit
-    androidTestImplementation packages.androidx_test_espresso_core
-    androidTestImplementation packages.androidx_arch_core_testing
-    androidTestImplementation packages.androidx_test_espresso_contrib
-    androidTestImplementation(packages.androidx_test_espresso_intents) {
+    androidTestImplementation Dependencies.fastlane_screengrab
+    androidTestImplementation Dependencies.mockito_android
+    androidTestImplementation Dependencies.androidx_test_ext_junit
+    androidTestImplementation Dependencies.androidx_test_espresso_core
+    androidTestImplementation Dependencies.androidx_arch_core_testing
+    androidTestImplementation Dependencies.androidx_test_espresso_contrib
+    androidTestImplementation(Dependencies.androidx_test_espresso_intents) {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
 
-    androidTestImplementation packages.okhttp3_mockwebserver
-    androidTestImplementation packages.androidx_work_testing
-    androidTestImplementation packages.uiautomator
+    androidTestImplementation Dependencies.okhttp3_mockwebserver
+    androidTestImplementation Dependencies.androidx_work_testing
+    androidTestImplementation Dependencies.uiautomator
 
-    testImplementation project(path: ':odk:collect:fragmentstest')
-    testImplementation(project(path: ':odk:collect:testshared')) {
-        exclude group: 'org.robolectric'
-        // Some tests in `collect_app` don't work with newer Robolectric
+    debugImplementation project(':odk:collect:fragmentstest')
+    debugImplementation(project(':odk:collect:testshared')) {
+        exclude group: 'org.robolectric' // Some tests in `collect_app` don't work with newer Robolectric
     }
 
     // Real LeakCanary for debug builds only: notifications, analysis, etc
-//    debugImplementation packages.leakcanary
+    debugImplementation Dependencies.leakcanary
 }
 
 // Must be at bottom to prevent dependency collisions
 // https://developers.google.com/android/guides/google-services-plugin
-//apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'
 
 // Must be after google-services to prevent build failure
 // https://stackoverflow.com/a/67995305
-//apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.crashlytics'

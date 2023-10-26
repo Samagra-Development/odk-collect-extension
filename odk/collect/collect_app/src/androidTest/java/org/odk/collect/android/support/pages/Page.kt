@@ -1,7 +1,7 @@
 package org.odk.collect.android.support.pages
 
-import android.app.Activity
 import android.content.pm.ActivityInfo
+import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
@@ -16,7 +16,6 @@ import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.core.internal.deps.guava.collect.Iterables
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
@@ -30,9 +29,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withHint
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
-import androidx.test.runner.lifecycle.Stage
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.core.StringContains.containsString
@@ -41,13 +37,13 @@ import org.junit.Assert
 import org.odk.collect.android.R
 import org.odk.collect.android.application.Collect
 import org.odk.collect.android.storage.StoragePathProvider
+import org.odk.collect.android.support.ActivityHelpers
 import org.odk.collect.android.support.StorageUtils
 import org.odk.collect.android.support.WaitFor.wait250ms
 import org.odk.collect.android.support.WaitFor.waitFor
 import org.odk.collect.android.support.actions.RotateAction
 import org.odk.collect.android.support.matchers.CustomMatchers.withIndex
 import org.odk.collect.androidshared.ui.ToastUtils.popRecordedToasts
-import org.odk.collect.androidtest.NestedScrollToAction.nestedScrollTo
 import org.odk.collect.strings.localization.getLocalizedString
 import org.odk.collect.testshared.RecyclerViewMatcher
 import timber.log.Timber
@@ -92,12 +88,44 @@ abstract class Page<T : Page<T>> {
         return destination.assertOnPage()
     }
 
-    fun assertText(text: String?): T {
-        onView(allOf(withText(text), withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))).check(matches(isDisplayed()))
+    fun assertTexts(vararg texts: String?): T {
+        closeSoftKeyboard()
+        for (text in texts) {
+            assertText(text)
+        }
         return this as T
     }
 
+    fun assertText(stringID: Int, vararg formatArgs: Any): T {
+        assertText(getTranslatedString(stringID, *formatArgs))
+        return this as T
+    }
+
+    fun assertText(text: String?): T {
+        onView(allOf(withText(text), withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))).check(matches(not(doesNotExist())))
+        return this as T
+    }
+
+    @JvmOverloads
     fun assertTextThatContainsExists(text: String, index: Int = 0): T {
+        onView(
+            allOf(
+                withIndex(
+                    withText(
+                        containsString(
+                            text
+                        )
+                    ),
+                    index
+                ),
+                withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)
+            )
+        ).check(matches(not(doesNotExist())))
+        return this as T
+    }
+
+    @JvmOverloads
+    fun assertTextThatContainsDoesNoExist(text: String, index: Int = 0): T {
         onView(
             withIndex(
                 withText(
@@ -107,20 +135,7 @@ abstract class Page<T : Page<T>> {
                 ),
                 index
             )
-        ).check(matches(isDisplayed()))
-        return this as T
-    }
-
-    fun assertText(vararg text: String?): T {
-        closeSoftKeyboard()
-        for (t in text) {
-            onView(allOf(withText(t), withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))).check(matches(isDisplayed()))
-        }
-        return this as T
-    }
-
-    fun assertText(stringID: Int, vararg formatArgs: Any): T {
-        assertText(getTranslatedString(stringID, *formatArgs))
+        ).check(doesNotExist())
         return this as T
     }
 
@@ -140,8 +155,10 @@ abstract class Page<T : Page<T>> {
         return this as T
     }
 
-    fun assertTextDoesNotExist(text: String?): T {
-        onView(withText(text)).check(doesNotExist())
+    fun assertTextsDoNotExist(vararg texts: String?): T {
+        for (text in texts) {
+            assertTextDoesNotExist(text)
+        }
         return this as T
     }
 
@@ -149,10 +166,22 @@ abstract class Page<T : Page<T>> {
         return assertTextDoesNotExist(getTranslatedString(string))
     }
 
-    fun assertTextDoesNotExist(vararg text: String?): T {
-        for (t in text) {
-            onView(allOf(withText(t), withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))).check(doesNotExist())
+    fun assertTextDoesNotExist(text: String?): T {
+        onView(allOf(withText(text), withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))).check(doesNotExist())
+        return this as T
+    }
+
+    fun checkIsSnackbarWithMessageDisplayed(message: Int): T {
+        onView(withText(message)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+        return this as T
+    }
+
+    fun assertToastNotDisplayed(message: String): T {
+        Espresso.onIdle()
+        if (popRecordedToasts().stream().anyMatch { s: String -> s == message }) {
+            throw RuntimeException("Toast with text \"$message\" shown on screen!")
         }
+
         return this as T
     }
 
@@ -292,12 +321,12 @@ abstract class Page<T : Page<T>> {
     }
 
     fun scrollToAndClickText(text: Int): T {
-        onView(withText(getTranslatedString(text))).perform(nestedScrollTo(), click())
+        onView(withText(getTranslatedString(text))).perform(scrollTo(), click())
         return this as T
     }
 
     fun scrollToAndClickText(text: String?): T {
-        onView(withText(text)).perform(nestedScrollTo(), click())
+        onView(withText(text)).perform(scrollTo(), click())
         return this as T
     }
 
@@ -310,12 +339,6 @@ abstract class Page<T : Page<T>> {
     fun scrollToRecyclerViewItemAndClickText(string: Int): T {
         onView(ViewMatchers.isAssignableFrom(RecyclerView::class.java)).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(hasDescendant(withText(getTranslatedString(string))), scrollTo()))
         onView(ViewMatchers.isAssignableFrom(RecyclerView::class.java)).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(hasDescendant(withText(getTranslatedString(string))), click()))
-        return this as T
-    }
-
-    fun scrollToAndAssertText(text: String?): T {
-        onView(withText(text)).perform(nestedScrollTo())
-        onView(withText(text)).check(matches(isDisplayed()))
         return this as T
     }
 
@@ -361,11 +384,6 @@ abstract class Page<T : Page<T>> {
 
     protected fun waitForText(text: String?) {
         waitFor { assertText(text) }
-    }
-
-    fun assertTextNotDisplayed(string: Int): T {
-        onView(withText(getTranslatedString(string))).check(matches(not(isDisplayed())))
-        return this as T
     }
 
     protected fun assertToolbarTitle(title: String?) {
@@ -417,6 +435,25 @@ abstract class Page<T : Page<T>> {
         return this as T
     }
 
+    fun assertTextInDialog(text: Int): T {
+        onView(withText(getTranslatedString(text))).inRoot(isDialog()).check(matches(isDisplayed()))
+        return this as T
+    }
+
+    fun closeSnackbar(): T {
+        onView(withContentDescription(R.string.close_snackbar)).perform(click())
+        return this as T
+    }
+
+    fun clickOptionsIcon(@StringRes expectedOptionString: Int): T {
+        tryAgainOnFail({
+            Espresso.openActionBarOverflowOrOptionsMenu(ActivityHelpers.getActivity())
+            assertText(expectedOptionString)
+        })
+
+        return this as T
+    }
+
     companion object {
         private fun rotateToLandscape(): ViewAction {
             return RotateAction(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
@@ -425,20 +462,5 @@ abstract class Page<T : Page<T>> {
         private fun rotateToPortrait(): ViewAction {
             return RotateAction(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         }
-
-        val currentActivity: Activity?
-            get() {
-                InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-                val activity = arrayOfNulls<Activity>(1)
-                InstrumentationRegistry.getInstrumentation().runOnMainSync {
-                    val activities = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED)
-                    if (!activities.isEmpty()) {
-                        activity[0] = Iterables.getOnlyElement(activities) as Activity
-                    } else {
-                        activity[0] = null
-                    }
-                }
-                return activity[0]
-            }
     }
 }

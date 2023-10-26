@@ -1,29 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Text for the topmost button on the main screen. It should be short and action-oriented.-->
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data">空のフォームに入力してください</string>
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">空のフォームに入力する</string>
   <!--Text for an action button on the main screen.-->
-  <string name="review_data">保存済のフォームを編集</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="review_data_button">保存済のフォーム (%s) を編集</string>
   <!--Text for an action button on the main screen.-->
-  <string name="send_data">確定済のフォームを送信</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="send_data_button">確定済のフォーム (%s) を送信</string>
   <!--Text for an action button on the main screen.-->
-  <string name="view_sent_forms">送信済フォームを表示</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="view_sent_forms_button">送信済フォーム (%s) を表示</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms">空のフォームを取得する</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">保存されたフォームを削除</string>
   <string name="version_number">バージョン: %s</string>
   <string name="id_number">ID: %s</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="added_on_date_at_time">yyyy/MM/dd HH:mm \'に追加しました\'</string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="saved_on_date_at_time">yyyy/MM/dd HH:mm \'に保存しました\'</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -46,15 +33,12 @@
   <string name="sort_by_date_desc">日付順、新しいものが最初</string>
   <string name="sort_by_date_asc">日付順、古いものが最初</string>
   <!--A sort option for blank forms. When this option is selected, the form for which a filled instance was last filled will go first.-->
-  <string name="sort_by_status_asc">ステータス順、確定済が最初</string>
-  <string name="sort_by_status_desc">ステータス順、未確定が最初</string>
   <string name="filter_the_list">一覧をフィルター</string>
   <!--Displayed in search boxes for form lists or question types that involve search-->
   <string name="search">検索</string>
   <string name="no_items_display">表示できるものはありません。</string>
   <string name="no_items_display_forms">表示できるものはありません。\n\n空のフォームを取得し、必要事項を記入してみてください。</string>
   <string name="no_items_display_sent_forms">表示可能なものはありません。\n\n表示する前に確定済みのフォームを送信してみてください。</string>
-  <string name="no_items_display_instances">表示可能なものはありません。\n\nフォームを送信する前に保存されたフォームを確定してください。</string>
   <string name="not_granted_permission">開始しようとしているアクティビティは、必要なアクセス許可が付与されていません。</string>
   <string name="storage_runtime_permission_denied_title">ストレージのアクセス許可</string>
   <string name="storage_runtime_permission_denied_desc">これらのアクセス許可がないと、Collect はフォームにアクセスしたり、回答を保存することができません。 アクセス許可を付与する準備ができたら、アプリをもう一度開いてください。</string>
@@ -66,8 +50,6 @@
   <string name="record_audio_runtime_permission_denied_desc">このアクセス許可がないと、Collect はマイクにアクセスできません。 付与する準備ができたら、もう一度お試しください。</string>
   <string name="get_accounts_runtime_permission_denied_title">アカウントのアクセス許可を取得</string>
   <string name="get_accounts_runtime_permission_denied_desc">このアクセス許可がないと、Collect はアカウントにアクセスできません。 付与する準備ができたら、もう一度お試しください。</string>
-  <string name="read_phone_state_runtime_permission_denied_title">電話の状態読み取りアクセス許可</string>
-  <string name="read_phone_state_runtime_permission_denied_desc">ODK Collect は電話はかけませんが、電話番号やデバイス ID など、デバイスに関する特定のプロパティにアクセスする必要があります。</string>
   <!--##############################################
     # FILL BLANK FORM
     ##############################################-->
@@ -81,7 +63,6 @@
   <string name="survey_loading_reading_csv_message">CSV ファイルを読み込み中…</string>
   <string name="parse_error">申し訳ありません、フォームを解析できません。</string>
   <string name="loading_form_failed">フォームの読み込み時にエラーが発生しました。もう一度やり直してください。</string>
-  <string name="parent_form_not_present">対応する空のフォームが存在しないか、削除されたため、この保存済のフォームを編集できません。\n\nフォーム ID: %1$s</string>
   <string name="cannot_edit_completed_form">確定済になっているため、このフォームは編集できません。暗号化されているかもしれません。</string>
   <!--Displayed when loading a form if that form was previously filled but closed because of a crash or system failure-->
   <string name="savepoint_used">未保存の変更をセーブポイントから回復しました!</string>
@@ -90,7 +71,6 @@
   <!--Text for button displayed in the form filling menu to see the form's table of contents-->
   <string name="view_hierarchy">プロンプトへ移動</string>
   <!--Text for button displayed in the form filling menu to save the form-->
-  <string name="save_all_answers">フォームを保存する</string>
   <!--Text of button from the form's table of contents to jump to the beginning of the form-->
   <string name="jump_to_beginning">最初に移動</string>
   <!--Text of button from the form's table of contents to jump to the end of the form-->
@@ -126,18 +106,12 @@
   <string name="too_complex_form">この形式はこの端末には複雑すぎます。 表現を単純化するか、フォーラムで助けを求めてください。</string>
   <string name="survey_internal_error">内部エラー: プロンプトするステップに失敗しました。</string>
   <string name="save_enter_data_description">%s の最後です。</string>
-  <string name="save_form_as">このフォームの名前</string>
-  <string name="save_as_error">保存する名前は空にできません!</string>
-  <string name="mark_finished">フォームを確定済にします</string>
-  <string name="quit_entry">フォームを保存して終了</string>
   <string name="data_saved_error">申し訳ありません、フォームが保存できませんでした!</string>
   <string name="data_saved_ok">フォームを保存しました!</string>
   <string name="save_point_error">リカバリーポイントの保存中にエラー: %s</string>
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <string name="quit_application">%s を終了</string>
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
-  <string name="no_form_loaded">&lt;フォームが読み込まれていません&gt;</string>
-  <string name="do_not_save">変更を無視する</string>
   <string name="keep_changes">変更を保存する</string>
   <string name="saving_form">フォームを保存中</string>
   <string name="survey_saving_validating_message">回答を検証中…</string>
@@ -207,8 +181,6 @@
   <string name="set_color">色を設定</string>
   <string name="capture_video">ビデオを録画</string>
   <string name="choose_video">ビデオを選択</string>
-  <string name="start_video_capture_instruction">画面をタップすると記録を開始します</string>
-  <string name="stop_video_capture_instruction">記録を開始しました。もう一度タップすると停止します</string>
   <string name="play_video">ビデオを再生</string>
   <string name="choose_file">ファイルを選択</string>
   <!--Text for button that deletes a file that is the answer to a question-->
@@ -401,6 +373,7 @@
   <string name="track_location">位置情報を追跡</string>
   <string name="background_location_disabled">このフォームは位置を追跡しようとしますが、追跡が無効になっています。 上の %1$s メニューで有効にしてください。</string>
   <string name="background_location_enabled">このフォームは位置を追跡します。 上の %1$s メニューで追跡を無効にすることができます。</string>
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <string name="get_point">地理位置を開始</string>
   <string name="geopoint_view_read_only">地理位置を表示</string>
   <string name="geoshape_view_read_only">GeoShape を表示</string>
@@ -643,8 +616,6 @@
   <string name="delete_after_send">送信後に削除</string>
   <string name="delete_after_send_summary">サーバに送信した後、確定されたフォームやメディアを削除します</string>
   <string name="form_filling_category">フォーム入力</string>
-  <string name="default_completed">デフォルトで確定</string>
-  <string name="default_completed_summary">デフォルトでフォームを確定済にします</string>
   <string name="constraint_behavior_title">処理の制約</string>
   <string name="constraint_behavior">処理動作の制約</string>
   <string name="constraint_behavior_on_swipe">次へスワイプ時に検証</string>
@@ -722,13 +693,10 @@
   <!--Name of a setting that determines whether users can navigate backwards in a form-->
   <string name="moving_backwards_title">後ろへの移動</string>
   <string name="moving_backwards_disabled_title">後ろへの移動は無効です</string>
-  <string name="moving_backwards_disabled_message">ユーザーがこの設定をバイパスできないようにデバイスを設定しますか?\n\n変更は:\n\u2022 保存したフォームの編集を無効にする\n\u2022 フォームの保存を無効にする\n\u2022 プロンプトへの移動を無効にする\n\u2022 制約処理を設定して、次画面にスワイプ時に検証する</string>
   <string name="yes">はい</string>
   <string name="no">いいえ</string>
   <string name="moving_backwards_enabled_title">後ろへの移動は有効です</string>
-  <string name="moving_backwards_enabled_message">次の設定を確認することができます:\n\n\u2022 保存したフォームの編集\n\u2022 フォームの保存\n\u2022 プロンプトに移動\n\u2022 制約処理</string>
   <!--Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end-->
-  <string name="save_mid">フォームを保存する</string>
   <!--##############################################
      # GOOGLE DRIVE, GOOGLE SHEETS
      ##############################################-->
@@ -777,7 +745,7 @@
   <string name="view_qr_code_fragment_title">QR コード</string>
   <string name="import_qrcode_sd">QR コードをインポート</string>
   <string name="successfully_imported_settings">設定を正常にインポートしました</string>
-  <string name="encoding_max_limit">最大文字数制限に達しました: すべての設定の QR コードを生成することができません</string>
+  <string name="encoding_max_limit" tools:ignore="UnusedResources">最大文字数制限に達しました: すべての設定の QR コードを生成することができません</string>
   <string name="share">共有</string>
   <string name="turn_on_flashlight">フラッシュライトをオンにする</string>
   <string name="turn_off_flashlight">フラッシュライトをオフにする</string>
@@ -831,8 +799,6 @@
     select the wording and where to put the \n for maximum impact in your language.-->
   <!--Text for the button that allows for configuring a project by scanning a QR code. Should be short-->
   <!--Text for the button that allows for manually entering project details. Should be short-->
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <!--Preceded by "Don't have a project yet?" question-->
   <!--Error shown when a user tries to open a form that's in a different project-->
@@ -848,9 +814,16 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <string name="dismiss_button_text">消去</string>
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

@@ -3,22 +3,20 @@ package org.odk.collect.android.formlists.blankformlist
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import org.odk.collect.android.R
-import org.odk.collect.android.activities.FormEntryActivity
 import org.odk.collect.android.activities.FormMapActivity
+import org.odk.collect.android.formmanagement.FormFillingIntentFactory
 import org.odk.collect.android.injection.DaggerUtils
 import org.odk.collect.android.preferences.dialogs.ServerAuthDialogFragment
-import org.odk.collect.android.utilities.ApplicationConstants
-import org.odk.collect.android.utilities.SnackbarUtils
 import org.odk.collect.androidshared.network.NetworkStateProvider
 import org.odk.collect.androidshared.ui.DialogFragmentUtils
+import org.odk.collect.androidshared.ui.SnackbarUtils
 import org.odk.collect.permissions.PermissionListener
 import org.odk.collect.permissions.PermissionsProvider
 import org.odk.collect.strings.localization.LocalizedActivity
@@ -39,7 +37,11 @@ class BlankFormListActivity : LocalizedActivity(), OnFormItemClickListener {
 
     private val adapter: BlankFormListAdapter = BlankFormListAdapter(this)
 
-    private lateinit var menuDelegate: BlankFormListMenuDelegate
+    private val formLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            setResult(RESULT_OK, it.data)
+            finish()
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,45 +50,23 @@ class BlankFormListActivity : LocalizedActivity(), OnFormItemClickListener {
         title = getString(R.string.enter_data)
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        menuDelegate = BlankFormListMenuDelegate(this, viewModel, networkStateProvider)
+        val menuProvider = BlankFormListMenuProvider(this, viewModel, networkStateProvider)
+        addMenuProvider(menuProvider, this)
 
         findViewById<RecyclerView>(R.id.form_list).adapter = adapter
 
         initObservers()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuDelegate.onCreateOptionsMenu(menuInflater, menu)
-        return true
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        menuDelegate.onPrepareOptionsMenu(menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return menuDelegate.onOptionsItemSelected(item)
-    }
-
     override fun onFormClick(formUri: Uri) {
         if (Intent.ACTION_PICK == intent.action) {
             // caller is waiting on a picked form
             setResult(RESULT_OK, Intent().setData(formUri))
+            finish()
         } else {
-            // caller wants to view/edit a form, so launch formentryactivity
-            Intent(this, FormEntryActivity::class.java).apply {
-                action = Intent.ACTION_EDIT
-                data = formUri
-                putExtra(
-                    ApplicationConstants.BundleKeys.FORM_MODE,
-                    ApplicationConstants.FormModes.EDIT_SAVED
-                )
-
-                startActivity(this)
-            }
+            // caller wants to view/edit a form, so launch FormFillingActivity
+            formLauncher.launch(FormFillingIntentFactory.newInstanceIntent(this, formUri))
         }
-        finish()
     }
 
     override fun onMapButtonClick(id: Long) {

@@ -24,7 +24,6 @@ object ProtectedProjectKeys {
     const val KEY_HIDE_OLD_FORM_VERSIONS = "hide_old_form_versions"
     const val KEY_AUTOSEND = "change_autosend"
     const val KEY_DELETE_AFTER_SEND = "delete_after_send"
-    const val KEY_DEFAULT_TO_FINALIZED = "default_to_finalized"
     const val KEY_CONSTRAINT_BEHAVIOR = "change_constraint_behavior"
     const val KEY_HIGH_RESOLUTION = "high_resolution"
     const val KEY_IMAGE_SIZE = "image_size"
@@ -40,11 +39,8 @@ object ProtectedProjectKeys {
     const val KEY_CHANGE_LANGUAGE = "change_language"
     const val KEY_JUMP_TO = "jump_to"
     const val KEY_SAVE_MID = "save_mid"
-    const val KEY_SAVE_BY_DEFAULT = "save_by_default"
-    const val KEY_EXIT_ON_BACK = "exit_on_back"
-    const val KEY_EXIT_ON_SAVE = "exit_on_save"
-    const val KEY_SAVE_AS = "save_as"
-    const val KEY_MARK_AS_FINALIZED = "mark_as_finalized"
+    const val KEY_SAVE_AS_DRAFT = "save_as_draft"
+    const val KEY_FINALIZE = "finalize"
 
     const val ALLOW_OTHER_WAYS_OF_EDITING_FORM = "allow_other_ways_of_editing_form"
 
@@ -70,7 +66,6 @@ object ProtectedProjectKeys {
         KEY_HIDE_OLD_FORM_VERSIONS,
         KEY_AUTOSEND,
         KEY_DELETE_AFTER_SEND,
-        KEY_DEFAULT_TO_FINALIZED,
         KEY_CONSTRAINT_BEHAVIOR,
         KEY_HIGH_RESOLUTION,
         KEY_IMAGE_SIZE,
@@ -85,11 +80,8 @@ object ProtectedProjectKeys {
         KEY_CHANGE_LANGUAGE,
         KEY_JUMP_TO,
         KEY_SAVE_MID,
-        KEY_SAVE_BY_DEFAULT,
-        KEY_EXIT_ON_SAVE,
-        KEY_EXIT_ON_BACK,
-        KEY_SAVE_AS,
-        KEY_MARK_AS_FINALIZED,
+        KEY_SAVE_AS_DRAFT,
+        KEY_FINALIZE,
         ALLOW_OTHER_WAYS_OF_EDITING_FORM
     )
 }

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.startup.AppInitializer
 import com.google.android.gms.location.LocationListener
 import com.mapbox.android.core.location.LocationEngineProvider
 import com.mapbox.android.core.location.LocationEngineRequest
@@ -29,6 +30,7 @@ import com.mapbox.maps.extension.style.sources.addSource
 import com.mapbox.maps.extension.style.sources.generated.RasterSource
 import com.mapbox.maps.extension.style.sources.generated.VectorSource
 import com.mapbox.maps.extension.style.sources.getSource
+import com.mapbox.maps.loader.MapboxMapsInitializer
 import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.animation.MapAnimationOptions.Companion.mapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
@@ -36,6 +38,7 @@ import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.createPolygonAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.createPolylineAnnotationManager
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.gestures.OnMapClickListener
@@ -132,13 +135,14 @@ class MapboxMapFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppInitializer.getInstance(requireContext()).initializeComponent(MapboxMapsInitializer::class.java)
         mapFragmentDelegate.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         mapView = MapView(inflater.context).apply {
             scalebar.enabled = false
@@ -252,11 +256,11 @@ class MapboxMapFragment :
     override fun zoomToBoundingBox(
         mapPoints: Iterable<MapPoint>?,
         scaleFactor: Double,
-        animate: Boolean,
+        animate: Boolean
     ) {
         mapPoints?.let {
             val points = mapPoints.map {
-                Point.fromLngLat(it.lon, it.lat, it.alt)
+                Point.fromLngLat(it.longitude, it.latitude, it.altitude)
             }
 
             val screenWidth = ScreenUtils.getScreenWidth(context)
@@ -327,38 +331,62 @@ class MapboxMapFragment :
         }
     }
 
-    override fun addDraggablePoly(points: MutableIterable<MapPoint>, closedPolygon: Boolean): Int {
+    override fun addPolyLine(points: MutableIterable<MapPoint>, closed: Boolean, draggable: Boolean): Int {
         val featureId = nextFeatureId++
-        features[featureId] = PolyFeature(
-            requireContext(),
-            pointAnnotationManager,
-            polylineAnnotationManager,
-            featureId,
-            featureClickListener,
-            featureDragEndListener,
-            closedPolygon,
-            points
-        )
+        if (draggable) {
+            features[featureId] = DynamicPolyLineFeature(
+                requireContext(),
+                pointAnnotationManager,
+                polylineAnnotationManager,
+                featureId,
+                featureClickListener,
+                featureDragEndListener,
+                closed,
+                points
+            )
+        } else {
+            features[featureId] = StaticPolyLineFeature(
+                requireContext(),
+                polylineAnnotationManager,
+                featureId,
+                featureClickListener,
+                closed,
+                points
+            )
+        }
         return featureId
     }
 
-    override fun appendPointToPoly(featureId: Int, point: MapPoint) {
+    override fun addPolygon(points: MutableIterable<MapPoint>): Int {
+        val featureId = nextFeatureId++
+        features[featureId] = StaticPolygonFeature(
+            requireContext(),
+            mapView.annotations.createPolygonAnnotationManager(),
+            points,
+            featureClickListener,
+            featureId
+        )
+
+        return featureId
+    }
+
+    override fun appendPointToPolyLine(featureId: Int, point: MapPoint) {
         val feature = features[featureId]
-        if (feature is PolyFeature) {
+        if (feature is DynamicPolyLineFeature) {
             feature.appendPoint(point)
         }
     }
 
-    override fun removePolyLastPoint(featureId: Int) {
+    override fun removePolyLineLastPoint(featureId: Int) {
         val feature = features[featureId]
-        if (feature is PolyFeature) {
+        if (feature is DynamicPolyLineFeature) {
             feature.removeLastPoint()
         }
     }
 
-    override fun getPolyPoints(featureId: Int): List<MapPoint> {
+    override fun getPolyLinePoints(featureId: Int): List<MapPoint> {
         val feature = features[featureId]
-        return if (feature is PolyFeature) {
+        return if (feature is DynamicPolyLineFeature) {
             feature.mapPoints
         } else {
             emptyList()
@@ -442,8 +470,10 @@ class MapboxMapFragment :
 
     override fun onLocationChanged(location: Location) {
         lastLocationFix = MapPoint(
-            location.latitude, location.longitude,
-            location.altitude, location.accuracy.toDouble()
+            location.latitude,
+            location.longitude,
+            location.altitude,
+            location.accuracy.toDouble()
         )
         lastLocationProvider = location.provider
         Timber.i(
@@ -485,7 +515,7 @@ class MapboxMapFragment :
             this.locationPuck = LocationPuck2D(
                 AppCompatResources.getDrawable(
                     requireContext(),
-                    R.drawable.ic_crosshairs,
+                    R.drawable.ic_crosshairs
                 )
             )
         }
@@ -494,7 +524,7 @@ class MapboxMapFragment :
     private fun moveOrAnimateCamera(point: MapPoint, animate: Boolean, zoom: Double = getZoom()) {
         mapboxMap.flyTo(
             cameraOptions {
-                center(Point.fromLngLat(point.lon, point.lat, point.alt))
+                center(Point.fromLngLat(point.longitude, point.latitude, point.altitude))
                 zoom(zoom)
             },
             mapAnimationOptions {

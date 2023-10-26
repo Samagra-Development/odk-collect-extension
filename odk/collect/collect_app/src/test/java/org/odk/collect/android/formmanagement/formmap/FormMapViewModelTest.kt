@@ -120,14 +120,14 @@ class FormMapViewModelTest {
             ),
             action = MappableSelectItem.IconifiedText(
                 R.drawable.ic_edit,
-                application.getString(R.string.review_data)
+                application.getString(R.string.edit_data)
             )
         )
         assertThat(viewModel.getMappableItems().value!![0], equalTo(expectedItem))
     }
 
     @Test
-    fun `finalized instances with geometry have edit action and no info`() {
+    fun `finalized instances with geometry have view action and no info`() {
         val form = formsRepository.save(
             FormUtils.buildForm("id", "version", TempFiles.createTempDir().absolutePath)
                 .build()
@@ -163,8 +163,8 @@ class FormMapViewModelTest {
                 )
             ),
             action = MappableSelectItem.IconifiedText(
-                R.drawable.ic_edit,
-                application.getString(R.string.review_data)
+                R.drawable.ic_visibility,
+                application.getString(R.string.view_data)
             )
         )
         assertThat(viewModel.getMappableItems().value!![0], equalTo(expectedItem))
@@ -252,7 +252,7 @@ class FormMapViewModelTest {
                     )
                 )
             ),
-            info = formatDate(R.string.deleted_on_date_at_time, 123L),
+            info = formatDate(R.string.deleted_on_date_at_time, 123L)
         )
         assertThat(viewModel.getMappableItems().value!![0], equalTo(expectedItem))
     }

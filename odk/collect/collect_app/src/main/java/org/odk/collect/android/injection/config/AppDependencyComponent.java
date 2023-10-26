@@ -3,19 +3,17 @@ package org.odk.collect.android.injection.config;
 import android.app.Application;
 
 import org.javarosa.core.reference.ReferenceManager;
-import org.odk.collect.analytics.Analytics;
 import org.odk.collect.android.activities.AboutActivity;
-import org.odk.collect.android.activities.CollectAbstractActivity;
+import org.odk.collect.android.activities.AppListActivity;
 import org.odk.collect.android.activities.DeleteSavedFormActivity;
 import org.odk.collect.android.activities.FirstLaunchActivity;
 import org.odk.collect.android.activities.FormDownloadListActivity;
-import org.odk.collect.android.activities.FormEntryActivity;
+import org.odk.collect.android.activities.FormFillingActivity;
 import org.odk.collect.android.activities.FormHierarchyActivity;
 import org.odk.collect.android.activities.FormMapActivity;
 import org.odk.collect.android.activities.InstanceChooserList;
 import org.odk.collect.android.activities.InstanceUploaderActivity;
 import org.odk.collect.android.activities.InstanceUploaderListActivity;
-import org.odk.collect.android.activities.MainMenuActivity;
 import org.odk.collect.android.adapters.InstanceUploaderAdapter;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.application.initialization.ApplicationInitializer;
@@ -37,27 +35,22 @@ import org.odk.collect.android.external.FormsProvider;
 import org.odk.collect.android.external.InstanceProvider;
 import org.odk.collect.android.formentry.BackgroundAudioPermissionDialogFragment;
 import org.odk.collect.android.formentry.ODKView;
-import org.odk.collect.android.formentry.QuitFormDialogFragment;
-import org.odk.collect.android.formentry.backgroundlocation.BackgroundLocationViewModel;
 import org.odk.collect.android.formentry.repeats.DeleteRepeatDialogFragment;
 import org.odk.collect.android.formentry.saving.SaveAnswerFileErrorDialogFragment;
 import org.odk.collect.android.formentry.saving.SaveFormProgressDialogFragment;
 import org.odk.collect.android.formlists.blankformlist.BlankFormListActivity;
-import org.odk.collect.android.formmanagement.FormDownloader;
 import org.odk.collect.android.formmanagement.FormSourceProvider;
 import org.odk.collect.android.formmanagement.InstancesAppState;
-import org.odk.collect.android.formmanagement.ServerFormsDetailsFetcher;
 import org.odk.collect.android.formmanagement.matchexactly.SyncStatusAppState;
 import org.odk.collect.android.fragments.AppListFragment;
 import org.odk.collect.android.fragments.BarCodeScannerFragment;
-import org.odk.collect.android.fragments.BlankFormListFragment;
 import org.odk.collect.android.fragments.SavedFormListFragment;
 import org.odk.collect.android.fragments.dialogs.FormsDownloadResultDialog;
 import org.odk.collect.android.fragments.dialogs.SelectMinimalDialog;
 import org.odk.collect.android.gdrive.GoogleDriveActivity;
 import org.odk.collect.android.gdrive.GoogleSheetsUploaderActivity;
 import org.odk.collect.android.geo.GoogleMapFragment;
-import org.odk.collect.android.logic.PropertyManager;
+import org.odk.collect.android.mainmenu.MainMenuActivity;
 import org.odk.collect.android.openrosa.OpenRosaHttpInterface;
 import org.odk.collect.android.preferences.CaptionedListPreference;
 import org.odk.collect.android.preferences.dialogs.AdminPasswordDialogFragment;
@@ -89,7 +82,6 @@ import org.odk.collect.android.upload.InstanceUploader;
 import org.odk.collect.android.utilities.AuthDialogUtility;
 import org.odk.collect.android.utilities.FormsRepositoryProvider;
 import org.odk.collect.android.utilities.InstancesRepositoryProvider;
-import org.odk.collect.android.utilities.MediaUtils;
 import org.odk.collect.android.utilities.ProjectResetter;
 import org.odk.collect.android.utilities.ThemeUtils;
 import org.odk.collect.android.widgets.ExStringWidget;
@@ -155,9 +147,7 @@ public interface AppDependencyComponent {
 
     void inject(SavedFormListFragment savedFormListFragment);
 
-    void inject(PropertyManager propertyManager);
-
-    void inject(FormEntryActivity formEntryActivity);
+    void inject(FormFillingActivity formFillingActivity);
 
     void inject(InstanceServerUploaderTask uploader);
 
@@ -209,8 +199,6 @@ public interface AppDependencyComponent {
 
     void inject(SaveFormProgressDialogFragment saveFormProgressDialogFragment);
 
-    void inject(QuitFormDialogFragment quitFormDialogFragment);
-
     void inject(BarCodeScannerFragment barCodeScannerFragment);
 
     void inject(QRCodeScannerFragment qrCodeScannerFragment);
@@ -229,8 +217,6 @@ public interface AppDependencyComponent {
 
     void inject(BasePreferencesFragment basePreferencesFragment);
 
-    void inject(BlankFormListFragment blankFormListFragment);
-
     void inject(InstanceUploaderActivity instanceUploaderActivity);
 
     void inject(ProjectPreferencesFragment projectPreferencesFragment);
@@ -244,8 +230,6 @@ public interface AppDependencyComponent {
     void inject(SaveAnswerFileErrorDialogFragment saveAnswerFileErrorDialogFragment);
 
     void inject(AudioRecordingErrorDialogFragment audioRecordingErrorDialogFragment);
-
-    void inject(CollectAbstractActivity collectAbstractActivity);
 
     void inject(InstanceChooserList instanceChooserList);
 
@@ -295,15 +279,13 @@ public interface AppDependencyComponent {
 
     void inject(BlankFormListActivity blankFormListActivity);
 
-    void inject(BackgroundLocationViewModel.Factory factory);
-
     void inject(DeleteRepeatDialogFragment deleteRepeatDialogFragment);
+
+    void inject(AppListActivity appListActivity);
 
     OpenRosaHttpInterface openRosaHttpInterface();
 
     ReferenceManager referenceManager();
-
-    Analytics analytics();
 
     SettingsProvider settingsProvider();
 
@@ -346,10 +328,4 @@ public interface AppDependencyComponent {
     NetworkStateProvider networkStateProvider();
 
     EntitiesRepositoryProvider entitiesRepositoryProvider();
-
-    ServerFormsDetailsFetcher providesServerFormsDetailsFetcher();
-
-    FormDownloader providesFormDownloader();
-
-    MediaUtils providesMediaUtils();
 }

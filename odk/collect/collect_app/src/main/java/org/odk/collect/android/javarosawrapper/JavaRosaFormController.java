@@ -90,6 +90,7 @@ public class JavaRosaFormController implements FormController {
      */
     private static final String AUDIT = "audit";
     public static final String AUDIT_FILE_NAME = "audit.csv";
+    private final boolean isEditing;
 
     /*
      * Store the auditEventLogger object with the form controller state
@@ -106,6 +107,12 @@ public class JavaRosaFormController implements FormController {
         this.mediaFolder = mediaFolder;
         formEntryController = fec;
         this.instanceFile = instanceFile;
+        isEditing = instanceFile != null;
+    }
+
+    @Override
+    public boolean isEditing() {
+        return isEditing;
     }
 
     public FormDef getFormDef() {
@@ -388,16 +395,20 @@ public class JavaRosaFormController implements FormController {
         }
     }
 
-    public int validateAnswers(boolean markCompleted) throws JavaRosaException {
-        ValidateOutcome outcome = getFormDef().validate(markCompleted);
-        if (outcome != null) {
-            this.jumpToIndex(outcome.failedPrompt);
-            if (indexIsInFieldList()) {
-                stepToPreviousScreenEvent();
+    public ValidationResult validateAnswers(boolean markCompleted) throws JavaRosaException {
+        try {
+            ValidateOutcome validateOutcome = getFormDef().validate(markCompleted);
+            if (validateOutcome != null) {
+                this.jumpToIndex(validateOutcome.failedPrompt);
+                if (indexIsInFieldList()) {
+                    stepToPreviousScreenEvent();
+                }
+                return new FailedValidationResult(validateOutcome.failedPrompt, validateOutcome.outcome);
             }
-            return outcome.outcome;
+            return SuccessValidationResult.INSTANCE;
+        } catch (RuntimeException e) {
+            throw new JavaRosaException(e);
         }
-        return FormEntryController.ANSWER_OK;
     }
 
     public boolean saveAnswer(FormIndex index, IAnswerData data) throws JavaRosaException {
@@ -599,31 +610,30 @@ public class JavaRosaFormController implements FormController {
         return !absRef.equals(bindRef);
     }
 
-    public FailedConstraint saveAllScreenAnswers(HashMap<FormIndex, IAnswerData> answers, boolean evaluateConstraints) throws JavaRosaException {
+    public ValidationResult saveAllScreenAnswers(HashMap<FormIndex, IAnswerData> answers, boolean evaluateConstraints) throws JavaRosaException {
         if (currentPromptIsQuestion()) {
             for (FormIndex index : answers.keySet()) {
-                FailedConstraint failedConstraint = saveOneScreenAnswer(
+                ValidationResult validationResult = saveOneScreenAnswer(
                         index,
                         answers.get(index),
                         evaluateConstraints
                 );
-
-                if (failedConstraint != null) {
-                    return failedConstraint;
+                if (validationResult instanceof FailedValidationResult) {
+                    return validationResult;
                 }
             }
         }
 
-        return null;
+        return SuccessValidationResult.INSTANCE;
     }
 
-    public FailedConstraint saveOneScreenAnswer(FormIndex index, IAnswerData answer, boolean evaluateConstraints) throws JavaRosaException {
+    public ValidationResult saveOneScreenAnswer(FormIndex index, IAnswerData answer, boolean evaluateConstraints) throws JavaRosaException {
         // Within a group, you can only save for question events
         if (getEvent(index) == FormEntryController.EVENT_QUESTION) {
             if (evaluateConstraints) {
                 int saveStatus = answerQuestion(index, answer);
                 if (saveStatus != FormEntryController.ANSWER_OK) {
-                    return new FailedConstraint(index, saveStatus);
+                    return new FailedValidationResult(index, saveStatus);
                 }
             } else {
                 saveAnswer(index, answer);
@@ -632,7 +642,7 @@ public class JavaRosaFormController implements FormController {
             Timber.w("Attempted to save an index referencing something other than a question: %s",
                     index.getReference().toString());
         }
-        return null;
+        return SuccessValidationResult.INSTANCE;
     }
 
     public int stepToPreviousEvent() {

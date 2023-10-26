@@ -1,30 +1,17 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Text for the topmost button on the main screen. It should be short and action-oriented.-->
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data">فورم خالی را تکمیل کنید.</string>
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">فورم خالی را تکمیل کنید.</string>
   <!--Text for an action button on the main screen.-->
-  <string name="review_data">ویرایش فورم ذخیره شده</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="review_data_button">ویرایش فورم های ذخیره شده (%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="send_data">ارسال فورم نهایی</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="send_data_button">ارسال فورم نهایی (%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="view_sent_forms">مشاهده فورم ارسال شده</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="view_sent_forms_button">مشاهده فورم ارسال شده (%s)</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms">دریافت فورم خالی</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">حذف فورم ذخیره شده</string>
   <string name="saved_forms">ذخیره فورم ها</string>
   <string name="version_number">نسخه: %s</string>
   <string name="id_number">شماره شناسایی: %s</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="added_on_date_at_time">اضافه شد EEE,MMM,dd,yyyy در HH:mm</string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="saved_on_date_at_time">ذخیره شد EEE,MMM,dd,yyyy در HH:mm</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -47,15 +34,12 @@
   <string name="sort_by_date_desc">تاریخ،  جدیدترین در اولویت</string>
   <string name="sort_by_date_asc">تاریخ،  قدیمی ترها در اولویت</string>
   <!--A sort option for blank forms. When this option is selected, the form for which a filled instance was last filled will go first.-->
-  <string name="sort_by_status_asc">وضعیت، ابتدا نهایی شد</string>
-  <string name="sort_by_status_desc">وضعیت، ابتدا نهایی نشده است</string>
   <string name="filter_the_list">فلتر لیست</string>
   <!--Displayed in search boxes for form lists or question types that involve search-->
   <string name="search">جستجو</string>
   <string name="no_items_display">هیچ موردی برای نمایش وجورد ندارد.</string>
   <string name="no_items_display_forms">هیج موردی برای نمایش در دسترس نیست. \n\n\و سعی کنید فرم خالی را دریافت و پر کنید.</string>
   <string name="no_items_display_sent_forms">هیچ موردی برای نمایش در دسترس نیست. \n\n\ و سعی کنید فرم های نهایی را قبل از مشاهده ارسال کنید.</string>
-  <string name="no_items_display_instances">هیچ موردی برای نمایش در دسترس نیست. n\n\ و سعی کنید فرم‌های ذخیره‌شده را قبل از ارسال نهایی کنید.</string>
   <string name="not_granted_permission">فعالیتی که شما میخواهید آنرا انجام دهید به مجوزی ضرورت دارد که به شما اعطا نشده است. </string>
   <string name="storage_runtime_permission_denied_title">مجوزهای برای ذخیره سازی</string>
   <string name="storage_runtime_permission_denied_desc">بدون مجوزها، مجموعه نمی‌تواند به فرم‌های شما دسترسی داشته باشد یا پاسخ‌ها را ذخیره کند. زمانی که برای اعطای برنامه آماده شدید، دوباره آن را باز کنید.</string>
@@ -67,8 +51,6 @@
   <string name="record_audio_runtime_permission_denied_desc">بدون این مجوز، Collect نمی تواند به میکروفون دسترسی داشته باشد. لطفاً هنگامی که آماده اعطای آن هستید دوباره امتحان کنید.</string>
   <string name="get_accounts_runtime_permission_denied_title">دریافت مجوز حساب ها</string>
   <string name="get_accounts_runtime_permission_denied_desc">بدون این مجوز Collect نمی تواند به حساب ها دسترسی داشته باشد. لطفاً هنگامی که آماده اعطای آن هستید دوباره امتحان کنید.</string>
-  <string name="read_phone_state_runtime_permission_denied_title">خواندن مجوز وضعیت تلفن</string>
-  <string name="read_phone_state_runtime_permission_denied_desc">Collect ODK  تماس برقرار نمی کند اما نیاز به دسترسی در مورد دستگاه شما مانند شماره تلفن و شناسایی دستگاه داشته باشد.</string>
   <!--##############################################
     # FILL BLANK FORM
     ##############################################-->
@@ -83,7 +65,6 @@
   <string name="survey_loading_reading_csv_message">خواندن اسناد CSV</string>
   <string name="parse_error">با عرض پوزش، نمی توان فورم را تجزیه کرد.</string>
   <string name="loading_form_failed">هنگام  آماده سازی فورم خطایی روی داد. لطفا دوباره تلاش کنید.</string>
-  <string name="parent_form_not_present">ویرایش این فورم ذخیره شده ممکن نیست زیرا فورم خالی وجود ندارد یا حذف شده است.\n\n شناسایی فورم: %1$s</string>
   <string name="cannot_edit_completed_form">این فورم بعد از نهایی شدن آن قابل ویرایش نیست. ممکن است رمگزاری شده باشد. </string>
   <!--Displayed when loading a form if that form was previously filled but closed because of a crash or system failure-->
   <string name="savepoint_used">تغییرات ذخیره نشده از savepoint بازیابی شد!</string>
@@ -92,7 +73,6 @@
   <!--Text for button displayed in the form filling menu to see the form's table of contents-->
   <string name="view_hierarchy">به Prompt بروید</string>
   <!--Text for button displayed in the form filling menu to save the form-->
-  <string name="save_all_answers">ذخیره فورم</string>
   <!--Text of button from the form's table of contents to jump to the beginning of the form-->
   <string name="jump_to_beginning">به شروع برو</string>
   <!--Text of button from the form's table of contents to jump to the end of the form-->
@@ -128,18 +108,12 @@
   <string name="too_complex_form">این فرم برای این دستگاه بسیار پیچیده است. سعی کنید برای ساده سازی فورم  یا اصطلاحات کمک بخواهید.</string>
   <string name="survey_internal_error">خطای داخلی: گام به اعلان ناموفق بود.</string>
   <string name="save_enter_data_description">شما در پایان %sقرار دارید.</string>
-  <string name="save_form_as">نام گذاری این فورم</string>
-  <string name="save_as_error">نام ذخیره شده نباید خالی باشد!</string>
-  <string name="mark_finished">فورم را به عنوان نهایی شده علامت بزنید</string>
-  <string name="quit_entry">ذخیره فورم و خروج </string>
   <string name="data_saved_error">متاسفانه فورم ذخیره نشد!</string>
   <string name="data_saved_ok">فورم با موفقیت ذخیره شد!</string>
   <string name="save_point_error">خطا در ذخیره نقطه یابی: %s</string>
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <string name="quit_application">خروج %s</string>
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
-  <string name="no_form_loaded">&lt; هیچ فورمی پر نشده است &gt;</string>
-  <string name="do_not_save">نادیده گرفتن تغییرات</string>
   <string name="keep_changes">ذخیره تغییرات</string>
   <string name="saving_form">ذخیره فورم</string>
   <string name="survey_saving_validating_message">در حال اعتبار سنجی پاسخ ها</string>
@@ -196,11 +170,9 @@
   <string name="svg_file_does_not_exist">فایل SVG موجود نیست!</string>
   <string name="capture_image">گرفتن عکس</string>
   <string name="choose_image">انتخاب تصویر</string>
-  <string name="choose_account">حساب را انتخاب کنید</string>
   <string name="selected_invalid_image">فایل انتخاب شده تصویر قابل اعتبار ندارد</string>
   <string name="take_picture_instruction">برای گرفتن عکس روی صفحه ضربه بزنید</string>
   <string name="error_front_camera_unavailable">این دستگاه دوربین جلو موجود نیست</string>
-  <string name="camera_error">این دستگاه از Camera2 API پشتیبانی نمی کند.</string>
   <string name="annotate_image">نوشتن بر روی تصویر</string>
   <string name="invalid_file_type">برنامه یک نوع فایل نامعتبر را برگرداند</string>
   <!--Dialog heading for saving annotated image-->
@@ -213,8 +185,6 @@
   <string name="set_color">تنظیم رنگ</string>
   <string name="capture_video">ثبت ویدیو</string>
   <string name="choose_video">انتخاب ویدیو</string>
-  <string name="start_video_capture_instruction">برای آغاز کردن ثبت روی صفحه را فشار دهید</string>
-  <string name="stop_video_capture_instruction">ثبت آغاز شد. برای توقف آن دوباره روی صفحه را فشار دهید</string>
   <string name="play_video">پخش ویدیو</string>
   <string name="choose_file">انتخاب فایل</string>
   <!--Text for button that deletes a file that is the answer to a question-->
@@ -381,6 +351,7 @@
   <string name="track_location">ردیابی مکان</string>
   <string name="background_location_disabled">این فورم می خواهد موقعیت مکانی شما را ردیابی کند اما ردیابی غیرفعال است. لطفاً در منوی %1$s بالا فعال کنید.</string>
   <string name="background_location_enabled">این فورم موقعیت مکانی شما را ردیابی می کند. می‌توانید ردیابی را در منوی %1$s بالا غیرفعال کنید.</string>
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <string name="get_point">آغاز GeoPoint</string>
   <string name="geopoint_view_read_only">نمایش GeoPoint</string>
   <string name="geoshape_view_read_only">نمایش GeoShape</string>
@@ -656,8 +627,6 @@
   <string name="delete_after_send">بعد از ارسال حذف کنید</string>
   <string name="delete_after_send_summary">فورم های نهایی و رسانه یی را بعد از ارسال به سرور حذف کنید</string>
   <string name="form_filling_category">فورم را پر کنید</string>
-  <string name="default_completed">پیش‌فرض نهایی شد</string>
-  <string name="default_completed_summary">به طور پیش فرض فورم را به عنوان نهایی شده علامت گذاری کنید</string>
   <string name="constraint_behavior_title"> محدودیت پردازش</string>
   <string name="constraint_behavior">محدودیت رفتار پردازش </string>
   <string name="constraint_behavior_on_swipe">با کشیدن انگشت به جلو اعتبارسنجی کنید</string>
@@ -743,13 +712,10 @@
   <!--Name of a setting that determines whether users can navigate backwards in a form-->
   <string name="moving_backwards_title">حرکت به سمت عقب</string>
   <string name="moving_backwards_disabled_title">حرکت به عقب غیرفعال است</string>
-  <string name="moving_backwards_disabled_message">دستگاه را طوری تنظیم کنید که کاربران از دور زدن این تنظیم جلوگیری کنند؟\n\nتغییرات عبارتند از:\n\u2022 ویرایش فورم ذخیره شده را غیرفعال کنید\n\u2022 غیرفعال کردن ذخیره فورم\n\u2022 غیرفعال کردن Go To Prompt\n\u2022 پردازش محدودیت را روی اعتبار تنظیم کنید با کشیدن انگشت به جلو</string>
   <string name="yes">بلی</string>
   <string name="no">نخیر</string>
   <string name="moving_backwards_enabled_title">حرکت به عقب فعال شد</string>
-  <string name="moving_backwards_enabled_message">ممکن است بخواهید تنظیمات زیر را مرور کنید: \n\n\u2022 ویرایش فورم ذخیره شده \n\u2022 ذخیره فورم\n\u2022 رفتن به درخواست\n\u2022 پردازش محدودیت</string>
   <!--Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end-->
-  <string name="save_mid">ذخیره فورم</string>
   <!--##############################################
      # GOOGLE DRIVE, GOOGLE SHEETS
      ##############################################-->
@@ -801,7 +767,7 @@
   <string name="view_qr_code_fragment_title">ًQR کد</string>
   <string name="import_qrcode_sd">QR کد را وارد شد</string>
   <string name="successfully_imported_settings">تنظیمات با موفقیت وارد شد</string>
-  <string name="encoding_max_limit">به حداکثر محدودیت رقم ها رسیده‌اید: QR کد نمی‌تواند برای همه تنظیمات ایجاد شود</string>
+  <string name="encoding_max_limit" tools:ignore="UnusedResources">به حداکثر محدودیت رقم ها رسیده‌اید: QR کد نمی‌تواند برای همه تنظیمات ایجاد شود</string>
   <string name="share">اشتراک گذاری</string>
   <string name="turn_on_flashlight">روشن نمودن چراغ </string>
   <string name="turn_off_flashlight">خاموش نمودن چراغ</string>
@@ -882,10 +848,6 @@
   <!--Text for the button that allows for manually entering project details. Should be short-->
   <string name="configure_manually">جزئیات پروژه را به صورت دستی وارد کنید</string>
   <string name="project_config_tip">پس از اینکه پروژه خود را اضافه کردید، می توانید آن را در تنظیمات تنظیم کنید</string>
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <string name="gdrive_project">پروژه من از Google Drive استفاده می کند.</string>
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
-  <string name="gdrive_configure">تنظیم کردن</string>
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <string name="dont_have_project">هنوز پروژه ای ندارید؟</string>
   <!--Preceded by "Don't have a project yet?" question-->
@@ -909,9 +871,15 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

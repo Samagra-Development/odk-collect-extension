@@ -32,9 +32,9 @@ the specific language governing permissions and limitations under the License.
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <!-- Normal permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -78,29 +78,38 @@ the specific language governing permissions and limitations under the License.
     <application
         android:name=".application.Collect"
         android:allowBackup="true"
+        android:icon="@drawable/notes"
         android:installLocation="auto"
+        android:label="@string/collect_app_name"
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme.Collect">
 
-<!--        Base application should provide this.-->
-<!--        <provider-->
-<!--            android:name="androidx.core.content.FileProvider"-->
-<!--            android:authorities="${applicationId}.provider"-->
-<!--            android:exported="false"-->
-<!--            android:grantUriPermissions="true">-->
-<!--            <meta-data-->
-<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
-<!--                android:resource="@xml/provider_paths" />-->
-<!--        </provider>-->
-
-        <activity android:name=".activities.FirstLaunchActivity"></activity>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
 
         <activity
-            android:name=".activities.MainMenuActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Collect.SplashScreen">
+            android:name=".activities.FirstLaunchActivity">
+        </activity>
+
+        <activity
+            android:name=".mainmenu.MainMenuActivity"
+            android:theme="@style/Theme.Collect.SplashScreen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name="org.odk.collect.android.activities.CrashHandlerActivity" />
@@ -111,7 +120,7 @@ the specific language governing permissions and limitations under the License.
             android:stateNotNeeded="true"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".activities.FormEntryActivity"
+            android:name=".activities.FormFillingActivity"
             android:theme="@style/Theme.Collect.FormEntry"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -126,9 +135,7 @@ the specific language governing permissions and limitations under the License.
             android:name=".formlists.blankformlist.BlankFormListActivity"
             android:launchMode="singleTop" />
         <activity android:name=".activities.FormDownloadListActivity" />
-        <activity
-            android:name=".activities.DeleteSavedFormActivity"
-            android:configChanges="orientation|screenSize" />
+        <activity android:name=".activities.DeleteSavedFormActivity" />
         <activity
             android:name=".gdrive.GoogleSheetsUploaderActivity"
             android:configChanges="orientation|screenSize" />
@@ -216,23 +223,24 @@ the specific language governing permissions and limitations under the License.
 
         <provider
             android:name=".external.FormsProvider"
-            android:authorities="${applicationId}.android.provider.odk.forms"
+            android:authorities="org.odk.collect.android.provider.odk.forms"
             android:exported="true" />
         <provider
             android:name=".external.InstanceProvider"
-            android:authorities="${applicationId}.android.provider.odk.instances"
+            android:authorities="org.odk.collect.android.provider.odk.instances"
             android:exported="true" />
 
         <activity-alias
             android:name=".activities.FormEntryActivity"
-            android:exported="true"
-            android:targetActivity=".activities.FormEntryActivity"
-            tools:ignore="AppLinkUrlError"></activity-alias>
+            android:targetActivity=".external.FormUriActivity"
+            tools:ignore="AppLinkUrlError"
+            android:exported="true">
+        </activity-alias>
 
         <activity-alias
             android:name=".activities.InstanceChooserList"
-            android:exported="true"
             android:targetActivity=".activities.InstanceChooserList"
+            android:exported="true"
             tools:ignore="AppLinkUrlError">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -247,8 +255,8 @@ the specific language governing permissions and limitations under the License.
 
         <activity-alias
             android:name=".activities.FormChooserList"
-            android:exported="true"
             android:targetActivity=".formlists.blankformlist.BlankFormListActivity"
+            android:exported="true"
             tools:ignore="AppLinkUrlError">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -263,8 +271,8 @@ the specific language governing permissions and limitations under the License.
 
         <activity-alias
             android:name=".activities.FormDownloadList"
-            android:exported="true"
-            android:targetActivity=".activities.FormDownloadListActivity">
+            android:targetActivity=".activities.FormDownloadListActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="org.odk.collect.android.FORM_DOWNLOAD" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -274,8 +282,8 @@ the specific language governing permissions and limitations under the License.
 
         <activity-alias
             android:name=".activities.InstanceUploaderList"
-            android:exported="true"
-            android:targetActivity=".activities.InstanceUploaderListActivity">
+            android:targetActivity=".activities.InstanceUploaderListActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.EDIT" />
@@ -286,8 +294,8 @@ the specific language governing permissions and limitations under the License.
 
         <activity-alias
             android:name=".activities.InstanceUploaderActivity"
-            android:exported="true"
-            android:targetActivity=".activities.InstanceUploaderActivity">
+            android:targetActivity=".activities.InstanceUploaderActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="org.odk.collect.android.INSTANCE_UPLOAD" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -298,9 +306,9 @@ the specific language governing permissions and limitations under the License.
         <!-- Enable Shortcuts for Command Actions -->
         <activity
             android:name=".external.AndroidShortcutsActivity"
-            android:exported="true"
             android:label="ODK Form"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
 
@@ -321,7 +329,6 @@ the specific language governing permissions and limitations under the License.
                 <action android:name="android.intent.action.EDIT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="vnd.android.cursor.item/vnd.odk.form" />
                 <data android:mimeType="vnd.android.cursor.item/vnd.odk.instance" />
             </intent-filter>

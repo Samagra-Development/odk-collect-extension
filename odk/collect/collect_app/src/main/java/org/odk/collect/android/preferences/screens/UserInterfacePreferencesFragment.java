@@ -24,8 +24,8 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.preference.ListPreference;
 import org.odk.collect.android.R;
-import org.odk.collect.android.activities.MainMenuActivity;
 import org.odk.collect.android.injection.DaggerUtils;
+import org.odk.collect.android.mainmenu.MainMenuActivity;
 import org.odk.collect.android.utilities.LocaleHelper;
 import org.odk.collect.android.version.VersionInformation;
 import java.util.ArrayList;
@@ -103,8 +103,7 @@ public class UserInterfacePreferencesFragment extends BaseProjectPreferencesFrag
         final ListPreference pref = findPreference(KEY_APP_LANGUAGE);
 
         if (pref != null) {
-            final LocaleHelper localeHelper = new LocaleHelper();
-            TreeMap<String, String> languageList = localeHelper.getEntryListValues();
+            TreeMap<String, String> languageList = LocaleHelper.languageList();
             ArrayList<String> entryValues = new ArrayList<>();
             entryValues.add(0, "");
             entryValues.addAll(languageList.values());

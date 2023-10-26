@@ -6,11 +6,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
+import org.odk.collect.android.support.pages.SaveOrDiscardFormDialog;
 import org.odk.collect.android.support.rules.CollectTestRule;
 import org.odk.collect.android.support.rules.TestRuleChain;
 import org.odk.collect.android.support.pages.FormEntryPage;
 import org.odk.collect.android.support.pages.MainMenuPage;
-import org.odk.collect.android.support.pages.SaveOrIgnoreDialog;
 
 // Issue number NODK-251
 @RunWith(AndroidJUnit4.class)
@@ -35,7 +35,7 @@ public class FormValidationTest {
                 .answerQuestion(0, "Aaaaa")
                 .clickGoToArrow()
                 .clickJumpEndButton()
-                .clickSaveAndExit();
+                .clickFinalize();
     }
 
     @Test
@@ -49,7 +49,7 @@ public class FormValidationTest {
                 .assertText("YY")
                 .pressBack(new FormEntryPage("OnePageFormShort"))
                 .closeSoftKeyboard()
-                .pressBack(new SaveOrIgnoreDialog<>("OnePageFormShort", new MainMenuPage()))
-                .clickIgnoreChanges();
+                .pressBack(new SaveOrDiscardFormDialog<>(new MainMenuPage()))
+                .clickDiscardForm();
     }
 }

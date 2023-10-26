@@ -20,7 +20,6 @@ import org.odk.collect.android.BuildConfig
 import org.odk.collect.android.R
 import org.odk.collect.androidshared.system.IntentLauncher
 import org.odk.collect.androidshared.ui.ToastUtils
-import org.odk.collect.settings.keys.ProjectKeys
 import timber.log.Timber
 import java.io.File
 
@@ -51,8 +50,7 @@ class MediaUtils(private val intentLauncher: IntentLauncher, private val content
 
         val contentUri = contentUriProvider.getUriForFile(
             context,
-            //TODO pass from apps
-            ProjectKeys.APP_PROVIDER + ".provider",
+            BuildConfig.APPLICATION_ID + ".provider",
             file
         )
 
@@ -78,8 +76,11 @@ class MediaUtils(private val intentLauncher: IntentLauncher, private val content
     }
 
     private fun getMimeType(file: File, expectedMimeType: String?) =
-        if (expectedMimeType == null || expectedMimeType.isEmpty()) FileUtils.getMimeType(file)
-        else expectedMimeType
+        if (expectedMimeType == null || expectedMimeType.isEmpty()) {
+            FileUtils.getMimeType(file)
+        } else {
+            expectedMimeType
+        }
 
     fun pickFile(activity: Activity, mimeType: String, requestCode: Int) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {

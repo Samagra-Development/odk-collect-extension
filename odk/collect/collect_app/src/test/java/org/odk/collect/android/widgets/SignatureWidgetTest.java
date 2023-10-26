@@ -3,6 +3,7 @@ package org.odk.collect.android.widgets;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -29,12 +30,14 @@ import org.odk.collect.imageloader.ImageLoader;
 import org.odk.collect.shared.TempFiles;
 
 import java.io.File;
+import java.io.IOException;
 
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.when;
 import static org.odk.collect.android.support.CollectHelpers.setupFakeReferenceManager;
 import static org.robolectric.Shadows.shadowOf;
@@ -72,15 +75,6 @@ public class SignatureWidgetTest extends FileWidgetTest<SignatureWidget> {
     }
 
     @Test
-    public void buttonsShouldLaunchCorrectIntents() {
-        stubAllRuntimePermissionsGranted(true);
-
-        Intent intent = getIntentLaunchedByClick(R.id.simple_button);
-        assertComponentEquals(activity, DrawActivity.class, intent);
-        assertExtraEquals(DrawActivity.OPTION, DrawActivity.OPTION_SIGNATURE, intent);
-    }
-
-    @Test
     public void usingReadOnlyOptionShouldMakeAllClickableElementsDisabled() {
         when(formEntryPrompt.isReadOnly()).thenReturn(true);
 
@@ -93,6 +87,40 @@ public class SignatureWidgetTest extends FileWidgetTest<SignatureWidget> {
         when(formEntryPrompt.isReadOnly()).thenReturn(false);
 
         assertThat(getSpyWidget().signButton.getVisibility(), is(View.GONE));
+    }
+
+    @Test
+    public void whenThereIsNoAnswer_hideImageViewAndErrorMessage() {
+        SignatureWidget widget = createWidget();
+
+        assertThat(widget.getImageView().getVisibility(), is(View.GONE));
+        assertThat(widget.getImageView().getDrawable(), nullValue());
+
+        assertThat(widget.getErrorTextView().getVisibility(), is(View.GONE));
+    }
+
+    @Test
+    public void whenTheAnswerImageCanNotBeLoaded_hideImageViewAndShowErrorMessage() throws IOException {
+        CollectHelpers.overrideAppDependencyModule(new AppDependencyModule() {
+            @Override
+            public ImageLoader providesImageLoader() {
+                return new SynchronousImageLoader(true);
+            }
+        });
+
+        String imagePath = File.createTempFile("current", ".bmp").getAbsolutePath();
+        currentFile = new File(imagePath);
+
+        formEntryPrompt = new MockFormEntryPromptBuilder()
+                .withAnswerDisplayText(DrawWidgetTest.USER_SPECIFIED_IMAGE_ANSWER)
+                .build();
+
+        SignatureWidget widget = createWidget();
+
+        assertThat(widget.getImageView().getVisibility(), is(View.GONE));
+        assertThat(widget.getImageView().getDrawable(), nullValue());
+
+        assertThat(widget.getErrorTextView().getVisibility(), is(View.VISIBLE));
     }
 
     @Test
@@ -120,7 +148,7 @@ public class SignatureWidgetTest extends FileWidgetTest<SignatureWidget> {
 
         SignatureWidget widget = createWidget();
         ImageView imageView = widget.getImageView();
-        assertThat(imageView, notNullValue());
+        assertThat(imageView.getVisibility(), is(View.VISIBLE));
         Drawable drawable = imageView.getDrawable();
         assertThat(drawable, notNullValue());
 
@@ -146,11 +174,61 @@ public class SignatureWidgetTest extends FileWidgetTest<SignatureWidget> {
 
         SignatureWidget widget = createWidget();
         ImageView imageView = widget.getImageView();
-        assertThat(imageView, notNullValue());
+        assertThat(imageView.getVisibility(), is(View.VISIBLE));
         Drawable drawable = imageView.getDrawable();
         assertThat(drawable, notNullValue());
 
         String loadedPath = shadowOf(((BitmapDrawable) drawable).getBitmap()).getCreatedFromPath();
         assertThat(loadedPath, equalTo(imagePath));
+    }
+
+    @Test
+    public void whenPromptHasDefaultAnswer_passUriToDrawActivity() throws Exception {
+        File file = File.createTempFile("default", ".bmp");
+        String imagePath = file.getAbsolutePath();
+
+        ReferenceManager referenceManager = setupFakeReferenceManager(singletonList(
+                new Pair<>(DrawWidgetTest.DEFAULT_IMAGE_ANSWER, imagePath)
+        ));
+        CollectHelpers.overrideAppDependencyModule(new AppDependencyModule() {
+            @Override
+            public ReferenceManager providesReferenceManager() {
+                return referenceManager;
+            }
+
+            @Override
+            public ImageLoader providesImageLoader() {
+                return new SynchronousImageLoader();
+            }
+        });
+
+        formEntryPrompt = new MockFormEntryPromptBuilder()
+                .withAnswerDisplayText(DrawWidgetTest.DEFAULT_IMAGE_ANSWER)
+                .build();
+
+        Intent intent = getIntentLaunchedByClick(R.id.simple_button);
+        assertComponentEquals(activity, DrawActivity.class, intent);
+        assertExtraEquals(DrawActivity.OPTION, DrawActivity.OPTION_SIGNATURE, intent);
+        assertExtraEquals(DrawActivity.REF_IMAGE, Uri.fromFile(file), intent);
+    }
+
+    @Test
+    public void whenPromptHasDefaultAnswerThatDoesNotExist_doNotPassUriToDrawActivity() {
+        formEntryPrompt = new MockFormEntryPromptBuilder()
+                .withAnswerDisplayText(DrawWidgetTest.DEFAULT_IMAGE_ANSWER)
+                .build();
+
+        Intent intent = getIntentLaunchedByClick(R.id.simple_button);
+        assertComponentEquals(activity, DrawActivity.class, intent);
+        assertExtraEquals(DrawActivity.OPTION, DrawActivity.OPTION_SIGNATURE, intent);
+        assertThat(intent.hasExtra(DrawActivity.REF_IMAGE), is(false));
+    }
+
+    @Test
+    public void whenThereIsNoAnswer_doNotPassUriToDrawActivity() {
+        Intent intent = getIntentLaunchedByClick(R.id.simple_button);
+        assertComponentEquals(activity, DrawActivity.class, intent);
+        assertExtraEquals(DrawActivity.OPTION, DrawActivity.OPTION_SIGNATURE, intent);
+        assertThat(intent.hasExtra(DrawActivity.REF_IMAGE), is(false));
     }
 }

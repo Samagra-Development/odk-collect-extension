@@ -4,12 +4,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.odk.collect.android.R;
+import org.odk.collect.android.support.pages.AccessControlPage;
+import org.odk.collect.android.support.pages.MainMenuPage;
+import org.odk.collect.android.support.pages.ProjectSettingsPage;
+import org.odk.collect.android.support.pages.SaveOrDiscardFormDialog;
 import org.odk.collect.android.support.rules.CollectTestRule;
 import org.odk.collect.android.support.rules.TestRuleChain;
-import org.odk.collect.android.support.pages.AccessControlPage;
-import org.odk.collect.android.support.pages.ExitFormDialog;
-import org.odk.collect.android.support.pages.ProjectSettingsPage;
-import org.odk.collect.android.support.pages.MainMenuPage;
 
 //Issue NODK-243
 public class FormEntrySettingsTest {
@@ -41,7 +41,7 @@ public class FormEntrySettingsTest {
                 .assertText(R.string.yes)
                 .assertText(R.string.no)
                 .clickOnString(R.string.yes)
-                .checkIfSaveFormOptionIsDisabled()
+                .assertSaveAsDraftInFormEntryDisabled()
                 .pressBack(new AccessControlPage())
                 .pressBack(new ProjectSettingsPage())
                 .pressBack(new MainMenuPage())
@@ -59,7 +59,7 @@ public class FormEntrySettingsTest {
                 .swipeToNextQuestion("String widget")
                 .closeSoftKeyboard()
                 .swipeToPreviousQuestion("String widget")
-                .pressBack(new ExitFormDialog("All widgets"))
+                .pressBack(new SaveOrDiscardFormDialog<>(new MainMenuPage(), false))
                 .assertText(R.string.do_not_save)
                 .assertTextDoesNotExist(R.string.keep_changes)
                 .clickOnString(R.string.do_not_save);

@@ -1,30 +1,23 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Text for an action button on the main screen.-->
-  <string name="enter_data">Jaza fomu iliyo tupu</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">Jaza fomu iliyo tupu</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="review_data">Hariri fomu iliyohifadhiwa</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="review_data_button">Hariri fomu iliyohifadhiwa (%s)</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="send_data">Tuma fomu zilizokamilika</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="send_data_button">Tuma fomu zilizokamilika (%s)</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="view_sent_forms">Angalia fomu Iliyotumwa</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="view_sent_forms_button">Angalia fomu Iliyotumwa (%s)</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms">Pata fomu iliyowazi</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">Futa fomu zilizohifadhiwa</string>
+  <!-- Text for the topmost button on the main screen. It should be short and action-oriented. -->
+  <string name="enter_data">Anza fomu mpya</string>
+  <!-- Text for an action button on the main screen. -->
+  <string name="review_data">Rasimu</string>
+  <!-- Text for an action button on the main screen. -->
+  <string name="send_data">Tayari kutuma</string>
+  <!-- Text for an action button on the main screen. -->
+  <string name="view_sent_forms">Imetumwa</string>
+  <!-- Text for an action button on the main screen. -->
+  <string name="get_forms">Pakua fomu</string>
+  <!-- Text for an action button on the main screen. -->
+  <string name="manage_files">Futa fomu</string>
   <string name="saved_forms">Fomu zilizohifadhiwa</string>
   <string name="version_number">Toleo: %s</string>
   <string name="id_number">Utambulisho: %s</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="added_on_date_at_time">\'Imeongezwa kwenye\' EEE, MMM dd, yyyy \'at\' HH:mm</string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="saved_on_date_at_time">\'Imehifadhiwa kwenye\' EEE, MMM dd, yyyy \'at\' HH:mm</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -47,15 +40,12 @@
   <string name="sort_by_date_desc">Tarehe, mpya zaidi kwanza</string>
   <string name="sort_by_date_asc">Tarehe, zamani kwanza</string>
   <!--A sort option for blank forms. When this option is selected, the form for which a filled instance was last filled will go first.-->
-  <string name="sort_by_status_asc">Hadhi, malizia kwanza</string>
-  <string name="sort_by_status_desc">Hadhi, ambayo haijamaliziwa kwanza</string>
   <string name="filter_the_list">Chuja orodha</string>
   <!--Displayed in search boxes for form lists or question types that involve search-->
   <string name="search">Tafuta</string>
   <string name="no_items_display">Hakuna kitu cha kuonyesha.</string>
   <string name="no_items_display_forms">Hakuna kitu cha kuonyesha.\n\njaribu kuchukua na kujaza fomu tupu</string>
   <string name="no_items_display_sent_forms">Hakuna kitu cha kuonyesha. \ N \ n Jaribu kutuma fomu zilizokamilika kabla ya kutazama.</string>
-  <string name="no_items_display_instances">Hakuna kitu cha kuonyesha.\n\n Jaribu kukamilisha fomu kabla ya kuzituma</string>
   <string name="not_granted_permission">Kitendo unachijaribu kufanya kinahitaji ruhusa ambayo bado haijatolewa.</string>
   <string name="storage_runtime_permission_denied_title">Ruhusa ya kuhifadhi</string>
   <string name="storage_runtime_permission_denied_desc">Bila hizi ruhusa Collect haiwezi kufikia fomu au kuhifadhi majibu. Fungua tena program ukiwa tayari kuziruhusu.</string>
@@ -67,8 +57,6 @@
   <string name="record_audio_runtime_permission_denied_desc">Bila hii ruhusa Collect haiwezi kutumia kinakili sauti. Tafadhali jaribu tena ukiwa tayari kutoa ruhusa.</string>
   <string name="get_accounts_runtime_permission_denied_title">Pata ruhusa ya akaunti</string>
   <string name="get_accounts_runtime_permission_denied_desc">Bila hii ruhusa Collect haiwezi kufungua akaunti. Tafadhali jaribu tena ukiwa tayari kutoa ruhusa.</string>
-  <string name="read_phone_state_runtime_permission_denied_title">Soma ruhusa ya simu</string>
-  <string name="read_phone_state_runtime_permission_denied_desc">ODK Collect haipigi simu lakini inahitaji kufikia taarifa fulani kuhusu kifaa chako kama namba ya simu na ya utambulisho wa kifaa.</string>
   <!--##############################################
     # FILL BLANK FORM
     ##############################################-->
@@ -83,7 +71,6 @@
   <string name="survey_loading_reading_csv_message">Inasoma faili za CSV…</string>
   <string name="parse_error">Pole, haiwezi kuchanganua fomu.</string>
   <string name="loading_form_failed">Tatizo limetokea wakati wa kupakua fomu. Tafadhali jaribu tena.</string>
-  <string name="parent_form_not_present">Haiwezekani kurekebisha fomu hii kwa sababu fomu yake tupu haipo au imeshaondolewa..\n\nFomu ID: %1$s</string>
   <string name="cannot_edit_completed_form">Hii fomu haiwezi kurekebishwa wakati imeshamalizika. Inaweza kuwa na usimbaji fiche.</string>
   <!--Displayed when loading a form if that form was previously filled but closed because of a crash or system failure-->
   <string name="savepoint_used">Mabadiliko ambayo hayakuwa yamehifadhiwa yamerudishwa!</string>
@@ -92,7 +79,6 @@
   <!--Text for button displayed in the form filling menu to see the form's table of contents-->
   <string name="view_hierarchy">Nenda kwenye chanzo</string>
   <!--Text for button displayed in the form filling menu to save the form-->
-  <string name="save_all_answers">Hifadhi fomu</string>
   <!--Text of button from the form's table of contents to jump to the beginning of the form-->
   <string name="jump_to_beginning">Nenda mwanzo</string>
   <!--Text of button from the form's table of contents to jump to the end of the form-->
@@ -128,18 +114,12 @@
   <string name="too_complex_form">Fomu hii ni ngumu sana kwa uwezo wa kifaa hiki. Jaribu kuirahisisha au omba msaada katika jukwaa.</string>
   <string name="survey_internal_error">Kosa la ndani: hatua ya kutoa taarifa imeshindikana.</string>
   <string name="save_enter_data_description">Upo mwishoni mwa %s.</string>
-  <string name="save_form_as">Andika jina la fomu</string>
-  <string name="save_as_error">Jina la Kuhifadhi halipaswi kuwa tupu!</string>
-  <string name="mark_finished">Weka alama kuonesha fomu imekamilika</string>
-  <string name="quit_entry">Hifadhi fomu na toka</string>
   <string name="data_saved_error">Samahani, uhifadhi wa fomu umeshindikana!</string>
   <string name="data_saved_ok">Umefanikiwa kuhifadhi fomu!</string>
   <string name="save_point_error">Hitilafu katika kuhifadhi alama ya urejeshi \"recovery point\" :%s</string>
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <string name="quit_application">Toka %s</string>
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
-  <string name="no_form_loaded">&amp;It;Hakuna fomu iliyowekwa&amp;gt;</string>
-  <string name="do_not_save">Puuzia mabadiliko</string>
   <string name="keep_changes">Hifadhi mabadiliko</string>
   <string name="saving_form">Inahifadhi fomu</string>
   <string name="survey_saving_validating_message">Inathibitisha majibu…</string>
@@ -194,11 +174,10 @@
   <string name="svg_file_does_not_exist">Kabrasha la SVG halipo</string>
   <string name="capture_image">Chukua picha</string>
   <string name="choose_image">Chagua picha</string>
-  <string name="choose_account">Chagua akaunti</string>
   <string name="selected_invalid_image">Faili lillilochaguliwa sio picha sahihi</string>
   <string name="take_picture_instruction">Bofya kioo kuchukua picha</string>
   <string name="error_front_camera_unavailable">Kamera ya mbele haipo katika kifaa hiki</string>
-    <string name="annotate_image">Elezea picha</string>
+  <string name="annotate_image">Elezea picha</string>
   <!--Dialog heading for saving annotated image-->
   <string name="save_and_close">Hifadhi na funga</string>
   <string name="signature_capture">Chukua sahihi</string>
@@ -209,8 +188,6 @@
   <string name="set_color">Weka rangi</string>
   <string name="capture_video">Rekodi video</string>
   <string name="choose_video">Chagua video</string>
-  <string name="start_video_capture_instruction">Bofya kioo kuanza kurekodi</string>
-  <string name="stop_video_capture_instruction">Imeanza kurekodi. Bofya tena kusitisha</string>
   <string name="play_video">Cheza video</string>
   <string name="choose_file">Chagua faili</string>
   <!--Text for button that deletes a file that is the answer to a question-->
@@ -365,6 +342,7 @@
   <string name="gps_result">Latitude: %1$s \nLongitude: %2$s \nUrefumwambao:%3$s m\nUsahihi: %4$s m</string>
   <!--Action to go to Android settings. Displayed when location providers are disabled.-->
   <!--Label for a menu item that can be toggled to turn background location tracking on and off during form filling-->
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <string name="get_point">Anza geopoint</string>
   <string name="geopoint_view_read_only">Tazama geopoint</string>
   <string name="get_shape">Anza umbo la kijografia</string>
@@ -571,8 +549,6 @@
   <string name="delete_after_send">Futa baada ya kutuma</string>
   <string name="delete_after_send_summary">Inafuta fomu zilizokamilika na midia baada ya kuzituma kwenye seva</string>
   <string name="form_filling_category">Ujazaji wa fomu</string>
-  <string name="default_completed">Imekamilika ni jibu msingi</string>
-  <string name="default_completed_summary">Weka alama kwenye imekamilika kama jibu msingi</string>
   <string name="constraint_behavior_title">Kuchakata kikwazo </string>
   <string name="constraint_behavior">Kikwazo uchakataji tabia</string>
   <string name="constraint_behavior_on_swipe">Thibitisha pindi unapitisha mbele</string>
@@ -649,13 +625,10 @@
   <!--Name of a setting that determines whether users can navigate backwards in a form-->
   <string name="moving_backwards_title">Kusonga nyuma</string>
   <string name="moving_backwards_disabled_title">Kusonga nyuma kumesitishwa</string>
-  <string name="moving_backwards_disabled_message">Sanidi kifaa kuzuia watumiaji kupitisha mipangilio?\n\nMabadiliko ni:\n\u2022 Zuia kuhariri fomu zilizohifadhiwa\n\u2022 Zuia kuhifadhi fomu\n\u2022Kuzuia haraka\n\u2022 Weka kikwazo kuchakata uhalalisha unapopeleka mbele</string>
   <string name="yes">Ndiyo</string>
   <string name="no">Hapana</string>
   <string name="moving_backwards_enabled_title">Kusonga nyuma kumewezeshwa</string>
-  <string name="moving_backwards_enabled_message">Ungependa kurejea mipangilio ifuatayo:\n\n\u2022 Rekebisha fomu iliyohifadhiwa\n\u2022 Hifadhi fomu\n\u2022 Nenda kwa kisituo\n\u2022 kikwazo kinachakatwa</string>
   <!--Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end-->
-  <string name="save_mid">Hifadhi fomu</string>
   <!--##############################################
      # GOOGLE DRIVE, GOOGLE SHEETS
      ##############################################-->
@@ -698,7 +671,7 @@
      # SETTINGS IMPORT
      ##############################################-->
   <string name="successfully_imported_settings">Mipangilio imeingizwa kwa mafanikio</string>
-  <string name="encoding_max_limit">Kiwango cha herufi kimefikia ukomo: Misimbo ya QR haziwezi kutengenezwa kwa mipangilio yote</string>
+  <string name="encoding_max_limit" tools:ignore="UnusedResources">Kiwango cha herufi kimefikia ukomo: Misimbo ya QR haziwezi kutengenezwa kwa mipangilio yote</string>
   <string name="share">Shirikisha</string>
   <string name="turn_on_flashlight">Washa mwanga</string>
   <string name="turn_off_flashlight">Zima mwanga</string>
@@ -751,9 +724,6 @@
     select the wording and where to put the \n for maximum impact in your language.-->
   <!--Text for the button that allows for configuring a project by scanning a QR code. Should be short-->
   <!--Text for the button that allows for manually entering project details. Should be short-->
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <string name="gdrive_project">Mradi wangu unatumia Google Drive.</string>
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <!--Preceded by "Don't have a project yet?" question-->
   <!--Error shown when a user tries to open a form that's in a different project-->
@@ -769,9 +739,15 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

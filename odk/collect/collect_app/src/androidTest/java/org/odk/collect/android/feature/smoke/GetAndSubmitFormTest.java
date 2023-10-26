@@ -35,11 +35,11 @@ public class GetAndSubmitFormTest {
                 // Fill out form
                 .startBlankForm("One Question")
                 .swipeToEndScreen()
-                .clickSaveAndExit()
+                .clickFinalize()
 
                 // Send form
                 .clickSendFinalizedForm(1)
-                .clickOnForm("One Question")
+                .clickSelectAll()
                 .clickSendSelected()
                 .assertText("One Question - Success")
                 .clickOK(new SendFinalizedFormPage())

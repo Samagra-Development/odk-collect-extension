@@ -1,27 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Text for the topmost button on the main screen. It should be short and action-oriented.-->
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data">खाली फारम भर्न</string>
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">खाली फारम भर्न</string>
   <!--Text for an action button on the main screen.-->
-  <string name="review_data">संचित फारम सम्पादन गर्न</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="review_data_button">संचित फारम सम्पादन गर्न (%s) </string>
   <!--Text for an action button on the main screen.-->
-  <string name="send_data">भरिसकेको फारम पठाउन</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="send_data_button">भरिसकेको फारम पठाउन (%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="view_sent_forms">भरिसकेको फारम हेर्न</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="view_sent_forms_button">भरिसकेको फारम हेर्न (%s)</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms">अर्कै खाली फारम पाउन</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">संचित फारम डिलिट गर्न</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="added_on_date_at_time">EEE, MMM dd, yyyy \'को\' HH:mm \'मा थपिएको\'</string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="saved_on_date_at_time">EEE, MMM dd, yyyy \'को\' HH:mm \'मा संचित गरिएको\'</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -36,12 +23,12 @@
   <string name="modified_on_date_at_time">EEE, MMM dd, yyyy \'को\' HH:mm \'मा परिवर्तन गरिएको\'</string>
   <string name="encrypted_form">गुप्तिकृत फारम।</string>
   <string name="deleted_form">मेटाइएको फारम।</string>
+  <string name="sort_the_list">सूची क्रमबद्ध गर्नुहोस्।</string>
   <!--A sort option for blank forms. When this option is selected, the form for which a filled instance was last filled will go first.-->
   <!--Displayed in search boxes for form lists or question types that involve search-->
   <string name="no_items_display">देखाउनको लागि केहि उपलब्ध छैन </string>
   <string name="no_items_display_forms">देखाउनको लागि केहि उपलब्ध छैन | \n\n खाली फारम खोलेर भर्न प्रयास गर्नुहोला |</string>
   <string name="no_items_display_sent_forms">देखाउनको लागि केहि उपलब्ध छैन | \n\n संचित फारमलाई हेर्न अघि पठाउन प्रयास गर्नुहोला |</string>
-  <string name="no_items_display_instances">देखाउनको लागि केहि उपलब्ध छैन | \n\n संचित फारमलाई पठाउनु अघि अन्तिम रुप दिन प्रयास गर्नुहोला |</string>
   <!--Starting in Android 12, Android makes it possible to give precise or approximate location permissions to an application. ODK Collect only captures location if the precise location permission is granted.-->
   <!--##############################################
     # FILL BLANK FORM
@@ -54,7 +41,6 @@
   <string name="survey_loading_reading_data_message">सर्भे डाटा रिड हुँदै…</string>
   <string name="survey_loading_reading_csv_message">CSV फाइल्स रिड हुँदै…</string>
   <string name="parse_error">माफ गर्नुहोला, फारमको शब्द-सम्मती गर्न सकिएन |</string>
-  <string name="parent_form_not_present">यो संचित फारम सम्पादन गर्न सकिएन किनकि यससंग जोडिएको खाली फारम उपलब्ध छैन वा डिलिट भइसकेको छ | \n\nफारम नं: %1$s</string>
   <string name="cannot_edit_completed_form">एक पटक पूरा भनी अंकित गरिएको फारमलाई सम्पादन गर्न मिल्दैन । सो फारम गुप्तिकृत (encrypted) गरिएको पनि हुन सक्छ । </string>
   <!--Displayed when loading a form if that form was previously filled but closed because of a crash or system failure-->
   <string name="savepoint_used">संचित नगरिएका परिवर्तनहरु संचितबिन्दुवाट पुन: निकाल्न सकियो !</string>
@@ -63,7 +49,6 @@
   <!--Text for button displayed in the form filling menu to see the form's table of contents-->
   <string name="view_hierarchy">प्रम्टमा जानुहोस् </string>
   <!--Text for button displayed in the form filling menu to save the form-->
-  <string name="save_all_answers">फारम संचित गर्नुहोस् </string>
   <!--Text of button from the form's table of contents to jump to the beginning of the form-->
   <string name="jump_to_beginning">सुरुमा जानुहोस् </string>
   <!--Text of button from the form's table of contents to jump to the end of the form-->
@@ -93,17 +78,12 @@
   <string name="required_answer_error">माफ गर्नुहोला, यो उत्तर अनिवार्य चाहिन्छ !</string>
   <string name="survey_internal_error">भित्री गल्ती: प्रम्ट सम्म को चरण असफल भयो |</string>
   <string name="save_enter_data_description">तपाई %sको अन्त्यमा हुनुहुन्छ |</string>
-  <string name="save_form_as">फारमलाई नाम दिनुहोस्</string>
-  <string name="save_as_error">संचित गर्दा नाम खाली छोड्न मिल्दैन !</string>
-  <string name="mark_finished">फारामलाई अन्तिम रुप दिइएको अंकित गर्नुहोस् </string>
-  <string name="quit_entry">फारम संचित गरी बाहिर निस्कनुहोस् </string>
   <string name="data_saved_error">माफ गर्नुहोला , फारम संचित हुन सकेन !</string>
   <string name="data_saved_ok">फारम सफलतापूर्वक संचित भयो !</string>
   <string name="save_point_error">रिकभरी बिन्दु संचित गर्दा गल्ति भयो: %s</string>
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <string name="quit_application">बाहिर निस्कनुहोस् %s </string>
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
-  <string name="do_not_save">परिवर्तनहरुलाई संचित नगर्नुहोस्</string>
   <string name="keep_changes">परिवर्तनहरु संचित गर्नुहोस् </string>
   <string name="saving_form">फारम संचित गरिदैछ |</string>
   <string name="survey_saving_validating_message">जवाफहरू प्रमाणीकरण गरिदै…</string>
@@ -151,7 +131,6 @@
   <string name="set_color">रंग छान्नुहोस् </string>
   <string name="capture_video">भिडियो रेकर्ड गर्नुहोस् </string>
   <string name="choose_video">भिडियो छान्नुहोस् </string>
-  <string name="stop_video_capture_instruction">रेकर्डिङ सुरु भयो। रोक्न फेरि छुनुहोस् ।</string>
   <string name="play_video">भिडियो हेर्नुहोस्</string>
   <string name="choose_file">फाइलहरू छान्नुहोस्</string>
   <!--Text for button that deletes a file that is the answer to a question-->
@@ -241,6 +220,7 @@
   <string name="provider_disabled_error">माफ गर्नुहोस्, स्थान प्रदायकहरु निष्क्रिय गरिएका छन् !</string>
   <!--Action to go to Android settings. Displayed when location providers are disabled.-->
   <!--Label for a menu item that can be toggled to turn background location tracking on and off during form filling-->
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <string name="get_point">जियो पोइन्ट शुरू गर्नुहोस्</string>
   <string name="geopoint_view_read_only">जियो पोइन्ट हेर्नुहोस्</string>
   <string name="get_shape">जियो सेप शुरू गर्नुहोस्</string>
@@ -403,8 +383,6 @@
   <string name="delete_after_send">पठाए पछि डिलिट गर्नुहोस् </string>
   <string name="delete_after_send_summary">अन्तिम रुप दिइएको फारम र मिडिया सर्भरमा पठाए पछि डिलिट गर्छ </string>
   <string name="form_filling_category">फारम भर्दा</string>
-  <string name="default_completed">डिफल्ट रुपमा अन्तिम रुप दिइएको </string>
-  <string name="default_completed_summary">डिफल्ट रुपमा फारामलाई अन्तिम रुप दिइएको अंकित गर्नुहोस् </string>
   <string name="constraint_behavior">अभाव प्रशोधन व्यवहार </string>
   <string name="constraint_behavior_on_swipe">तेर्सो स्वाइप गरे पछी मान्य छ कि छैन हेर्नुहोला </string>
   <string name="constraint_behavior_on_finalize">अन्तिम रुप नदिए सम्म मान्यता दिन स्थगित गर्नुहोस् </string>
@@ -450,7 +428,6 @@
   <string name="yes">हो</string>
   <string name="no">होइन</string>
   <!--Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end-->
-  <string name="save_mid">फारम संचित गर्नुहोस् </string>
   <!--##############################################
      # GOOGLE DRIVE, GOOGLE SHEETS
      ##############################################-->
@@ -524,8 +501,6 @@
     select the wording and where to put the \n for maximum impact in your language.-->
   <!--Text for the button that allows for configuring a project by scanning a QR code. Should be short-->
   <!--Text for the button that allows for manually entering project details. Should be short-->
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <!--Preceded by "Don't have a project yet?" question-->
   <!--Error shown when a user tries to open a form that's in a different project-->
@@ -541,9 +516,15 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

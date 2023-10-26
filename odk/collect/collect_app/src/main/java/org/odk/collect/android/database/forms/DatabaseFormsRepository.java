@@ -3,6 +3,8 @@ package org.odk.collect.android.database.forms;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorWindow;
+import android.database.sqlite.SQLiteBlobTooBigException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
@@ -12,10 +14,11 @@ import org.odk.collect.android.database.DatabaseConstants;
 import org.odk.collect.android.utilities.FileUtils;
 import org.odk.collect.forms.Form;
 import org.odk.collect.forms.FormsRepository;
+import org.odk.collect.shared.files.DirectoryUtils;
 import org.odk.collect.shared.strings.Md5;
 
 import java.io.File;
-import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -25,7 +28,6 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import static android.provider.BaseColumns._ID;
-import static org.apache.commons.io.FileUtils.deleteDirectory;
 import static org.odk.collect.android.database.DatabaseConstants.FORMS_TABLE_NAME;
 import static org.odk.collect.android.database.DatabaseObjectMapper.getFormFromCurrentCursorPosition;
 import static org.odk.collect.android.database.DatabaseObjectMapper.getValuesFromForm;
@@ -38,6 +40,8 @@ import static org.odk.collect.android.database.forms.DatabaseFormColumns.JR_FORM
 import static org.odk.collect.android.database.forms.DatabaseFormColumns.JR_VERSION;
 import static org.odk.collect.android.database.forms.DatabaseFormColumns.MD5_HASH;
 import static org.odk.collect.shared.PathUtils.getRelativeFilePath;
+
+import timber.log.Timber;
 
 public class DatabaseFormsRepository implements FormsRepository {
 
@@ -246,13 +250,25 @@ public class DatabaseFormsRepository implements FormsRepository {
     private static List<Form> getFormsFromCursor(Cursor cursor, String formsPath, String cachePath) {
         List<Form> forms = new ArrayList<>();
         if (cursor != null) {
-            cursor.moveToPosition(-1);
-            while (cursor.moveToNext()) {
-                Form form = getFormFromCurrentCursorPosition(cursor, formsPath, cachePath);
-
-                forms.add(form);
+            Object cursorSize = null;
+            try {
+                Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+                field.setAccessible(true);
+                cursorSize = field.get(null);
+            } catch (Throwable e) {
+                // ignore
             }
 
+            try {
+                cursor.moveToPosition(-1);
+                while (cursor.moveToNext()) {
+                    Form form = getFormFromCurrentCursorPosition(cursor, formsPath, cachePath);
+                    forms.add(form);
+                }
+            } catch (SQLiteBlobTooBigException e) {
+                Timber.w("SQLiteBlobTooBigException, sCursorWindowSize: %sB", cursorSize != null ? cursorSize : "?");
+                throw e;
+            }
         }
         return forms;
     }
@@ -270,16 +286,12 @@ public class DatabaseFormsRepository implements FormsRepository {
 
         // Delete media files
         if (form.getFormMediaPath() != null) {
-            try {
-                File mediaDir = new File(form.getFormMediaPath());
+            File mediaDir = new File(form.getFormMediaPath());
 
-                if (mediaDir.isDirectory()) {
-                    deleteDirectory(mediaDir);
-                } else {
-                    mediaDir.delete();
-                }
-            } catch (IOException ignored) {
-                // Ignored
+            if (mediaDir.isDirectory()) {
+                DirectoryUtils.deleteDirectory(mediaDir);
+            } else {
+                mediaDir.delete();
             }
         }
     }

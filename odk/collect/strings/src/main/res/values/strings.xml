@@ -10,26 +10,18 @@
     License.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation" tools:locale="en">
+    <!-- Text for the topmost button on the main screen. It should be short and action-oriented. -->
+    <string name="enter_data">Start new form</string>
     <!-- Text for an action button on the main screen. -->
-    <string name="enter_data">Fill Blank Form</string>
+    <string name="review_data">Drafts</string>
     <!-- Text for an action button on the main screen. -->
-    <string name="enter_data_button">Fill Blank Form</string>
+    <string name="send_data">Ready to send</string>
     <!-- Text for an action button on the main screen. -->
-    <string name="review_data">Edit Saved Form</string>
-    <!-- Text for an action button on the main screen. A form count is provided in parentheses. -->
-    <string name="review_data_button">Edit Saved Form (%s)‎‎‎‎</string>
+    <string name="view_sent_forms">Sent</string>
     <!-- Text for an action button on the main screen. -->
-    <string name="send_data">Send Finalized Form</string>
-    <!-- Text for an action button on the main screen. A form count is provided in parentheses. -->
-    <string name="send_data_button">Send Finalized Form (%s)</string>
+    <string name="get_forms">Download form</string>
     <!-- Text for an action button on the main screen. -->
-    <string name="view_sent_forms">View Sent Form</string>
-    <!-- Text for an action button on the main screen. A form count is provided in parentheses. -->
-    <string name="view_sent_forms_button">View Sent Form (%s)</string>
-    <!-- Text for an action button on the main screen. -->
-    <string name="get_forms">Get Blank Form</string>
-    <!-- Text for an action button on the main screen. -->
-    <string name="manage_files">Delete Saved Form</string>
+    <string name="manage_files">Delete form</string>
 
     <string name="saved_forms">Saved forms</string>
 
@@ -63,8 +55,6 @@
     <string name="sort_by_date_asc">Date, oldest first</string>
     <!-- A sort option for blank forms. When this option is selected, the form for which a filled instance was last filled will go first. -->
     <string name="sort_by_last_saved">Last saved first</string>
-    <string name="sort_by_status_asc">Status, finalized first</string>
-    <string name="sort_by_status_desc">Status, unfinalized first</string>
     <string name="filter_the_list">Filter the list</string>
     <!-- Displayed in search boxes for form lists or question types that involve search -->
     <string name="search">Search</string>
@@ -72,7 +62,7 @@
     <string name="no_items_display">Nothing available to display.</string>
     <string name="no_items_display_forms">Nothing available to display.\n\nTry getting and filling out a blank form.</string>
     <string name="no_items_display_sent_forms">Nothing available to display.\n\nTry sending finalized forms before viewing.</string>
-    <string name="no_items_display_instances">Nothing available to display.\n\nTry finalizing saved forms before sending.</string>
+    <string name="no_items_display_instances">Nothing available to display.\n\nTry finalizing drafts before sending.</string>
 
     <string name="not_granted_permission">The activity you are trying to start requires a permission which is not granted.</string>
     <string name="storage_runtime_permission_denied_title">Storage permissions</string>
@@ -86,8 +76,6 @@
     <string name="record_audio_runtime_permission_denied_desc">Without this permission Collect can\'t access the microphone. Please try again when you are ready to grant it.</string>
     <string name="get_accounts_runtime_permission_denied_title">Get accounts permission</string>
     <string name="get_accounts_runtime_permission_denied_desc">Without this permission Collect can\'t access accounts. Please try again when you are ready to grant it.</string>
-    <string name="read_phone_state_runtime_permission_denied_title">Read phone state permission</string>
-    <string name="read_phone_state_runtime_permission_denied_desc">ODK Collect does not make calls but it needs to access certain properties about your device such as the phone number and device ID.</string>
 
     <!--
     ##############################################
@@ -106,7 +94,7 @@
     <string name="survey_loading_reading_csv_message">Reading CSV files…</string>
     <string name="parse_error">Sorry, unable to parse form.</string>
     <string name="loading_form_failed">An error occurred while loading the form. Please try again.</string>
-    <string name="parent_form_not_present">Unable to edit this saved form because the corresponding blank form is not present or was deleted.\n\nForm ID: %1$s</string>
+    <string name="parent_form_not_present">Unable to edit this draft because the corresponding blank form is not present or was deleted.\n\nForm ID: %1$s</string>
     <string name="cannot_edit_completed_form">This form cannot be edited once it has been marked as finalized. It may be encrypted.</string>
 
     <!-- Displayed when loading a form if that form was previously filled but closed because of a crash or system failure -->
@@ -117,7 +105,7 @@
     <!-- Text for button displayed in the form filling menu to see the form's table of contents -->
     <string name="view_hierarchy">Go To Prompt</string>
     <!-- Text for button displayed in the form filling menu to save the form -->
-    <string name="save_all_answers">Save Form</string>
+    <string name="save_all_answers">Save as draft</string>
 
     <!-- Text of button from the form's table of contents to jump to the beginning of the form -->
     <string name="jump_to_beginning">Go To Start</string>
@@ -154,6 +142,7 @@
 
     <string name="invalid_answer_error">Sorry, this response is invalid!</string>
     <string name="required_answer_error">Sorry, this response is required!</string>
+    <string name="success_form_validation">Success! No errors found in your form.</string>
     <string name="invalid_space_in_answer_singular">Warning: underlying value %s has spaces</string>
     <string name="invalid_space_in_answer_plural">Warning: underlying values %s have spaces</string>
 
@@ -162,24 +151,30 @@
     <string name="survey_internal_error">Internal error: step to prompt failed.</string>
 
     <string name="save_enter_data_description">You are at the end of %s.</string>
-    <string name="save_form_as">Name this form</string>
-    <string name="save_as_error">Saved name must not be blank!</string>
-    <string name="mark_finished">Mark form as finalized</string>
-    <string name="quit_entry">Save Form and Exit</string>
+    <string name="form_edits_warning_only_finalize_enabled">You will not be able to make edits once you finalize.</string>
+    <string name="form_edits_warning_save_as_draft_and_finalize_enabled">You will not be able to make edits once you finalize. If you need to make changes, \"Save as draft\" until you\'re ready to send.</string>
+    <string name="form_edits_warning_save_as_draft_and_finalize_with_auto_send_enabled">You will not be able to make edits once you send. If you need to make changes, \"Save as draft\" until you\'re ready to send.</string>
+    <string name="save_as_draft">Save as draft</string>
+    <string name="finalize">Finalize</string>
+    <string name="send">Send</string>
 
     <string name="data_saved_error">Sorry, form save failed!</string>
     <string name="data_saved_ok">Form successfully saved!</string>
     <string name="save_point_error">Error saving recovery point: %s</string>
 
-    <!-- Dialog title when exiting a form. The name of the form will be included -->
+    <!-- Dialog title when exiting a drawing view. The name of the kind of drawing will be included -->
     <string name="quit_application">Exit %s</string>
     <!-- Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded> -->
-    <string name="no_form_loaded">&lt;no form loaded&gt;</string>
-    <string name="do_not_save">Ignore Changes</string>
+    <string name="do_not_save">Discard Form</string>
+    <string name="discard_changes">Discard Changes</string>
     <string name="keep_changes">Save Changes</string>
-    <string name="confirm_exit_without_save">Do you want to exit? The data filled so far will be lost.</string>
-    <string name="confirm_exit_with_save">Are you sure that you want to save the data and exit the form?</string>
-    <string name="confirm_exit">Are you sure that you want to exit the form? You may save the filled data for later use.</string>
+    <string name="keep_editing">Keep editing</string>
+    <string name="quit_form_title">Save form?</string>
+    <string name="save_explanation">You can save this form and access it from your drafts at any time.</string>
+    <string name="save_explanation_with_last_saved">\'This form was last saved on\' EEE, MMM dd, yyyy \'at\' HH:mm\'. Save as draft to keep changes.\'</string>
+    <string name="quit_form_continue_title">Continue editing?</string>
+    <string name="discard_form_warning">If you discard form, you will lose any changes you have made so far.</string>
+    <string name="discard_changes_warning">\'This form was last saved on\' EEE, MMM dd, yyyy \'at\' HH:mm\'. If you discard changes, you will lose any changes you have made since then.\'</string>
 
     <string name="saving_form">Saving Form</string>
     <string name="survey_saving_validating_message">Validating answers…</string>
@@ -256,7 +251,6 @@
 
     <string name="capture_image">Take Picture</string>
     <string name="choose_image">Choose Image</string>
-    <string name="choose_account">Choose account</string>
     <string name="selected_invalid_image">Selected file is not a valid image</string>
     <string name="take_picture_instruction">Tap the screen to take a picture</string>
     <string name="error_front_camera_unavailable">Front camera not available on this device</string>
@@ -275,8 +269,6 @@
 
     <string name="capture_video">Record Video</string>
     <string name="choose_video">Choose Video</string>
-    <string name="start_video_capture_instruction">Tap the screen to start recording</string>
-    <string name="stop_video_capture_instruction">Recording started. Tap again to stop</string>
     <string name="play_video">Play Video</string>
 
     <string name="choose_file">Choose File</string>
@@ -509,6 +501,9 @@
     <string name="background_location_disabled">This form wants to track your location but tracking is disabled. Please enable in the %1$s menu above.</string>
     <string name="background_location_enabled">This form tracks your location. You can disable tracking in the %1$s menu above.</string>
 
+    <!-- Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error. -->
+    <string name="validate">Check for errors</string>
+
     <string name="get_point">Start GeoPoint</string>
     <string name="geopoint_view_read_only">View GeoPoint</string>
     <string name="geoshape_view_read_only">View GeoShape</string>
@@ -595,6 +590,7 @@
     <string name="select_item">Select</string>
     <string name="new_item">New item</string>
     <!-- Name of an action button -->
+    <string name="edit_data">Edit Draft</string>
     <string name="view_data">View Saved Form</string>
 
     <!-- Name for the location tracking notifications. Will be seen in Android settings. -->
@@ -869,9 +865,6 @@
 
     <string name="form_filling_category">Form filling</string>
 
-    <string name="default_completed">Default to finalized</string>
-    <string name="default_completed_summary">Mark form as finalized by default</string>
-
     <string name="constraint_behavior_title">Constraint processing</string>
     <string name="constraint_behavior">Constraint processing behavior</string>
     <string name="constraint_behavior_on_swipe">Validate upon forward swipe</string>
@@ -939,6 +932,7 @@
     <string name="found_in_main">Uncheck to hide from Main Menu</string>
     <string name="found_in_settings">Uncheck to hide from Unprotected Settings</string>
     <string name="form_entry">Uncheck to hide from Form Entry</string>
+    <string name="form_end">Uncheck to hide from Form End</string>
 
     <string name="reset_project_settings_title">Reset</string>
     <string name="reset_project_settings_subtext">Choose from settings, forms, data</string>
@@ -971,14 +965,15 @@
     <!-- Name of a setting that determines whether users can navigate backwards in a form -->
     <string name="moving_backwards_title">Moving backwards</string>
     <string name="moving_backwards_disabled_title">Moving backwards disabled</string>
-    <string name="moving_backwards_disabled_message">Configure the device to prevent users from bypassing this setting?\n\nThe changes are:\n\u2022 Disable Edit Saved Form\n\u2022 Disable Save Form\n\u2022 Disable Go To Prompt\n\u2022 Set Constraint processing to Validate upon forward swipe</string>
+    <string name="moving_backwards_disabled_message">Configure the device to prevent users from bypassing this setting?\n\nThe changes are:\n\u2022 Disable Edit Draft\n\u2022 Disable Save as draft\n\u2022 Disable Go To Prompt\n\u2022 Set Constraint processing to Validate upon forward swipe</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="moving_backwards_enabled_title">Moving backwards enabled</string>
-    <string name="moving_backwards_enabled_message">You may wish to review the following settings:\n\n\u2022 Edit Saved Form\n\u2022 Save Form\n\u2022 Go To Prompt\n\u2022 Constraint processing</string>
+    <string name="moving_backwards_enabled_message">You may wish to review the following settings:\n\n\u2022 Edit Draft\n\u2022 Save as draft\n\u2022 Go To Prompt\n\u2022 Constraint processing</string>
 
     <!-- Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end -->
-    <string name="save_mid">Save Form</string>
+    <string name="save_mid">Save as draft</string>
+    <string name="save_mid_summary">Save icon in top bar and \"Save as draft\" button when exiting form</string>
 
     <!--
      ##############################################
@@ -1039,7 +1034,7 @@
     <string name="view_qr_code_fragment_title">QR Code</string>
     <string name="import_qrcode_sd">Import QR code</string>
     <string name="successfully_imported_settings">Settings imported successfully</string>
-    <string name="encoding_max_limit">Maximum characters limit reached: QR code can\'t be generated for all settings</string>
+    <string name="encoding_max_limit" tools:ignore="UnusedResources">Maximum characters limit reached: QR code can\'t be generated for all settings</string>
     <string name="share">Share</string>
     <string name="turn_on_flashlight">Turn on flashlight</string>
     <string name="turn_off_flashlight">Turn off flashlight</string>
@@ -1053,6 +1048,7 @@
     <string name="invalid_qrcode">QR code does not contain valid settings</string>
     <string name="qr_code_not_found">QR Code not found in the selected image</string>
     <string name="corrupt_imported_preferences_error">Current settings are corrupt. From project management settings, reset settings or import working ones.</string>
+    <string name="settings_with_gd_protocol">Google Drive/Sheets projects can no longer be created</string>
 
     <!--
      ##############################################
@@ -1115,6 +1111,7 @@
     <!-- Description for screen readers of the action to switch to a different existing project. This is part of the project selection dialog -->
     <string name="switch_to_project">Switch to %s</string>
     <string name="delete_project_confirm_message">All blank forms, submissions and settings will be permanently deleted.</string>
+    <string name="delete_google_drive_project_confirm_message"><font fgcolor='#D42C2C'>This is a Google Drive/Sheets project. Once you delete it, you will not be able to create it again.</font>\n\nAll blank forms, submissions and settings will be permanently deleted.</string>
     <string name="delete_project_yes">Yes</string>
     <string name="delete_project_no">No</string>
     <string name="cannot_delete_project_title">Project can\'t be deleted</string>
@@ -1137,10 +1134,6 @@
     <!-- Text for the button that allows for manually entering project details. Should be short -->
     <string name="configure_manually">Manually enter project details</string>
     <string name="project_config_tip">After you add your project, you can configure it in Settings</string>
-    <!-- Immediately followed by "Configure" which is a link to configure a Google Drive project -->
-    <string name="gdrive_project">My project uses Google Drive.</string>
-    <!-- Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project -->
-    <string name="gdrive_configure">Configure</string>
     <!-- Immediately followed by "Try Collect" which is a link to create a demo project -->
     <string name="dont_have_project">Don\'t have a project yet?</string>
     <!-- Preceded by "Don't have a project yet?" question -->
@@ -1185,6 +1178,15 @@
 
     <!--
     ##############################################
+    # Google Drive deprecation
+    ##############################################
+    -->
+    <string name="google_drive_deprecation_message">This project uses Google Drive. This functionality will be removed in the next app update.</string>
+    <string name="learn_more_button_text">Learn more</string>
+    <string name="dismiss_button_text">Dismiss</string>
+
+    <!--
+    ##############################################
     # Developer tools
     ##############################################
     -->
@@ -1194,5 +1196,24 @@
     <string name="crash_app">Crash app</string>
     <!-- An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close -->
     <string name="crash_app_summary">Force an uncaught exception causing the app to crash</string>
+    <string name="predicate_caching">Predicate caching</string>
 
+    <string name="permission_dialog_title">About permissions</string>
+    <string name="permission_dialog_text">You will be asked to allow ODK Collect access to the features below, select “allow” if you want to use them.</string>
+    <string name="notifications">Notifications</string>
+    <string name="required_for_notifications">Required for showing updates when forms are downloaded, updated and sent.</string>
+
+    <!--
+    ##############################################
+    # Form saved Snackbar
+    ##############################################
+    -->
+    <string name="form_saved_as_draft">Your form was saved as a draft.</string>
+    <string name="form_saved">Your form was saved.</string>
+    <string name="form_sending">Sending form…</string>
+    <string name="edit_form">Edit</string>
+    <string name="view_form">View</string>
+    <string name="close_snackbar">Close snackbar</string>
+
+    <string name="edit_finalized_form_warning">In later releases, you will not be able to edit finalized forms. Save forms as draft to edit them later.\n\nYou can check for errors in a draft form by tapping the three dots (⋮) and then Check for errors.</string>
 </resources>

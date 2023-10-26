@@ -111,9 +111,7 @@ public final class ThemeUtils {
     }
 
     private String getPrefsTheme() {
-        String theme = settingsProvider.getUnprotectedSettings().getString(ProjectKeys.KEY_APP_THEME);
-        if (theme != null) return theme;
-        else return context.getResources().getString(R.string.app_theme_light);
+        return settingsProvider.getUnprotectedSettings().getString(ProjectKeys.KEY_APP_THEME);
     }
 
     /**

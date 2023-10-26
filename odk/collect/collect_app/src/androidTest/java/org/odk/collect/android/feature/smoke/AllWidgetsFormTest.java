@@ -10,12 +10,15 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.startsWith;
 
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.uiautomator.UiDevice;
+
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
-import org.odk.collect.android.support.rules.FormActivityTestRule;
+import org.odk.collect.android.support.rules.BlankFormTestRule;
 import org.odk.collect.android.support.rules.TestRuleChain;
 
 import tools.fastlane.screengrab.Screengrab;
@@ -34,7 +37,7 @@ public class AllWidgetsFormTest {
     @ClassRule
     public static final LocaleTestRule LOCALE_TEST_RULE = new LocaleTestRule();
 
-    public FormActivityTestRule activityTestRule = new FormActivityTestRule("all-widgets.xml", "All widgets");
+    public BlankFormTestRule activityTestRule = new BlankFormTestRule("all-widgets.xml", "All widgets");
 
     @Rule
     public RuleChain copyFormChain = TestRuleChain.chain()
@@ -86,7 +89,6 @@ public class AllWidgetsFormTest {
 
         testAudioWidget();
         testVideoWidget();
-        testSelfieVideoWidget();
 
         testFileWidget();
 
@@ -297,7 +299,7 @@ public class AllWidgetsFormTest {
         Screengrab.screenshot("selfie-widget");
 
         onView(withText("Take Picture")).perform(click());
-        pressBack();
+        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressBack();
 
         onView(withText("Selfie widget")).perform(swipeLeft());
     }
@@ -336,15 +338,6 @@ public class AllWidgetsFormTest {
         Screengrab.screenshot("video");
 
         onView(withText("Video widget")).perform(swipeLeft());
-    }
-
-    public void testSelfieVideoWidget() {
-        Screengrab.screenshot("selfie-video");
-
-        onView(withText("Record Video")).perform(click());
-        pressBack();
-
-        onView(withText("Selfie video widget")).perform(swipeLeft());
     }
 
     public void testFileWidget() {
@@ -460,11 +453,17 @@ public class AllWidgetsFormTest {
     public void testGeotraceWidget() {
         Screengrab.screenshot("geo-trace");
 
+        onView(withText("Start GeoTrace")).perform(click());
+        pressBack();
+
         onView(withText("Geotrace widget")).perform(swipeLeft());
     }
 
     public void testGeoshapeWidget() {
         Screengrab.screenshot("geo-space");
+
+        onView(withText("Start GeoShape")).perform(click());
+        pressBack();
 
         onView(withText("Geoshape widget")).perform(swipeLeft());
     }
@@ -548,6 +547,9 @@ public class AllWidgetsFormTest {
     }
 
     public void testSelectOneFromMapWidget() {
+        onView(withText("Select place")).perform(click());
+        pressBack();
+
         onView(withText("Select one from map widget")).perform(swipeLeft());
     }
 
@@ -604,10 +606,6 @@ public class AllWidgetsFormTest {
         Screengrab.screenshot("trigger-widget");
 
         onView(withText("Trigger widget")).perform(click());
-    }
-
-    public void testSubmission() {
-
     }
     //endregion
 }

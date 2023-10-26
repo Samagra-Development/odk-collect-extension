@@ -10,7 +10,7 @@ import org.odk.collect.android.R;
 import org.odk.collect.android.support.rules.CollectTestRule;
 import org.odk.collect.android.support.rules.TestRuleChain;
 import org.odk.collect.android.support.pages.FormEntryPage;
-import org.odk.collect.android.support.pages.SaveOrIgnoreDialog;
+import org.odk.collect.android.support.pages.SaveOrIgnoreDrawingDialog;
 
 // Issue number NODK-209
 @RunWith(AndroidJUnit4.class)
@@ -33,17 +33,17 @@ public class DrawWidgetTest {
                 .clickOnText("Draw widget")
                 .clickOnId(R.id.simple_button)
                 .waitForRotationToEnd()
-                .pressBack(new SaveOrIgnoreDialog<>("Sketch Image", new FormEntryPage("All widgets")))
-                .clickIgnoreChanges()
+                .pressBack(new SaveOrIgnoreDrawingDialog<>("Sketch Image", new FormEntryPage("All widgets")))
+                .clickDiscardChanges()
                 .waitForRotationToEnd()
                 .clickOnId(R.id.simple_button)
                 .waitForRotationToEnd()
-                .pressBack(new SaveOrIgnoreDialog<>("Sketch Image", new FormEntryPage("All widgets")))
+                .pressBack(new SaveOrIgnoreDrawingDialog<>("Sketch Image", new FormEntryPage("All widgets")))
                 .clickSaveChanges()
                 .waitForRotationToEnd()
                 .clickGoToArrow()
                 .clickJumpEndButton()
-                .clickSaveAndExit();
+                .clickFinalize();
     }
 
     @Test
@@ -60,12 +60,12 @@ public class DrawWidgetTest {
                 .clickOnId(R.id.fab_actions)
                 .clickOnId(R.id.fab_set_color)
                 .clickOnString(R.string.ok)
-                .pressBack(new SaveOrIgnoreDialog<>("Sketch Image", new FormEntryPage("All widgets")))
+                .pressBack(new SaveOrIgnoreDrawingDialog<>("Sketch Image", new FormEntryPage("All widgets")))
                 .clickSaveChanges()
                 .waitForRotationToEnd()
                 .clickGoToArrow()
                 .clickJumpEndButton()
-                .clickSaveAndExit();
+                .clickFinalize();
     }
 
     @Test
@@ -88,11 +88,11 @@ public class DrawWidgetTest {
                 .clickOnId(R.id.fab_actions)
                 .assertText(R.string.set_color)
                 .assertText(R.string.set_color)
-                .pressBack(new SaveOrIgnoreDialog<>("Sketch Image", new FormEntryPage("All widgets")))
+                .pressBack(new SaveOrIgnoreDrawingDialog<>("Sketch Image", new FormEntryPage("All widgets")))
                 .clickSaveChanges()
                 .waitForRotationToEnd()
                 .clickGoToArrow()
                 .clickJumpEndButton()
-                .clickSaveAndExit();
+                .clickFinalize();
     }
 }

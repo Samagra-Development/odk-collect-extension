@@ -1,5 +1,6 @@
 package org.odk.collect.android.projects
 
+import android.Manifest
 import android.content.Context
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
@@ -16,26 +17,25 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.journeyapps.barcodescanner.BarcodeResult
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.notNullValue
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verifyNoInteractions
+import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.odk.collect.android.R
-import org.odk.collect.android.activities.MainMenuActivity
 import org.odk.collect.android.fakes.FakePermissionsProvider
 import org.odk.collect.android.injection.config.AppDependencyModule
+import org.odk.collect.android.mainmenu.MainMenuActivity
 import org.odk.collect.android.support.CollectHelpers
 import org.odk.collect.android.utilities.CodeCaptureManagerFactory
-import org.odk.collect.android.utilities.CompressionUtils
 import org.odk.collect.android.views.BarcodeViewDecoder
+import org.odk.collect.androidshared.utils.CompressionUtils
 import org.odk.collect.fragmentstest.FragmentScenarioLauncherRule
 import org.odk.collect.permissions.PermissionsChecker
 import org.odk.collect.permissions.PermissionsProvider
@@ -80,11 +80,14 @@ class QrCodeProjectCreatorDialogTest {
     fun `requestCameraPermission() should be called in onStart() to make sure it is called after returning to the dialog`() {
         val scenario = launcherRule.launch(fragmentClass = QrCodeProjectCreatorDialog::class.java, initialState = Lifecycle.State.CREATED)
 
-        assertFalse(permissionsProvider.cameraPermissionRequested)
+        assertThat(permissionsProvider.requestedPermissions, equalTo(emptyList()))
 
         scenario.moveToState(Lifecycle.State.STARTED)
 
-        assertTrue(permissionsProvider.cameraPermissionRequested)
+        assertThat(
+            permissionsProvider.requestedPermissions,
+            equalTo(listOf(Manifest.permission.CAMERA))
+        )
     }
 
     @Test
@@ -176,6 +179,43 @@ class QrCodeProjectCreatorDialogTest {
             `is`(
                 ApplicationProvider.getApplicationContext<Context>()
                     .getString(R.string.invalid_qrcode)
+            )
+        )
+        verifyNoInteractions(projectCreator)
+    }
+
+    @Test
+    fun `When QR code contains GD protocol a toast should be displayed`() {
+        val projectCreator = mock<ProjectCreator>()
+
+        CollectHelpers.overrideAppDependencyModule(object : AppDependencyModule() {
+            override fun providesBarcodeViewDecoder(): BarcodeViewDecoder {
+                val barcodeResult = mock<BarcodeResult> {
+                    `when`(it.text).thenReturn(
+                        CompressionUtils.compress(
+                            "{\n" +
+                                "  \"general\": {\n" +
+                                "       \"protocol\" : \"google_sheets\"" +
+                                "  },\n" +
+                                "  \"admin\": {\n" +
+                                "  }\n" +
+                                "}"
+                        )
+                    )
+                }
+
+                return mock {
+                    `when`(it.waitForBarcode(any())).thenReturn(MutableLiveData(barcodeResult))
+                }
+            }
+        })
+
+        launcherRule.launch(QrCodeProjectCreatorDialog::class.java)
+        assertThat(
+            ShadowToast.getTextOfLatestToast(),
+            `is`(
+                ApplicationProvider.getApplicationContext<Context>()
+                    .getString(R.string.settings_with_gd_protocol)
             )
         )
         verifyNoInteractions(projectCreator)

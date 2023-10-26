@@ -1,29 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Text for the topmost button on the main screen. It should be short and action-oriented.-->
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data">Заповнити анкету</string>
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">Заповнити анкету</string>
   <!--Text for an action button on the main screen.-->
-  <string name="review_data">Виправити збережену анкету</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="review_data_button">Виправити збережену анкету (%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="send_data">Надіслати завершену анкету</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="send_data_button">Надіслати завершену анкету (%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="view_sent_forms">Переглянути надіслану анкету</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="view_sent_forms_button">Переглянути надіслану анкету (%s)</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms">Отримати анкету</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">Видалити збережену анкету</string>
   <string name="version_number">Версія: %s</string>
   <string name="id_number">ID: %s</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="added_on_date_at_time">\'Додана\' EEE, dd MMM, yyyy \'в\' HH:mm</string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="saved_on_date_at_time">\'Збережена\' EEE, dd MMM, yyyy \'в\' HH:mm</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -46,15 +33,12 @@
   <string name="sort_by_date_desc">За датою, найновіший перший</string>
   <string name="sort_by_date_asc">За датою, найстарший перший</string>
   <!--A sort option for blank forms. When this option is selected, the form for which a filled instance was last filled will go first.-->
-  <string name="sort_by_status_asc">За статусом, завершені перші</string>
-  <string name="sort_by_status_desc">За статусом, незавершені перші</string>
   <string name="filter_the_list">Фільтрувати список</string>
   <!--Displayed in search boxes for form lists or question types that involve search-->
   <string name="search">Пошук</string>
   <string name="no_items_display">Нічого доступного для відображення.</string>
   <string name="no_items_display_forms">Нічого доступного для відображення.\n\nСпробуйте отримання та заповнення анкет.</string>
   <string name="no_items_display_sent_forms">Нічого доступного для відображення.\n\nСпробуйте надіслати завершені анкети перед переглядом.</string>
-  <string name="no_items_display_instances">Нічого доступного для відображення.\n\nСпробуйте перед надсиланням позначити збережені анкети як завершені.</string>
   <string name="storage_runtime_permission_denied_title">Дозволи сховища</string>
   <string name="storage_runtime_permission_denied_desc">Без цих дозволів Collect не матиме дотупу до ваших анкет (читання, запис відповідей). Відкрийте програму знову, ящо ви вже їх надали.</string>
   <string name="location_runtime_permissions_denied_title">Місцеві дозволи</string>
@@ -65,8 +49,6 @@
   <string name="record_audio_runtime_permission_denied_desc">Без цього дозволу Collect не має доступу до мікрофону. Будь ласка, спробуйте знову коли будете готові надати його.</string>
   <string name="get_accounts_runtime_permission_denied_title">Отримати дозволи облікового запису</string>
   <string name="get_accounts_runtime_permission_denied_desc">Без цього дозволу Collect не має доступу до облікових записів. Будь ласка, спробуйте знову коли будете готові надати його.</string>
-  <string name="read_phone_state_runtime_permission_denied_title">Сатус телефону</string>
-  <string name="read_phone_state_runtime_permission_denied_desc">ODK Collect не робить телефонних дзвінків але потребує доступу до певних властивостей вашого пристрою як то номер телефну та ID пристрою</string>
   <!--##############################################
     # FILL BLANK FORM
     ##############################################-->
@@ -80,7 +62,6 @@
   <string name="survey_loading_reading_csv_message">Читання CSV файлів…</string>
   <string name="parse_error">Вибачте, неможливо розібрати анкету.</string>
   <string name="loading_form_failed">Під час завантаження анкети виникла помилка. Будь ласка спробуйте знову.</string>
-  <string name="parent_form_not_present">Неможливо відредагувати збережену анкету бо відповідна незаповнена анкета відсутня або була видалена.\n\nID анкети: %1$s</string>
   <string name="cannot_edit_completed_form">Після позначення завершеною ця анкета не може бути відредагована. Може бути зашифрованою.</string>
   <!--Displayed when loading a form if that form was previously filled but closed because of a crash or system failure-->
   <string name="savepoint_used">Незбережені зміни відновлені з місця збереження!</string>
@@ -89,7 +70,6 @@
   <!--Text for button displayed in the form filling menu to see the form's table of contents-->
   <string name="view_hierarchy">Перейти</string>
   <!--Text for button displayed in the form filling menu to save the form-->
-  <string name="save_all_answers">Зберегти анкету</string>
   <!--Text of button from the form's table of contents to jump to the beginning of the form-->
   <string name="jump_to_beginning">Перейти на початок</string>
   <!--Text of button from the form's table of contents to jump to the end of the form-->
@@ -121,18 +101,12 @@
   <string name="invalid_space_in_answer_plural">Попередження: основні значення %s містять пробіли</string>
   <string name="survey_internal_error">Внутрішня помилка: невдалий перехід.</string>
   <string name="save_enter_data_description">Ви наприкінці %s.</string>
-  <string name="save_form_as">Назвіть анкету</string>
-  <string name="save_as_error">Ім’я не може бути порожнім!</string>
-  <string name="mark_finished">Позначити анкету як завершену</string>
-  <string name="quit_entry">Зберегти анкету та вийти</string>
   <string name="data_saved_error">Вибачте, не вдалось зберегти анкету!</string>
   <string name="data_saved_ok">Анкету успішно збережено!</string>
   <string name="save_point_error">Помилка при збереженні точки відновлення: %s</string>
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <string name="quit_application">Вийти з %s</string>
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
-  <string name="no_form_loaded">&lt;анкети не завантажені&gt;</string>
-  <string name="do_not_save">Не зберігати</string>
   <string name="keep_changes">Зберегти зміни</string>
   <string name="saving_form">Зберігаю анкету</string>
   <string name="survey_saving_validating_message">Перевірка відповіді…</string>
@@ -196,8 +170,6 @@
   <string name="set_color">Колір</string>
   <string name="capture_video">Записати відео</string>
   <string name="choose_video">Оберіть відео</string>
-  <string name="start_video_capture_instruction">Щоб почати запис торкніться екрану</string>
-  <string name="stop_video_capture_instruction">Запис розпочато. Торкніться знову щоб зупинити</string>
   <string name="play_video">Відтворити відео</string>
   <string name="choose_file">Обрати файл</string>
   <!--Text for button that deletes a file that is the answer to a question-->
@@ -343,6 +315,7 @@
   <string name="track_location">Відслідковувати розташування</string>
   <string name="background_location_disabled">Ця анкета хоче відслідковувати ваше розташування але відслідковування вимкнене. Будь ласка, увімкніть його в %1$s меню.</string>
   <string name="background_location_enabled">Ця анкета відслідковує ваше розташування. Ви можете вимкнути відслідковування в %1$s меню.</string>
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <string name="get_point">Записати ГеоТочку</string>
   <string name="geopoint_view_read_only">Переглянути ГеоТочку</string>
   <string name="get_shape">Почати ГеоФігуру</string>
@@ -570,8 +543,6 @@
   <string name="delete_after_send">Видалити після надсилання</string>
   <string name="delete_after_send_summary">Видаляє завершені анкети та медіа файли після надсилання на сервер</string>
   <string name="form_filling_category">Заповнення анкети</string>
-  <string name="default_completed">Завершувати за замовчуванням</string>
-  <string name="default_completed_summary">За замовчуванням позначати анкети як завершені</string>
   <string name="constraint_behavior_title">Обробка обмежень</string>
   <string name="constraint_behavior">Обмеження зумовлюють поведінку</string>
   <string name="constraint_behavior_on_swipe">Перевіряти підчас переходу вперед</string>
@@ -646,13 +617,10 @@
   <!--Name of a setting that determines whether users can navigate backwards in a form-->
   <string name="moving_backwards_title">Переміщення назад</string>
   <string name="moving_backwards_disabled_title">Переміщення назад відключене</string>
-  <string name="moving_backwards_disabled_message">Бажаєте налаштувати цей пристрій аби заборонити користувачам оминати ці налаштування?\n\nВнесені зміни:\n\u2022 Відключено Виправити Збережену Анкету\n\u2022 Відключено Зберегти Анкету\n\u2022 Відключено Швидкій Перехід\n\u2022 Обробка обмежень встановлена на Перевіряти під час переходу вперед</string>
   <string name="yes">Так</string>
   <string name="no">Ні</string>
   <string name="moving_backwards_enabled_title">Переміщення назад включене</string>
-  <string name="moving_backwards_enabled_message">Можливи Ви захочете переглянути наступні налаштування:\n\n\u2022 Виправити Збережену Анкету\n\u2022 Зберегти Анкету\n\u2022 Швидкий Перехід\n\u2022 Обробка обмежень</string>
   <!--Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end-->
-  <string name="save_mid">Зберегти анкету</string>
   <!--##############################################
      # GOOGLE DRIVE, GOOGLE SHEETS
      ##############################################-->
@@ -695,7 +663,7 @@
      # SETTINGS IMPORT
      ##############################################-->
   <string name="successfully_imported_settings">Налаштування успішно імпортовані</string>
-  <string name="encoding_max_limit">Досягнуто максимальну кількість символів: QR код не може бути згенерований для всіх налаштувань</string>
+  <string name="encoding_max_limit" tools:ignore="UnusedResources">Досягнуто максимальну кількість символів: QR код не може бути згенерований для всіх налаштувань</string>
   <string name="share">Поділитись</string>
   <string name="turn_on_flashlight">Увімкнути ліхтарик</string>
   <string name="turn_off_flashlight">Вимкнути ліхтарик</string>
@@ -743,8 +711,6 @@
     select the wording and where to put the \n for maximum impact in your language.-->
   <!--Text for the button that allows for configuring a project by scanning a QR code. Should be short-->
   <!--Text for the button that allows for manually entering project details. Should be short-->
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <!--Preceded by "Don't have a project yet?" question-->
   <!--Error shown when a user tries to open a form that's in a different project-->
@@ -760,9 +726,15 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

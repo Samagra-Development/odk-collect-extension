@@ -3,6 +3,7 @@ package org.odk.collect.android.widgets;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,12 +33,14 @@ import org.odk.collect.imageloader.ImageLoader;
 import org.odk.collect.shared.TempFiles;
 
 import java.io.File;
+import java.io.IOException;
 
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 import static org.odk.collect.android.support.CollectHelpers.overrideReferenceManager;
@@ -130,6 +133,40 @@ public class AnnotateWidgetTest extends FileWidgetTest<AnnotateWidget> {
     }
 
     @Test
+    public void whenThereIsNoAnswer_hideImageViewAndErrorMessage() {
+        AnnotateWidget widget = createWidget();
+
+        assertThat(widget.getImageView().getVisibility(), is(View.GONE));
+        assertThat(widget.getImageView().getDrawable(), nullValue());
+
+        assertThat(widget.getErrorTextView().getVisibility(), is(View.GONE));
+    }
+
+    @Test
+    public void whenTheAnswerImageCanNotBeLoaded_hideImageViewAndShowErrorMessage() throws IOException {
+        CollectHelpers.overrideAppDependencyModule(new AppDependencyModule() {
+            @Override
+            public ImageLoader providesImageLoader() {
+                return new SynchronousImageLoader(true);
+            }
+        });
+
+        String imagePath = File.createTempFile("current", ".bmp").getAbsolutePath();
+        currentFile = new File(imagePath);
+
+        formEntryPrompt = new MockFormEntryPromptBuilder()
+                .withAnswerDisplayText(DrawWidgetTest.USER_SPECIFIED_IMAGE_ANSWER)
+                .build();
+
+        AnnotateWidget widget = createWidget();
+
+        assertThat(widget.getImageView().getVisibility(), is(View.GONE));
+        assertThat(widget.getImageView().getDrawable(), nullValue());
+
+        assertThat(widget.getErrorTextView().getVisibility(), is(View.VISIBLE));
+    }
+
+    @Test
     public void whenPromptHasDefaultAnswer_showsInImageView() throws Exception {
         String imagePath = File.createTempFile("default", ".bmp").getAbsolutePath();
 
@@ -154,7 +191,7 @@ public class AnnotateWidgetTest extends FileWidgetTest<AnnotateWidget> {
 
         AnnotateWidget widget = createWidget();
         ImageView imageView = widget.getImageView();
-        assertThat(imageView, notNullValue());
+        assertThat(imageView.getVisibility(), is(View.VISIBLE));
         Drawable drawable = imageView.getDrawable();
         assertThat(drawable, notNullValue());
 
@@ -180,7 +217,7 @@ public class AnnotateWidgetTest extends FileWidgetTest<AnnotateWidget> {
 
         AnnotateWidget widget = createWidget();
         ImageView imageView = widget.getImageView();
-        assertThat(imageView, notNullValue());
+        assertThat(imageView.getVisibility(), is(View.VISIBLE));
         Drawable drawable = imageView.getDrawable();
         assertThat(drawable, notNullValue());
 
@@ -206,5 +243,55 @@ public class AnnotateWidgetTest extends FileWidgetTest<AnnotateWidget> {
                 .build();
 
         assertThat(getWidget().annotateButton.isEnabled(), is(false));
+    }
+
+    @Test
+    public void whenPromptHasDefaultAnswer_passUriToDrawActivity() throws Exception {
+        File file = File.createTempFile("default", ".bmp");
+        String imagePath = file.getAbsolutePath();
+
+        ReferenceManager referenceManager = setupFakeReferenceManager(singletonList(
+                new Pair<>(DrawWidgetTest.DEFAULT_IMAGE_ANSWER, imagePath)
+        ));
+        CollectHelpers.overrideAppDependencyModule(new AppDependencyModule() {
+            @Override
+            public ReferenceManager providesReferenceManager() {
+                return referenceManager;
+            }
+
+            @Override
+            public ImageLoader providesImageLoader() {
+                return new SynchronousImageLoader();
+            }
+        });
+
+        formEntryPrompt = new MockFormEntryPromptBuilder()
+                .withAnswerDisplayText(DrawWidgetTest.DEFAULT_IMAGE_ANSWER)
+                .build();
+
+        Intent intent = getIntentLaunchedByClick(R.id.markup_image);
+        assertComponentEquals(activity, DrawActivity.class, intent);
+        assertExtraEquals(DrawActivity.OPTION, DrawActivity.OPTION_ANNOTATE, intent);
+        assertExtraEquals(DrawActivity.REF_IMAGE, Uri.fromFile(file), intent);
+    }
+
+    @Test
+    public void whenPromptHasDefaultAnswerThatDoesNotExist_doNotPassUriToDrawActivity() {
+        formEntryPrompt = new MockFormEntryPromptBuilder()
+                .withAnswerDisplayText(DrawWidgetTest.DEFAULT_IMAGE_ANSWER)
+                .build();
+
+        Intent intent = getIntentLaunchedByClick(R.id.markup_image);
+        assertComponentEquals(activity, DrawActivity.class, intent);
+        assertExtraEquals(DrawActivity.OPTION, DrawActivity.OPTION_ANNOTATE, intent);
+        assertThat(intent.hasExtra(DrawActivity.REF_IMAGE), is(false));
+    }
+
+    @Test
+    public void whenThereIsNoAnswer_doNotPassUriToDrawActivity() {
+        Intent intent = getIntentLaunchedByClick(R.id.markup_image);
+        assertComponentEquals(activity, DrawActivity.class, intent);
+        assertExtraEquals(DrawActivity.OPTION, DrawActivity.OPTION_ANNOTATE, intent);
+        assertThat(intent.hasExtra(DrawActivity.REF_IMAGE), is(false));
     }
 }

@@ -25,7 +25,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import org.odk.collect.android.storage.StoragePathProvider
-import org.odk.collect.android.utilities.ImageFileUtils
+import org.odk.collect.androidshared.bitmap.ImageFileUtils
 import java.io.File
 
 class DrawView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
@@ -121,8 +121,10 @@ class DrawView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     private fun touchMove(x: Float, y: Float) {
         currentPath.quadTo(valueX, valueY, (x + valueX) / 2, (y + valueY) / 2)
         offscreenPath.quadTo(
-            valueX - bitmapLeft, valueY - bitmapTop,
-            (x + valueX) / 2 - bitmapLeft, (y + valueY) / 2 - bitmapTop
+            valueX - bitmapLeft,
+            valueY - bitmapTop,
+            (x + valueX) / 2 - bitmapLeft,
+            (y + valueY) / 2 - bitmapTop
         )
         valueX = x
         valueY = y

@@ -38,18 +38,19 @@ public class EncryptedFormTest {
             .around(rule);
 
     @Test
-    public void instanceOfEncryptedForm_cantBeEditedWhenFinalized() {
+    public void instanceOfEncryptedForm_cantBeViewedAfterFinalizing() {
         rule.startAtMainMenu()
                 .copyForm("encrypted.xml")
+
                 .startBlankForm("encrypted")
                 .assertQuestion("Question 1")
                 .swipeToEndScreen()
-                .clickSaveAndExit()
-                .checkIsToastWithMessageDisplayed(R.string.data_saved_ok)
-                .clickEditSavedForm()
-                .checkInstanceState("encrypted", Instance.STATUS_COMPLETE)
-                .clickOnFormWithDialog("encrypted")
-                .assertText(R.string.cannot_edit_completed_form);
+                .clickFinalize()
+
+                .clickSendFinalizedForm(1)
+                .clickOnText("encrypted")
+                .checkIsToastWithMessageDisplayed(R.string.encrypted_form)
+                .assertOnPage();
     }
 
     @Test
@@ -61,10 +62,10 @@ public class EncryptedFormTest {
                 .startBlankForm("encrypted")
                 .assertQuestion("Question 1")
                 .swipeToEndScreen()
-                .clickSaveAndExit()
+                .clickFinalize()
 
                 .clickSendFinalizedForm(1)
-                .clickOnForm("encrypted")
+                .clickSelectAll()
                 .clickSendSelected()
                 .clickOK(new SendFinalizedFormPage())
                 .pressBack(new MainMenuPage())
@@ -83,7 +84,7 @@ public class EncryptedFormTest {
                 .startBlankForm("encrypted-no-instanceID")
                 .assertQuestion("Question 1")
                 .swipeToEndScreen()
-                .clickSaveAndExit()
+                .clickFinalize()
                 .checkIsToastWithMessageDisplayed("This form does not specify an instanceID. You must specify one to enable encryption. Form has not been saved as finalized.")
                 .clickEditSavedForm()
                 .checkInstanceState("encrypted-no-instanceID", Instance.STATUS_INCOMPLETE);

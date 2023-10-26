@@ -6,7 +6,6 @@ import org.odk.collect.android.application.Collect
 import org.odk.collect.android.gdrive.GoogleAccountsManager
 import org.odk.collect.android.gdrive.GoogleApiProvider
 import org.odk.collect.android.gdrive.InstanceGoogleSheetsUploader
-import org.odk.collect.android.logic.PropertyManager
 import org.odk.collect.android.upload.FormUploadException
 import org.odk.collect.android.upload.InstanceServerUploader
 import org.odk.collect.android.upload.InstanceUploader
@@ -17,18 +16,20 @@ import org.odk.collect.android.utilities.InstancesRepositoryProvider
 import org.odk.collect.android.utilities.WebCredentialsUtils
 import org.odk.collect.forms.FormsRepository
 import org.odk.collect.forms.instances.Instance
+import org.odk.collect.metadata.PropertyManager
+import org.odk.collect.metadata.PropertyManager.Companion.PROPMGR_DEVICE_ID
 import org.odk.collect.permissions.PermissionsProvider
 import org.odk.collect.settings.keys.ProjectKeys
 import org.odk.collect.shared.settings.Settings
 import timber.log.Timber
 
 class InstanceSubmitter(
-    private val analytics: Analytics,
     private val formsRepository: FormsRepository,
     private val googleAccountsManager: GoogleAccountsManager,
     private val googleApiProvider: GoogleApiProvider,
     private val permissionsProvider: PermissionsProvider,
-    private val generalSettings: Settings
+    private val generalSettings: Settings,
+    private val propertyManager: PropertyManager
 ) {
 
     @Throws(SubmitException::class)
@@ -37,7 +38,7 @@ class InstanceSubmitter(
             throw SubmitException(SubmitException.Type.NOTHING_TO_SUBMIT)
         }
         val result = mutableMapOf<Instance, FormUploadException?>()
-        val deviceId = PropertyManager().getSingularProperty(PropertyManager.PROPMGR_DEVICE_ID)
+        val deviceId = propertyManager.getSingularProperty(PROPMGR_DEVICE_ID)
 
         val uploader: InstanceUploader = if (isGoogleSheetsProtocol()) {
             setUpGoogleSheetsUploader()
@@ -119,8 +120,9 @@ class InstanceSubmitter(
     }
 
     private fun logUploadedForm(instance: Instance) {
-        val action = if (isGoogleSheetsProtocol()) "HTTP-Sheets auto" else "HTTP auto"
-        val label = Collect.getFormIdentifierHash(instance.formId, instance.formVersion)
-        analytics.logEvent(AnalyticsEvents.SUBMISSION, action, label)
+        val key = if (isGoogleSheetsProtocol()) "HTTP-Sheets auto" else "HTTP auto"
+        val value = Collect.getFormIdentifierHash(instance.formId, instance.formVersion)
+
+        Analytics.log(AnalyticsEvents.SUBMISSION, key, value)
     }
 }

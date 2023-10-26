@@ -39,7 +39,6 @@ import org.odk.collect.android.widgets.interfaces.ButtonClickListener;
 import org.odk.collect.android.widgets.utilities.WaitingForDataRegistry;
 import org.odk.collect.androidshared.system.CameraUtils;
 import org.odk.collect.selfiecamera.CaptureSelfieActivity;
-import org.odk.collect.settings.keys.ProjectKeys;
 
 import java.io.File;
 import java.util.Locale;
@@ -68,7 +67,7 @@ public class ImageWidget extends BaseImageWidget implements ButtonClickListener 
         imageClickHandler = new ViewImageClickHandler();
         imageCaptureHandler = new ImageCaptureHandler();
         setUpLayout();
-        addCurrentImageToLayout();
+        updateAnswer();
         addAnswerView(answerLayout, WidgetViewUtils.getStandardMargin(context));
     }
 
@@ -86,17 +85,9 @@ public class ImageWidget extends BaseImageWidget implements ButtonClickListener 
         answerLayout.addView(captureButton);
         answerLayout.addView(chooseButton);
         answerLayout.addView(errorTextView);
+        answerLayout.addView(imageView);
 
         hideButtonsIfNeeded(appearance);
-        errorTextView.setVisibility(View.GONE);
-
-        if (selfie) {
-            if (!new CameraUtils().isFrontCameraAvailable(getContext())) {
-                captureButton.setEnabled(false);
-                errorTextView.setText(R.string.error_front_camera_unavailable);
-                errorTextView.setVisibility(View.VISIBLE);
-            }
-        }
     }
 
     @Override
@@ -132,10 +123,13 @@ public class ImageWidget extends BaseImageWidget implements ButtonClickListener 
 
     @Override
     public void onButtonClick(int buttonId) {
-        if (buttonId == R.id.capture_image) {
-            getPermissionsProvider().requestCameraPermission((Activity) getContext(), this::captureImage);
-        } else if (buttonId == R.id.choose_image) {
-            imageCaptureHandler.chooseImage(R.string.choose_image);
+        switch (buttonId) {
+            case R.id.capture_image:
+                getPermissionsProvider().requestCameraPermission((Activity) getContext(), this::captureImage);
+                break;
+            case R.id.choose_image:
+                imageCaptureHandler.chooseImage(R.string.choose_image);
+                break;
         }
     }
 
@@ -147,8 +141,7 @@ public class ImageWidget extends BaseImageWidget implements ButtonClickListener 
     }
 
     private void captureImage() {
-        errorTextView.setVisibility(View.GONE);
-        if (selfie) {
+        if (selfie && new CameraUtils().isFrontCameraAvailable(getContext())) {
             Intent intent = new Intent(getContext(), CaptureSelfieActivity.class);
             intent.putExtra(CaptureSelfieActivity.EXTRA_TMP_PATH, new StoragePathProvider().getOdkDirPath(StorageSubdirectory.CACHE));
             imageCaptureHandler.captureImage(intent, RequestCodes.MEDIA_FILE_PATH, R.string.capture_image);
@@ -163,9 +156,8 @@ public class ImageWidget extends BaseImageWidget implements ButtonClickListener 
             // the size. boo.
 
             try {
-                //TODO f
                 Uri uri = new ContentUriProvider().getUriForFile(getContext(),
-                        ProjectKeys.APP_PROVIDER + ".provider",
+                        BuildConfig.APPLICATION_ID + ".provider",
                         new File(tmpImageFilePath));
                 // if this gets modified, the onActivityResult in
                 // FormEntyActivity will also need to be updated.

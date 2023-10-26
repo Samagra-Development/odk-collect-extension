@@ -66,7 +66,7 @@ class GeoPointActivityTest {
         val intent = Intent(getApplicationContext(), GeoPointActivity::class.java)
 
         launcherRule.launch<GeoPointActivity>(intent)
-        verify(viewModel).start(retainMockAccuracy = false,)
+        verify(viewModel).start(retainMockAccuracy = false)
     }
 
     @Test
@@ -80,7 +80,7 @@ class GeoPointActivityTest {
 
     @Test
     fun `finishes with location when available`() {
-        val scenario = launcherRule.launch(GeoPointActivity::class.java)
+        val scenario = launcherRule.launchForResult(GeoPointActivity::class.java)
 
         val location = Location(0.0, 0.0, 0.0, 0.0f)
         locationLiveData.value = location
@@ -97,7 +97,7 @@ class GeoPointActivityTest {
 
     @Test
     fun `finishes when dialog is cancelled`() {
-        val scenario = launcherRule.launch(GeoPointActivity::class.java)
+        val scenario = launcherRule.launchForResult(GeoPointActivity::class.java)
         scenario.onActivity {
             it.onCancel()
         }
@@ -112,7 +112,7 @@ class GeoPointActivityTest {
 
         intent.putExtra(EXTRA_RETAIN_MOCK_ACCURACY, true)
         launcherRule.launch<GeoPointActivity>(intent)
-        verify(viewModel).start(retainMockAccuracy = true,)
+        verify(viewModel).start(retainMockAccuracy = true)
     }
 
     @Test
@@ -121,7 +121,7 @@ class GeoPointActivityTest {
         intent.putExtra(GeoPointActivity.EXTRA_ACCURACY_THRESHOLD, 5.0f)
 
         launcherRule.launch<GeoPointActivity>(intent)
-        verify(viewModel).start(retainMockAccuracy = false, accuracyThreshold = 5.0f,)
+        verify(viewModel).start(retainMockAccuracy = false, accuracyThreshold = 5.0f)
     }
 
     @Test

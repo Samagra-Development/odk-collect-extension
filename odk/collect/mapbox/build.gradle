@@ -1,11 +1,13 @@
+import dependencies.Dependencies
+import dependencies.Versions
+
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
 }
 
-apply from: '../../config/quality.gradle'
-apply from: '../../config/dependencies.gradle'
+apply from: '../config/quality.gradle'
 
 android {
     compileSdkVersion Versions.android_compile_sdk
@@ -28,10 +30,6 @@ android {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
     }
 
     namespace 'org.odk.collect.mapbox'

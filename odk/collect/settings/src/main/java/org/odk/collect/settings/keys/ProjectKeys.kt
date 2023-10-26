@@ -36,7 +36,6 @@ object ProjectKeys {
     const val KEY_HIDE_OLD_FORM_VERSIONS = "hide_old_form_versions"
     const val KEY_AUTOSEND = "autosend"
     const val KEY_DELETE_AFTER_SEND = "delete_send"
-    const val KEY_COMPLETED_DEFAULT = "default_completed"
     const val KEY_CONSTRAINT_BEHAVIOR = "constraint_behavior"
     const val KEY_HIGH_RESOLUTION = "high_resolution"
     const val KEY_IMAGE_SIZE = "image_size"
@@ -54,6 +53,9 @@ object ProjectKeys {
     const val KEY_FORM_METADATA = "form_metadata"
     const val KEY_BACKGROUND_LOCATION = "background_location"
     const val KEY_BACKGROUND_RECORDING = "background_recording"
+
+    // experimental_preferences.xml
+    const val KEY_PREDICATE_CACHING = "predicate_caching"
 
     // values
     const val PROTOCOL_SERVER = "odk_default"
@@ -74,14 +76,6 @@ object ProjectKeys {
     const val BASEMAP_SOURCE_STAMEN = "stamen"
     const val BASEMAP_SOURCE_CARTO = "carto"
 
-    // Custom UI settings
-    const val FORM_ACTIVITY_TOOLBAR_BACKGROUND_COLOR = "form_activity_toolbar_background_color"
-    const val FORM_ACTIVITY_TOOLBAR_FOREGROUND_COLOR = "form_activity_toolbar_foreground_color"
-    const val FORM_ACTIVITY_PRIMARY_COLOR = "form_activity_primary_color"
-    const val FORM_ACTIVITY_FOOTER_COLOR = "form_activity_footer_color"
-    const val FORM_ACTIVITY_NAVIGATION_BACKGROUND_COLOR = "form_activity_navigation_button_background_color"
-    const val FORM_ACTIVITY_NAVIGATION_FOREGROUND_COLOR = "form_activity_navigation_button_foreground_color"
-
-    // Set this variable the same as applicationId
-    const val APP_PROVIDER = "com.example.odkshellapp";
+    const val GOOGLE_DRIVE_DEPRECATION_LEARN_MORE_CLICKED = "gd_lear_more_clicked"
+    const val GOOGLE_DRIVE_DEPRECATION_BANNER_DISMISSED = "gd_banner_dismissed"
 }

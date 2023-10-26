@@ -1,13 +1,13 @@
 package org.odk.collect.android.formlists.blankformlist
 
 import android.app.Application
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
+import org.odk.collect.android.formmanagement.FormDeleter
 import org.odk.collect.android.formmanagement.FormsUpdater
 import org.odk.collect.android.formmanagement.matchexactly.SyncStatusAppState
 import org.odk.collect.android.preferences.utilities.FormUpdateMode
@@ -24,8 +24,6 @@ import org.odk.collect.forms.FormsRepository
 import org.odk.collect.forms.instances.InstancesRepository
 import org.odk.collect.settings.keys.ProjectKeys
 import org.odk.collect.shared.settings.Settings
-import org.odk.collect.shared.strings.Md5.getMd5Hash
-import java.io.ByteArrayInputStream
 
 class BlankFormListViewModel(
     private val formsRepository: FormsRepository,
@@ -37,7 +35,8 @@ class BlankFormListViewModel(
     private val generalSettings: Settings,
     private val changeLockProvider: ChangeLockProvider,
     private val formsDirDiskFormsSynchronizer: FormsDirDiskFormsSynchronizer,
-    private val projectId: String
+    private val projectId: String,
+    private val showAllVersions: Boolean = false
 ) : ViewModel() {
 
     private val _allForms: MutableNonNullLiveData<List<BlankFormListItem>> = MutableNonNullLiveData(emptyList())
@@ -50,13 +49,11 @@ class BlankFormListViewModel(
     private val isFormLoadingRunning = MutableNonNullLiveData(false)
     private val isSyncingWithStorageRunning = MutableNonNullLiveData(false)
 
-    val isLoading: LiveData<Boolean> = Transformations.map(
-        LiveDataUtils.zip3(
-            isFormLoadingRunning,
-            isSyncingWithStorageRunning,
-            syncRepository.isSyncing(projectId),
-        )
-    ) { (one, two, three) -> one || two || three }
+    val isLoading: LiveData<Boolean> = LiveDataUtils.zip3(
+        isFormLoadingRunning,
+        isSyncingWithStorageRunning,
+        syncRepository.isSyncing(projectId)
+    ).map { (one, two, three) -> one || two || three }
 
     var sortingOrder: Int = generalSettings.getInt("formChooserListSortingOrder")
         get() { return generalSettings.getInt("formChooserListSortingOrder") }
@@ -71,11 +68,6 @@ class BlankFormListViewModel(
         set(value) {
             field = value
             sortAndFilter()
-        }
-
-    private val shouldHideOldFormVersions: Boolean
-        get() {
-            return generalSettings.getBoolean(ProjectKeys.KEY_HIDE_OLD_FORM_VERSIONS)
         }
 
     private val syncWithServerObserver = Observer<Boolean> {
@@ -111,7 +103,7 @@ class BlankFormListViewModel(
                         form.toBlankFormListItem(projectId, instancesRepository)
                     }
 
-                if (shouldHideOldFormVersions) {
+                if (!showAllVersions) {
                     newListOfForms = newListOfForms.groupBy {
                         it.formId
                     }.map { (_, itemsWithSameId) ->
@@ -151,7 +143,6 @@ class BlankFormListViewModel(
     }
 
     fun syncWithServer(): LiveData<Boolean> {
-        logManualSyncWithServer()
         val result = MutableLiveData<Boolean>()
         scheduler.immediate(
             { formsUpdater.matchFormsWithServer(projectId) },
@@ -171,17 +162,13 @@ class BlankFormListViewModel(
     }
 
     fun isOutOfSyncWithServer(): LiveData<Boolean> {
-        return Transformations.map(
-            syncRepository.getSyncError(projectId)
-        ) { obj: FormSourceException? ->
+        return syncRepository.getSyncError(projectId).map { obj: FormSourceException? ->
             obj != null
         }
     }
 
     fun isAuthenticationRequired(): LiveData<Boolean> {
-        return Transformations.map(
-            syncRepository.getSyncError(projectId)
-        ) { error: FormSourceException? ->
+        return syncRepository.getSyncError(projectId).map { error: FormSourceException? ->
             if (error != null) {
                 error is AuthRequired
             } else {
@@ -190,10 +177,20 @@ class BlankFormListViewModel(
         }
     }
 
-    private fun logManualSyncWithServer() {
-        val uri = Uri.parse(generalSettings.getString(ProjectKeys.KEY_SERVER_URL))
-        val host = if (uri.host != null) uri.host else ""
-        val urlHash = getMd5Hash(ByteArrayInputStream(host!!.toByteArray())) ?: ""
+    fun deleteForms(vararg databaseIds: Long) {
+        scheduler.immediate(
+            background = {
+                databaseIds.forEach {
+                    FormDeleter(
+                        formsRepository,
+                        instancesRepository
+                    ).delete(it)
+                }
+            },
+            foreground = {
+                loadFromDatabase()
+            }
+        )
     }
 
     private fun sortAndFilter() {
@@ -233,7 +230,8 @@ class BlankFormListViewModel(
                 generalSettings,
                 changeLockProvider,
                 formsDirDiskFormsSynchronizer,
-                projectId
+                projectId,
+                !generalSettings.getBoolean(ProjectKeys.KEY_HIDE_OLD_FORM_VERSIONS)
             ) as T
         }
     }

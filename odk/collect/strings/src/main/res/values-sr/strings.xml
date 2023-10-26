@@ -1,29 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Text for the topmost button on the main screen. It should be short and action-oriented.-->
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data">Popuni prazan formular</string>
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">Popuni prazan formular</string>
   <!--Text for an action button on the main screen.-->
-  <string name="review_data">Uredi sačuvani formular</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="review_data_button">Uredi sačuvani formular (%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="send_data">Pošalji završene formulare</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="send_data_button">Pošalji završene formulare (%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="view_sent_forms">Vidi poslate formulare</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="view_sent_forms_button">Vidi poslate formulare (%s)</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms">Preuzmi prazan formular</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">Obriši sačuvani formular</string>
   <string name="version_number">Verzija: %s</string>
   <string name="id_number">ID: %s</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="added_on_date_at_time">\'Dodato\' EEE, MMM dd, yyyy \'u\' HH:mm</string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="saved_on_date_at_time">\'Sačuvano\' EEE, MMM dd, yyyy \'u\' HH:mm</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -46,15 +33,12 @@
   <string name="sort_by_date_desc">Datum, prvo najskoriji</string>
   <string name="sort_by_date_asc">Datum, prvo najstariji</string>
   <!--A sort option for blank forms. When this option is selected, the form for which a filled instance was last filled will go first.-->
-  <string name="sort_by_status_asc">Status, prvo finalizirani</string>
-  <string name="sort_by_status_desc">Status, prvo nedovršeni </string>
   <string name="filter_the_list">Filtriraj listu</string>
   <!--Displayed in search boxes for form lists or question types that involve search-->
   <string name="search">Pretraži</string>
   <string name="no_items_display">Ništa nije dostupno za prikaz.</string>
   <string name="no_items_display_forms">Povezivanje na mrežu trenutno nije dostupno. Pokušaj preuzeti i popuniti prazan formular.</string>
   <string name="no_items_display_sent_forms">Ništa nije dostupno za prikaz. Pokušaj poslati završeni formular prije uvida.</string>
-  <string name="no_items_display_instances">Ništa nije dostupno za prikaz. Pokušaj završiti sačuvane formulare prije slanja.</string>
   <string name="not_granted_permission">Aktivnost koju pokušavate da pokrenete zahtijeva dozvolu koja nije odobrena.</string>
   <string name="storage_runtime_permission_denied_title">Dozvola za pristup memoriji</string>
   <string name="storage_runtime_permission_denied_desc">Bez ovih dozvola Collent ne može pristupiti formularima ili sačuvati odgovore. Ponovo otvorite aplikaciju kada budete spremni da dozvolite pristup.</string>
@@ -66,8 +50,6 @@
   <string name="record_audio_runtime_permission_denied_desc">Bez ovih dozvola Collect ne može pristupit mikrofonu. Molim pokušajte ponovo kada budete spremni da odoborite dozvole.</string>
   <string name="get_accounts_runtime_permission_denied_title">Dozvole za dobijanje korisničkih imena.</string>
   <string name="get_accounts_runtime_permission_denied_desc">Bez ovih dozvola Collect ne može pristupit korisničkim nalozima. Molim pokušajte ponovo kada budete spremni da odoborite dozvole.</string>
-  <string name="read_phone_state_runtime_permission_denied_title">Dozvola za čitanje statusa telefona</string>
-  <string name="read_phone_state_runtime_permission_denied_desc">Bez ovih dozvola Collect ne može da obavlja pozive ali mu je potreban pristup nekim djelovima uređaja poput broja telefona ili identifikacionog broja uređaja.</string>
   <!--##############################################
     # FILL BLANK FORM
     ##############################################-->
@@ -81,7 +63,6 @@
   <string name="survey_loading_reading_csv_message">Učitavam CSV fajlove…</string>
   <string name="parse_error">Nisam u stanju da analiziram formular!</string>
   <string name="loading_form_failed">Došlo je do greške prilikom učitavanja formulara. Molim pokušajte ponovo.</string>
-  <string name="parent_form_not_present">Ne mogu da uredim ili sačuvam formular jer prazna forma nije dostupna ili je obrisana.\n\nForm ID: %1$s</string>
   <string name="cannot_edit_completed_form">Ovaj formular ne može biti mijenjan nakon što je označen kao završen. Može biti pod enkripcijom.</string>
   <!--Displayed when loading a form if that form was previously filled but closed because of a crash or system failure-->
   <string name="savepoint_used">Nesačuvane izmjene su preuzete sa memorijske tačke!</string>
@@ -90,7 +71,6 @@
   <!--Text for button displayed in the form filling menu to see the form's table of contents-->
   <string name="view_hierarchy">Idi na Prompt</string>
   <!--Text for button displayed in the form filling menu to save the form-->
-  <string name="save_all_answers">Sačuvaj formular</string>
   <!--Text of button from the form's table of contents to jump to the beginning of the form-->
   <string name="jump_to_beginning">Idi na početak</string>
   <!--Text of button from the form's table of contents to jump to the end of the form-->
@@ -123,18 +103,12 @@
   <string name="too_complex_form">Formular je previše kompleksan za vaoj uređaj. Pokušaj da uprostiš izraze ili zatraži pomoć na forumu.</string>
   <string name="survey_internal_error">Interna greška: korak ka promt-u nije moguć.</string>
   <string name="save_enter_data_description">Nalazite se na kraju %s.</string>
-  <string name="save_form_as">Nazovi ovaj formular</string>
-  <string name="save_as_error">Sačuvano ime ne može biti prazno!</string>
-  <string name="mark_finished">Označi formular kao završen</string>
-  <string name="quit_entry">Sačuvaj formular i izađi</string>
   <string name="data_saved_error">Izvini, čuvanje formulara nije uspjelo!</string>
   <string name="data_saved_ok">Formular je uspješno sačuvan!</string>
   <string name="save_point_error">Greška u čuvanju tačke povratka: %s </string>
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <string name="quit_application">Izlaz %s</string>
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
-  <string name="no_form_loaded">&lt;formular nije učitan&gt;</string>
-  <string name="do_not_save">Zanemari promjene</string>
   <string name="keep_changes">Sačuvaj izmjene</string>
   <string name="saving_form">Čuvam formular</string>
   <string name="survey_saving_validating_message">Validiram odgovore…</string>
@@ -199,8 +173,6 @@
   <string name="set_color">Postavi boje</string>
   <string name="capture_video">Snimi video sadržaj</string>
   <string name="choose_video">Izaberi video</string>
-  <string name="start_video_capture_instruction">Dodirni ekran kako bi počeli sa snimanjem</string>
-  <string name="stop_video_capture_instruction">Snimanje je počelo. Dodirni za prekid</string>
   <string name="play_video">Pusti video</string>
   <string name="choose_file">Izaberi fajl</string>
   <!--Text for button that deletes a file that is the answer to a question-->
@@ -346,6 +318,7 @@
   <string name="track_location">Prati lokaciju</string>
   <string name="background_location_disabled">Ovaj formular želi da prati vašu lokaciju ali je ona isključena. Molim uključite lokaciju u %1$s meniju iznad.</string>
   <string name="background_location_enabled">Ovaj formular bilježi tvoju lokaciju. Možeš onemogućiti praćenje u %1$s meniju iznad.</string>
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <string name="get_point">Započni GeoPoint</string>
   <string name="geopoint_view_read_only">Vidi GeoPoint</string>
   <string name="get_shape">Započni GeoShape</string>
@@ -570,8 +543,6 @@
   <string name="delete_after_send">Obriši nakon otpreme</string>
   <string name="delete_after_send_summary">Briše završene ankete i medije nakon otpremanja na server</string>
   <string name="form_filling_category">Ispunjavanje formulara</string>
-  <string name="default_completed">Fabričko podešavanje: završena anketa</string>
-  <string name="default_completed_summary">Fabričko podešavanje - uvijek označi formular kao završen</string>
   <string name="constraint_behavior_title">Ograničenje procesuiranja</string>
   <string name="constraint_behavior">Ograniči procesuiranje</string>
   <string name="constraint_behavior_on_swipe">Validiraj nakon prevlačenja za naprijed</string>
@@ -646,13 +617,10 @@
   <!--Name of a setting that determines whether users can navigate backwards in a form-->
   <string name="moving_backwards_title">Idi nazad</string>
   <string name="moving_backwards_disabled_title">Povratak nazad onemogućen</string>
-  <string name="moving_backwards_disabled_message">Podesi uređaj kako bi onemogućio korisnike u premošćavanju ove postavke?\n\nPromjene su:\n\u2022 Onemogući ispravke sačuvanih formulara\n\u2022 Onemogući Sačuvaj formular\n\u2022 Onemogući idi na promt\n\u2022 Postavi ograničenje procesuiranja da validira nakon prevlačenja unaprijed</string>
   <string name="yes">Da</string>
   <string name="no">Ne</string>
   <string name="moving_backwards_enabled_title">Kretanje unazad je omogućeno</string>
-  <string name="moving_backwards_enabled_message">Možda biste željeli da pogledate sljedeća podešavanja: :\n\n\u2022 Uredi sačuvani fprmular\n\u2022 Sačuvaj fomular\n\u2022 Idi na Prompt\n\u2022 Ograničenje procesuiranja</string>
   <!--Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end-->
-  <string name="save_mid">Sačuvaj formular</string>
   <!--##############################################
      # GOOGLE DRIVE, GOOGLE SHEETS
      ##############################################-->
@@ -697,7 +665,7 @@
      # SETTINGS IMPORT
      ##############################################-->
   <string name="successfully_imported_settings">Podešavanja su uspješno preuzeta</string>
-  <string name="encoding_max_limit">Dostignut je maksimalan broj karaktera: QR kod ne može biti generisan za sva podešavanja</string>
+  <string name="encoding_max_limit" tools:ignore="UnusedResources">Dostignut je maksimalan broj karaktera: QR kod ne može biti generisan za sva podešavanja</string>
   <string name="share">Podijeli</string>
   <string name="turn_on_flashlight">Upali lampu</string>
   <string name="turn_off_flashlight">Ugasi lampu</string>
@@ -746,8 +714,6 @@
     select the wording and where to put the \n for maximum impact in your language.-->
   <!--Text for the button that allows for configuring a project by scanning a QR code. Should be short-->
   <!--Text for the button that allows for manually entering project details. Should be short-->
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <!--Preceded by "Don't have a project yet?" question-->
   <!--Error shown when a user tries to open a form that's in a different project-->
@@ -763,9 +729,15 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

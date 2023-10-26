@@ -12,13 +12,13 @@ import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import org.odk.collect.analytics.Analytics
 import org.odk.collect.android.TestSettingsProvider
 import org.odk.collect.android.formmanagement.FormSourceProvider
 import org.odk.collect.android.formmanagement.InstancesAppState
 import org.odk.collect.android.gdrive.GoogleAccountsManager
 import org.odk.collect.android.gdrive.GoogleApiProvider
 import org.odk.collect.android.injection.config.AppDependencyModule
+import org.odk.collect.android.instancemanagement.autosend.AutoSendSettingsProvider
 import org.odk.collect.android.instancemanagement.autosend.InstanceAutoSender
 import org.odk.collect.android.notifications.Notifier
 import org.odk.collect.android.projects.ProjectDependencyProvider
@@ -28,7 +28,7 @@ import org.odk.collect.android.support.CollectHelpers
 import org.odk.collect.android.utilities.ChangeLockProvider
 import org.odk.collect.android.utilities.FormsRepositoryProvider
 import org.odk.collect.android.utilities.InstancesRepositoryProvider
-import org.odk.collect.androidshared.network.NetworkStateProvider
+import org.odk.collect.metadata.PropertyManager
 import org.odk.collect.permissions.PermissionsProvider
 import org.odk.collect.settings.SettingsProvider
 import org.odk.collect.settings.keys.ProjectKeys
@@ -47,15 +47,14 @@ class AutoSendTaskSpecTest {
     fun setup() {
         CollectHelpers.overrideAppDependencyModule(object : AppDependencyModule() {
             override fun providesInstanceAutoSender(
-                networkStateProvider: NetworkStateProvider?,
-                settingsProvider: SettingsProvider?,
+                autoSendSettingsProvider: AutoSendSettingsProvider?,
                 context: Context?,
                 notifier: Notifier?,
-                analytics: Analytics?,
                 googleAccountsManager: GoogleAccountsManager?,
                 googleApiProvider: GoogleApiProvider?,
                 permissionsProvider: PermissionsProvider?,
-                instancesAppState: InstancesAppState?
+                instancesAppState: InstancesAppState?,
+                propertyManager: PropertyManager?
             ): InstanceAutoSender {
                 return instanceAutoSender
             }

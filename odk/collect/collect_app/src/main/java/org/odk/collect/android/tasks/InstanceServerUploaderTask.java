@@ -18,12 +18,12 @@ import org.odk.collect.analytics.Analytics;
 import org.odk.collect.android.R;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.forms.instances.Instance;
-import org.odk.collect.android.logic.PropertyManager;
 import org.odk.collect.android.openrosa.OpenRosaHttpInterface;
 import org.odk.collect.android.upload.InstanceServerUploader;
 import org.odk.collect.android.upload.FormUploadAuthRequestedException;
 import org.odk.collect.android.upload.FormUploadException;
 import org.odk.collect.android.utilities.WebCredentialsUtils;
+import org.odk.collect.metadata.PropertyManager;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class InstanceServerUploaderTask extends InstanceUploaderTask {
     WebCredentialsUtils webCredentialsUtils;
 
     @Inject
-    Analytics analytics;
+    PropertyManager propertyManager;
 
     // Custom submission URL, username and password that can be sent via intent extras by external
     // applications
@@ -64,7 +64,7 @@ public class InstanceServerUploaderTask extends InstanceUploaderTask {
         InstanceServerUploader uploader = new InstanceServerUploader(httpInterface, webCredentialsUtils, settingsProvider.getUnprotectedSettings());
         List<Instance> instancesToUpload = uploader.getInstancesFromIds(instanceIdsToUpload);
 
-        String deviceId = new PropertyManager().getSingularProperty(PropertyManager.PROPMGR_DEVICE_ID);
+        String deviceId = propertyManager.getSingularProperty(PropertyManager.PROPMGR_DEVICE_ID);
 
         for (int i = 0; i < instancesToUpload.size(); i++) {
             if (isCancelled()) {
@@ -80,7 +80,7 @@ public class InstanceServerUploaderTask extends InstanceUploaderTask {
                 outcome.messagesByInstanceId.put(instance.getDbId().toString(),
                         customMessage != null ? customMessage : getLocalizedString(Collect.getInstance(), R.string.success));
 
-                analytics.logEvent(SUBMISSION, "HTTP", Collect.getFormIdentifierHash(instance.getFormId(), instance.getFormVersion()));
+                Analytics.log(SUBMISSION, "HTTP", Collect.getFormIdentifierHash(instance.getFormId(), instance.getFormVersion()));
             } catch (FormUploadAuthRequestedException e) {
                 outcome.authRequestingServer = e.getAuthRequestingServer();
                 // Don't add the instance that caused an auth request to the map because we want to

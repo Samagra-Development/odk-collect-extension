@@ -1,0 +1,57 @@
+def configDir = "${project.rootDir}/config"
+def reportsDir = "${project.buildDir}/reports"
+
+//------------------------Checkstyle------------------------//
+
+apply plugin: 'checkstyle'
+
+checkstyle.toolVersion = '10.9.0'
+
+tasks.register("checkstyle", Checkstyle) {
+    configFile file("$configDir/checkstyle.xml")
+
+    ignoreFailures false // Fail early
+    showViolations true
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    classpath = files()
+}
+
+//------------------------Pmd------------------------//
+
+apply plugin: 'pmd'
+
+pmd {
+    toolVersion = '6.55.0'
+}
+
+tasks.register("pmd", Pmd) {
+    ignoreFailures = false // Fail early
+    ruleSetFiles = files("$configDir/pmd-ruleset.xml")
+    ruleSets = []
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        xml {
+            enabled false
+            setDestination new File("$reportsDir/pmd/pmd.xml")
+        }
+        html {
+            enabled true
+            setDestination new File("$reportsDir/pmd/pmd.html")
+        }
+    }
+}
+
+//------------------------ktlint------------------------//
+
+apply plugin: "org.jlleitschuh.gradle.ktlint"
+
+ktlint {
+    disabledRules.set(["no-blank-lines-in-chained-method-calls"])
+}

@@ -100,7 +100,7 @@ class FormMapViewModel(
     private fun createItem(
         instance: Instance,
         latitude: Double,
-        longitude: Double,
+        longitude: Double
     ): MappableSelectItem {
         val instanceLastStatusChangeDate = InstanceProvider.getDisplaySubtext(
             resources,
@@ -154,10 +154,10 @@ class FormMapViewModel(
                 info
             )
         } else {
-            val action = when (instance.status) {
-                Instance.STATUS_INCOMPLETE -> createEditAction()
-                Instance.STATUS_COMPLETE -> createEditAction()
-                else -> createViewAction()
+            val action = if (instance.status == Instance.STATUS_INCOMPLETE) {
+                createEditAction()
+            } else {
+                createViewAction()
             }
 
             MappableSelectItem.WithAction(
@@ -191,7 +191,7 @@ class FormMapViewModel(
 
         return MappableSelectItem.IconifiedText(
             if (canEditSaved) R.drawable.ic_edit else R.drawable.ic_visibility,
-            resources.getString(if (canEditSaved) R.string.review_data else R.string.view_data)
+            resources.getString(if (canEditSaved) R.string.edit_data else R.string.view_data)
         )
     }
 

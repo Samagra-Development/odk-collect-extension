@@ -1,28 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Text for the topmost button on the main screen. It should be short and action-oriented.-->
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data">Mbush formular bosh</string>
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">Mbush formular bosh</string>
   <!--Text for an action button on the main screen.-->
-  <string name="review_data">Modifiko formularin e ruajtur</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="review_data_button">Modifiko formularin e ruajtur (%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="send_data">Dërgo formularin e përfunduar</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="send_data_button">Dërgo formularin e përfunduar (%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="view_sent_forms">Shih formularin e dërguar</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="view_sent_forms_button">Shih formularin e dërguar (%s)</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms">Ngarko formular bosh</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">Fshi formularin e ruajtur</string>
   <string name="version_number">Versioni: %s</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="added_on_date_at_time">\'Shtuar më\' EEE, MMM dd, yyyy \'në orën\' HH:mm</string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="saved_on_date_at_time">\'Ruajtur më\' EEE, MMM dd, yyyy \'në orën\' HH:mm</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -44,15 +31,12 @@
   <string name="sort_by_date_desc">Datë, më të rejat në fillim</string>
   <string name="sort_by_date_asc">Datë, më të vjetrat në fillim</string>
   <!--A sort option for blank forms. When this option is selected, the form for which a filled instance was last filled will go first.-->
-  <string name="sort_by_status_asc">Status, të përmbyllurat të parat</string>
-  <string name="sort_by_status_desc">Status, të papërmbyllurat të parat</string>
   <string name="filter_the_list">Filtro listën</string>
   <!--Displayed in search boxes for form lists or question types that involve search-->
   <string name="search">Kërko</string>
   <string name="no_items_display">Asgjë nuk mund të shfaqet</string>
   <string name="no_items_display_forms">Asgjë nuk mund të shfaqet.\n\nProvoni të ngarkoni dhe plotësoni një formular bosh.</string>
   <string name="no_items_display_sent_forms">Asgjë nuk mund të shfaqet.\n\nProvoni të përfundoni një formular përpara se të shihni</string>
-  <string name="no_items_display_instances">Asgjë nuk mund të shfaqet.\n\nProvoni të ruani një formular përpara se të ngarkoni.</string>
   <string name="storage_runtime_permission_denied_desc">Pa këto leje Collect nuk mund të aksesojë format tuaja apo të ruajë përgjigjet. Rihapeni applikacionin kur të të jeni gati të lejoni ato.</string>
   <string name="location_runtime_permissions_denied_title">Lejo aksesin në vendndodhje</string>
   <!--Starting in Android 12, Android makes it possible to give precise or approximate location permissions to an application. ODK Collect only captures location if the precise location permission is granted.-->
@@ -70,7 +54,6 @@
   <string name="survey_loading_reading_data_message">Duke lexuar të dhënat e sondazhit…</string>
   <string name="survey_loading_reading_csv_message">Duke lexuar file-t CSV…</string>
   <string name="parse_error">Formulari nuk mund të dekodohet.</string>
-  <string name="parent_form_not_present">Është e pamundur të modifikohet ky formular i ruajtur pasi formulari bosh që i korrespondon nuk gjendet apo është fshirë.\n\nForm ID: %1$s</string>
   <string name="cannot_edit_completed_form">Ky formular nuk mund të modifikohet pasi është shënuar \'i plotësuar\'. Mund të jetë i enkriptuar.</string>
   <!--Displayed when loading a form if that form was previously filled but closed because of a crash or system failure-->
   <string name="savepoint_used">Ndryshimet e paruajtura u rikthyen nga pika ku ishin ruajtur!</string>
@@ -78,7 +61,6 @@
   <string name="change_language">Ndrysho gjuhën</string>
   <!--Text for button displayed in the form filling menu to see the form's table of contents-->
   <!--Text for button displayed in the form filling menu to save the form-->
-  <string name="save_all_answers">Ruaj formularin</string>
   <!--Text of button from the form's table of contents to jump to the beginning of the form-->
   <string name="jump_to_beginning">Shko në fillim</string>
   <!--Text of button from the form's table of contents to jump to the end of the form-->
@@ -106,18 +88,12 @@
   <string name="invalid_answer_error">Ndjesë, kjo përgjigje është e pavlefshme!</string>
   <string name="required_answer_error">Kjo përgjigje duhet të plotësohet patjetër!</string>
   <string name="save_enter_data_description">Jeni në fund të %s.</string>
-  <string name="save_form_as">Emërto formularin</string>
-  <string name="save_as_error">Emri i ruajtur nuk mund të jetë bosh!</string>
-  <string name="mark_finished">Shëno formularin si të përfunduar</string>
-  <string name="quit_entry">Ruaj formën dhe dil</string>
   <string name="data_saved_error">Ndjesë, ruajtja e formualrit dështoi!</string>
   <string name="data_saved_ok">Formulari u ruajt me sukses!</string>
   <string name="save_point_error">Gabim në ruajtjen e pikës së shpëtimit: %s</string>
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <string name="quit_application">Dil %s</string>
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
-  <string name="no_form_loaded">&lt;nuk u ngarkua formular&gt;</string>
-  <string name="do_not_save">Injoro ndryshimet</string>
   <string name="keep_changes">Ruaj ndryshimet</string>
   <string name="saving_form">Duke ruajtur formularin</string>
   <string name="survey_saving_validating_message">Duke validuar përgjigjet…</string>
@@ -180,8 +156,6 @@
   <string name="set_color">Cakto ngjyrën</string>
   <string name="capture_video">Regjistro video</string>
   <string name="choose_video">Zgjidh video</string>
-  <string name="start_video_capture_instruction">Prekni ekranin për të nisur regjistrimin</string>
-  <string name="stop_video_capture_instruction">Regjistrimi nisi. Prekni sërish ekranin për ta ndaluar</string>
   <string name="play_video">Shih videon</string>
   <string name="choose_file">Përzgjidh file</string>
   <!--Text for button that deletes a file that is the answer to a question-->
@@ -270,6 +244,7 @@
   <string name="go_to_settings">Shko tek parametrat</string>
   <!--Label for a menu item that can be toggled to turn background location tracking on and off during form filling-->
   <string name="track_location">Gjurmo vendndodhjen</string>
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <string name="get_point">Regjistro vendndodhjen gjeografike</string>
   <string name="geopoint_view_read_only">Shih vendndodhjen gjeografike</string>
   <string name="get_shape">Nis GeoShape</string>
@@ -450,8 +425,6 @@
   <string name="delete_after_send">Fshi formularët pasi të nisen</string>
   <string name="delete_after_send_summary">Fshi formularët e finalizuar dhe mediat pasi të jenë ngarkuar në server</string>
   <string name="form_filling_category">Plotësimi i formularëve</string>
-  <string name="default_completed">Parapërcaktoje të finalizuar</string>
-  <string name="default_completed_summary">Shëno formularin automatikisht si të përfunduar</string>
   <string name="constraint_behavior_title">Kufizo procesimin</string>
   <string name="constraint_behavior">Limito sjelljet procesuese</string>
   <string name="constraint_behavior_on_swipe">Valido pasi të ecet përpara</string>
@@ -528,7 +501,6 @@
   <string name="no">Jo</string>
   <string name="moving_backwards_enabled_title">Të shkuarit mbrapsht është aktivizuar</string>
   <!--Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end-->
-  <string name="save_mid">Ruaj formularin</string>
   <!--##############################################
      # GOOGLE DRIVE, GOOGLE SHEETS
      ##############################################-->
@@ -562,7 +534,7 @@
      # SETTINGS IMPORT
      ##############################################-->
   <string name="successfully_imported_settings">Parametrat u importuan me sukses</string>
-  <string name="encoding_max_limit">U arrit limiti maksimal i karaktereve: Kodi QR nuk mund të gjenerohet për të gjithë parametrat. </string>
+  <string name="encoding_max_limit" tools:ignore="UnusedResources">U arrit limiti maksimal i karaktereve: Kodi QR nuk mund të gjenerohet për të gjithë parametrat. </string>
   <string name="share">Ndaj</string>
   <string name="turn_on_flashlight">Ndiz dritën e kameras</string>
   <string name="turn_off_flashlight">Fik dritën e kameras</string>
@@ -609,8 +581,6 @@
     select the wording and where to put the \n for maximum impact in your language.-->
   <!--Text for the button that allows for configuring a project by scanning a QR code. Should be short-->
   <!--Text for the button that allows for manually entering project details. Should be short-->
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <!--Preceded by "Don't have a project yet?" question-->
   <!--Error shown when a user tries to open a form that's in a different project-->
@@ -626,9 +596,15 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

@@ -6,17 +6,13 @@ import android.Manifest;
 import android.os.Handler;
 import android.os.Looper;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
-import org.javarosa.core.model.actions.recordaudio.RecordAudioActions;
 import org.javarosa.core.model.instance.TreeReference;
 import org.odk.collect.android.formentry.audit.AuditEvent;
 import org.odk.collect.android.formentry.audit.AuditEventLogger;
-import org.odk.collect.android.javarosawrapper.FormController;
 import org.odk.collect.androidshared.livedata.LiveDataUtils;
 import org.odk.collect.androidshared.livedata.MutableNonNullLiveData;
 import org.odk.collect.androidshared.livedata.NonNullLiveData;
@@ -31,8 +27,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
-
-import javax.inject.Inject;
 
 public class BackgroundAudioViewModel extends ViewModel {
 
@@ -53,7 +47,7 @@ public class BackgroundAudioViewModel extends ViewModel {
     @Nullable
     private AuditEventLogger auditEventLogger;
 
-    public BackgroundAudioViewModel(AudioRecorder audioRecorder, Settings generalSettings, RecordAudioActionRegistry recordAudioActionRegistry, PermissionsChecker permissionsChecker, Supplier<Long> clock, LiveData<FormController> formSession) {
+    public BackgroundAudioViewModel(AudioRecorder audioRecorder, Settings generalSettings, RecordAudioActionRegistry recordAudioActionRegistry, PermissionsChecker permissionsChecker, Supplier<Long> clock, LiveData<FormSession> formSession) {
         this.audioRecorder = audioRecorder;
         this.generalSettings = generalSettings;
         this.recordAudioActionRegistry = recordAudioActionRegistry;
@@ -66,9 +60,7 @@ public class BackgroundAudioViewModel extends ViewModel {
 
         isBackgroundRecordingEnabled = new MutableNonNullLiveData<>(generalSettings.getBoolean(KEY_BACKGROUND_RECORDING));
 
-        formSessionObserver = LiveDataUtils.observe(formSession, formController -> {
-            this.auditEventLogger = formController.getAuditEventLogger();
-        });
+        formSessionObserver = LiveDataUtils.observe(formSession, it -> this.auditEventLogger = it.getFormController().getAuditEventLogger());
     }
 
     @Override
@@ -158,46 +150,5 @@ public class BackgroundAudioViewModel extends ViewModel {
         void register(BiConsumer<TreeReference, String> listener);
 
         void unregister();
-    }
-
-    public static class Factory implements ViewModelProvider.Factory {
-
-        private final AudioRecorder audioRecorder;
-        private final Settings generalSettings;
-        private final PermissionsChecker permissionsChecker;
-        private final Supplier<Long> clock;
-        private final FormSessionRepository formSessionRepository;
-        private LiveData<FormController> formSession;
-
-        @Inject
-        public Factory(AudioRecorder audioRecorder, Settings generalSettings, PermissionsChecker permissionsChecker, Supplier<Long> clock, FormSessionRepository formSessionRepository) {
-            this.audioRecorder = audioRecorder;
-            this.generalSettings = generalSettings;
-            this.permissionsChecker = permissionsChecker;
-            this.clock = clock;
-            this.formSessionRepository = formSessionRepository;
-        }
-
-        public void setSessionId(String sessionId) {
-            this.formSession = formSessionRepository.get(sessionId);
-        }
-
-        @NonNull
-        @Override
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            RecordAudioActionRegistry recordAudioActionRegistry = new RecordAudioActionRegistry() {
-                @Override
-                public void register(BiConsumer<TreeReference, String> listener) {
-                    RecordAudioActions.setRecordAudioListener(listener::accept);
-                }
-
-                @Override
-                public void unregister() {
-                    RecordAudioActions.setRecordAudioListener(null);
-                }
-            };
-
-            return (T) new BackgroundAudioViewModel(audioRecorder, generalSettings, recordAudioActionRegistry, permissionsChecker, clock, formSession);
-        }
     }
 }

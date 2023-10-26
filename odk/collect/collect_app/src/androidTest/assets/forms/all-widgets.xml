@@ -293,7 +293,6 @@
             <barcode_widget/>
             <audio_widget/>
             <video_widget/>
-            <selfie_video_widget/>
             <file_widget/>
           </media_widgets>
           <date_time_widgets>
@@ -369,6 +368,16 @@
             <label>B</label>
             <name>b</name>
           </item>
+          <item>
+            <geometry>41.3737384 2.1482904 0 0; 59.8937806 10.6450356 0 0</geometry>
+            <label>C</label>
+            <name>c</name>
+          </item>
+          <item>
+            <geometry>53.40903732686215 -2.991905620523312 0 0; 51.505094241512666 -0.1321803079139272 0 0; 53.8052722823615 -1.5363611594108022 0 0; 53.40903732686215 -2.991905620523312 0 0</geometry>
+            <label>D</label>
+            <name>d</name>
+          </item>
         </root>
       </instance>
       <bind nodeset="/data/intro" readonly="true()" type="string"/>
@@ -397,7 +406,6 @@
       <bind nodeset="/data/media_widgets/barcode_widget" type="barcode"/>
       <bind nodeset="/data/media_widgets/audio_widget" type="binary"/>
       <bind nodeset="/data/media_widgets/video_widget" type="binary"/>
-      <bind nodeset="/data/media_widgets/selfie_video_widget" type="binary"/>
       <bind nodeset="/data/media_widgets/file_widget" type="binary"/>
       <bind nodeset="/data/date_time_widgets/date_widget" type="date"/>
       <bind nodeset="/data/date_time_widgets/date_widget_nocalendar" type="date"/>
@@ -595,10 +603,6 @@
       <upload mediatype="video/*" ref="/data/media_widgets/video_widget">
         <label>Video widget</label>
         <hint>video type with no appearance</hint>
-      </upload>
-      <upload appearance="new-front" mediatype="video/*" ref="/data/media_widgets/selfie_video_widget">
-        <label>Selfie video widget</label>
-        <hint>video type with new-front appearance</hint>
       </upload>
       <upload mediatype="application/*" ref="/data/media_widgets/file_widget">
         <label>File widget</label>

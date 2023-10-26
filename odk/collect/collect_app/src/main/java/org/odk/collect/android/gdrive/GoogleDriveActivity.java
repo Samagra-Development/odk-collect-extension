@@ -59,6 +59,8 @@ import org.odk.collect.android.views.DayNightProgressDialog;
 import org.odk.collect.forms.Form;
 import org.odk.collect.forms.FormsRepository;
 import org.odk.collect.permissions.PermissionListener;
+import org.odk.collect.permissions.PermissionsProvider;
+import org.odk.collect.settings.SettingsProvider;
 import org.odk.collect.settings.keys.ProjectKeys;
 import org.odk.collect.shared.strings.Md5;
 
@@ -125,6 +127,12 @@ public class GoogleDriveActivity extends FormListActivity implements View.OnClic
 
     @Inject
     FormsRepositoryProvider formsRepositoryProvider;
+
+    @Inject
+    PermissionsProvider permissionsProvider;
+
+    @Inject
+    SettingsProvider settingsProvider;
 
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -565,31 +573,36 @@ public class GoogleDriveActivity extends FormListActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.root_button) {
-            getResultsFromApi();
-            myDrive = !myDrive;
-        } else if (id == R.id.back_button) {
-            folderIdStack.pop();
-            backButton.setEnabled(false);
-            rootButton.setEnabled(false);
-            downloadButton.setEnabled(false);
-            toDownload.clear();
-            driveList.clear();
-            if (connectivityProvider.isDeviceOnline()) {
-                if (folderIdStack.empty()) {
-                    parentId = ROOT_KEY;
+        switch (v.getId()) {
+            case R.id.root_button:
+                getResultsFromApi();
+                myDrive = !myDrive;
+                break;
+
+            case R.id.back_button:
+                folderIdStack.pop();
+                backButton.setEnabled(false);
+                rootButton.setEnabled(false);
+                downloadButton.setEnabled(false);
+                toDownload.clear();
+                driveList.clear();
+                if (connectivityProvider.isDeviceOnline()) {
+                    if (folderIdStack.empty()) {
+                        parentId = ROOT_KEY;
+                    } else {
+                        parentId = folderIdStack.peek();
+                    }
+                    listFiles(parentId);
+                    currentPath.pop();
+                    // }
                 } else {
-                    parentId = folderIdStack.peek();
+                    createAlertDialog(getString(R.string.no_connection));
                 }
-                listFiles(parentId);
-                currentPath.pop();
-                // }
-            } else {
-                createAlertDialog(getString(R.string.no_connection));
-            }
-        } else if (id == R.id.download_button) {
-            getFiles();
+                break;
+
+            case R.id.download_button:
+                getFiles();
+                break;
         }
     }
 

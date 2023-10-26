@@ -32,21 +32,16 @@ import android.widget.Toast;
 
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.core.model.data.StringData;
+import org.odk.collect.analytics.Analytics;
 import org.odk.collect.android.R;
-import org.odk.collect.android.analytics.AnalyticsUtils;
 import org.odk.collect.android.formentry.questions.QuestionDetails;
 import org.odk.collect.android.formentry.questions.WidgetViewUtils;
-import org.odk.collect.android.storage.StoragePathProvider;
-import org.odk.collect.android.storage.StorageSubdirectory;
 import org.odk.collect.android.utilities.Appearances;
 import org.odk.collect.android.utilities.QuestionMediaManager;
 import org.odk.collect.android.widgets.interfaces.ButtonClickListener;
 import org.odk.collect.android.widgets.interfaces.FileWidget;
 import org.odk.collect.android.widgets.interfaces.WidgetDataReceiver;
 import org.odk.collect.android.widgets.utilities.WaitingForDataRegistry;
-import org.odk.collect.androidshared.system.CameraUtils;
-import org.odk.collect.androidshared.ui.ToastUtils;
-import org.odk.collect.selfiecamera.CaptureSelfieActivity;
 import org.odk.collect.settings.keys.ProjectKeys;
 
 import java.io.File;
@@ -71,21 +66,17 @@ public class VideoWidget extends QuestionWidget implements FileWidget, ButtonCli
     Button chooseButton;
     private String binaryName;
 
-    private final boolean selfie;
-
     public VideoWidget(Context context, QuestionDetails prompt,  QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry) {
-        this(context, prompt, waitingForDataRegistry, questionMediaManager, new CameraUtils());
+        this(context, prompt, waitingForDataRegistry, questionMediaManager);
         render();
     }
 
-    public VideoWidget(Context context, QuestionDetails questionDetails, WaitingForDataRegistry waitingForDataRegistry, QuestionMediaManager questionMediaManager, CameraUtils cameraUtils) {
+    public VideoWidget(Context context, QuestionDetails questionDetails, WaitingForDataRegistry waitingForDataRegistry, QuestionMediaManager questionMediaManager) {
         super(context, questionDetails);
         render();
 
         this.waitingForDataRegistry = waitingForDataRegistry;
         this.questionMediaManager = questionMediaManager;
-
-        selfie = Appearances.isFrontCameraAppearance(getFormEntryPrompt());
 
         captureButton = createSimpleButton(getContext(), R.id.capture_video, questionDetails.isReadOnly(), getContext().getString(R.string.capture_video), getAnswerFontSize(), this);
 
@@ -107,13 +98,6 @@ public class VideoWidget extends QuestionWidget implements FileWidget, ButtonCli
         addAnswerView(answerLayout, WidgetViewUtils.getStandardMargin(context));
 
         hideButtonsIfNeeded();
-
-        if (selfie) {
-            if (!cameraUtils.isFrontCameraAvailable(getContext())) {
-                captureButton.setEnabled(false);
-                ToastUtils.showLongToast(getContext(), R.string.error_front_camera_unavailable);
-            }
-        }
     }
 
     @Override
@@ -165,8 +149,8 @@ public class VideoWidget extends QuestionWidget implements FileWidget, ButtonCli
     }
 
     private void hideButtonsIfNeeded() {
-        if (selfie || (getFormEntryPrompt().getAppearanceHint() != null
-                && getFormEntryPrompt().getAppearanceHint().toLowerCase(Locale.ENGLISH).contains(Appearances.NEW))) {
+        if (getFormEntryPrompt().getAppearanceHint() != null
+                && getFormEntryPrompt().getAppearanceHint().toLowerCase(Locale.ENGLISH).contains(Appearances.NEW)) {
             chooseButton.setVisibility(View.GONE);
         }
     }
@@ -188,39 +172,30 @@ public class VideoWidget extends QuestionWidget implements FileWidget, ButtonCli
 
     @Override
     public void onButtonClick(int id) {
-        if (id == R.id.capture_video) {
-            if (selfie) {
-                getPermissionsProvider().requestCameraAndRecordAudioPermissions((Activity) getContext(), this::captureVideo);
-            } else {
+        switch (id) {
+            case R.id.capture_video:
                 getPermissionsProvider().requestCameraPermission((Activity) getContext(), this::captureVideo);
-            }
-        } else if (id == R.id.choose_video) {
-            chooseVideo();
-        } else if (id == R.id.play_video) {
-            playVideoFile();
+                break;
+            case R.id.choose_video:
+                chooseVideo();
+                break;
+            case R.id.play_video:
+                playVideoFile();
+                break;
         }
     }
 
     private void captureVideo() {
-        Intent i;
-        int requestCode;
-        if (selfie) {
-            i = new Intent(getContext(), CaptureSelfieActivity.class);
-            i.putExtra(CaptureSelfieActivity.EXTRA_TMP_PATH, new StoragePathProvider().getOdkDirPath(StorageSubdirectory.CACHE));
-            i.putExtra(CaptureSelfieActivity.EXTRA_VIDEO, true);
-            requestCode = RequestCodes.MEDIA_FILE_PATH;
-        } else {
-            i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-            requestCode = RequestCodes.VIDEO_CAPTURE;
-        }
+        Intent i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        int requestCode = RequestCodes.VIDEO_CAPTURE;
 
         // request high resolution if configured for that...
         boolean highResolution = settingsProvider.getUnprotectedSettings().getBoolean(ProjectKeys.KEY_HIGH_RESOLUTION);
         if (highResolution) {
             i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-            AnalyticsUtils.logFormEvent(REQUEST_HIGH_RES_VIDEO);
+            Analytics.log(REQUEST_HIGH_RES_VIDEO, "form");
         } else {
-            AnalyticsUtils.logFormEvent(REQUEST_VIDEO_NOT_HIGH_RES);
+            Analytics.log(REQUEST_VIDEO_NOT_HIGH_RES, "form");
         }
         try {
             waitingForDataRegistry.waitForData(getFormEntryPrompt().getIndex());

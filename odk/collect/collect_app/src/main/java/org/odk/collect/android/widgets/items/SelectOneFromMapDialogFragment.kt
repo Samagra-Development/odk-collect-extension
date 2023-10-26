@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import org.javarosa.core.model.FormIndex
 import org.javarosa.core.model.SelectChoice
 import org.javarosa.core.model.data.SelectOneData
@@ -22,6 +23,7 @@ import org.odk.collect.android.databinding.SelectOneFromMapDialogLayoutBinding
 import org.odk.collect.android.formentry.FormEntryViewModel
 import org.odk.collect.android.injection.DaggerUtils
 import org.odk.collect.android.utilities.Appearances
+import org.odk.collect.android.widgets.utilities.GeoWidgetUtils
 import org.odk.collect.androidshared.livedata.MutableNonNullLiveData
 import org.odk.collect.androidshared.livedata.NonNullLiveData
 import org.odk.collect.androidshared.ui.FragmentFactoryBuilder
@@ -32,16 +34,14 @@ import org.odk.collect.geo.selection.SelectionMapFragment
 import org.odk.collect.geo.selection.SelectionMapFragment.Companion.REQUEST_SELECT_ITEM
 import org.odk.collect.material.MaterialFullScreenDialogFragment
 import javax.inject.Inject
-import kotlin.math.absoluteValue
 
-class SelectOneFromMapDialogFragment : MaterialFullScreenDialogFragment(), FragmentResultListener {
+class SelectOneFromMapDialogFragment(private val viewModelFactory: ViewModelProvider.Factory) :
+    MaterialFullScreenDialogFragment(), FragmentResultListener {
 
     @Inject
     lateinit var scheduler: Scheduler
 
-    @Inject
-    lateinit var formEntryViewModelFactory: FormEntryViewModel.Factory
-    private val formEntryViewModel: FormEntryViewModel by activityViewModels { formEntryViewModelFactory }
+    private val formEntryViewModel: FormEntryViewModel by activityViewModels { viewModelFactory }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -70,7 +70,7 @@ class SelectOneFromMapDialogFragment : MaterialFullScreenDialogFragment(), Fragm
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         val binding = SelectOneFromMapDialogLayoutBinding.inflate(inflater)
         return binding.root
@@ -107,7 +107,7 @@ internal class SelectChoicesMapData(
     private val resources: Resources,
     scheduler: Scheduler,
     prompt: FormEntryPrompt,
-    private val selectedIndex: Int?,
+    private val selectedIndex: Int?
 ) : SelectionMapData {
 
     private val mapTitle = MutableLiveData(prompt.longText)
@@ -132,45 +132,49 @@ internal class SelectChoicesMapData(
 
     private fun loadItemsFromChoices(
         selectChoices: MutableList<SelectChoice>,
-        prompt: FormEntryPrompt,
+        prompt: FormEntryPrompt
     ): List<MappableSelectItem> {
         return selectChoices.foldIndexed(emptyList()) { index, list, selectChoice ->
             val geometry = selectChoice.getChild("geometry")
 
             if (geometry != null) {
-                val latitude: Double
-                val longitude: Double
-
                 try {
-                    latitude = geometry.split(" ")[0].toDouble()
-                    longitude = geometry.split(" ")[1].toDouble()
-
-                    if (latitude.absoluteValue <= 90 && longitude.absoluteValue <= 180) {
-                        val properties = selectChoice.additionalChildren.filter {
-                            it.first != GeojsonFeature.GEOMETRY_CHILD_NAME
-                        }.map {
-                            MappableSelectItem.IconifiedText(null, "${it.first}: ${it.second}")
+                    val points = GeoWidgetUtils.parseGeometry(geometry)
+                    if (points.isNotEmpty()) {
+                        val withinBounds = points.all {
+                            GeoWidgetUtils.isWithinMapBounds(it)
                         }
 
-                        val markerColor = selectChoice.additionalChildren.firstOrNull { it.first == "marker-color" }?.second
-                        val markerSymbol = selectChoice.additionalChildren.firstOrNull { it.first == "marker-symbol" }?.second
+                        if (withinBounds) {
+                            val properties = selectChoice.additionalChildren.filter {
+                                it.first != GeojsonFeature.GEOMETRY_CHILD_NAME
+                            }.map {
+                                MappableSelectItem.IconifiedText(null, "${it.first}: ${it.second}")
+                            }
 
-                        list + MappableSelectItem.WithAction(
-                            index.toLong(),
-                            latitude,
-                            longitude,
-                            if (markerSymbol == null) R.drawable.ic_map_marker_with_hole_small else R.drawable.ic_map_marker_small,
-                            if (markerSymbol == null) R.drawable.ic_map_marker_with_hole_big else R.drawable.ic_map_marker_big,
-                            prompt.getSelectChoiceText(selectChoice),
-                            properties,
-                            MappableSelectItem.IconifiedText(
-                                R.drawable.ic_save,
-                                resources.getString(R.string.select_item)
-                            ),
-                            selectChoice.index == selectedIndex,
-                            markerColor,
-                            markerSymbol
-                        )
+                            val markerColor =
+                                selectChoice.additionalChildren.firstOrNull { it.first == "marker-color" }?.second
+                            val markerSymbol =
+                                selectChoice.additionalChildren.firstOrNull { it.first == "marker-symbol" }?.second
+
+                            list + MappableSelectItem.WithAction(
+                                index.toLong(),
+                                points,
+                                if (markerSymbol == null) R.drawable.ic_map_marker_with_hole_small else R.drawable.ic_map_marker_small,
+                                if (markerSymbol == null) R.drawable.ic_map_marker_with_hole_big else R.drawable.ic_map_marker_big,
+                                prompt.getSelectChoiceText(selectChoice),
+                                properties,
+                                MappableSelectItem.IconifiedText(
+                                    R.drawable.ic_save,
+                                    resources.getString(R.string.select_item)
+                                ),
+                                selectChoice.index == selectedIndex,
+                                markerColor,
+                                markerSymbol
+                            )
+                        } else {
+                            list
+                        }
                     } else {
                         list
                     }

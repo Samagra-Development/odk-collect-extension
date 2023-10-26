@@ -40,15 +40,15 @@ import android.widget.ListView;
 import com.google.common.collect.ImmutableList;
 
 import org.odk.collect.android.R;
-import org.odk.collect.android.activities.CollectAbstractActivity;
 import org.odk.collect.android.adapters.IconMenuListAdapter;
 import org.odk.collect.android.adapters.model.IconMenuItem;
 import org.odk.collect.android.injection.DaggerUtils;
 import org.odk.collect.android.utilities.AnimationUtils;
 import org.odk.collect.android.storage.StoragePathProvider;
 import org.odk.collect.android.utilities.DialogUtils;
-import org.odk.collect.android.utilities.ImageFileUtils;
+import org.odk.collect.androidshared.bitmap.ImageFileUtils;
 import org.odk.collect.androidshared.ui.DialogFragmentUtils;
+import org.odk.collect.strings.localization.LocalizedActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -65,7 +65,7 @@ import timber.log.Timber;
  *
  * @author BehrAtherton@gmail.com
  */
-public class DrawActivity extends CollectAbstractActivity {
+public class DrawActivity extends LocalizedActivity {
     public static final String OPTION = "option";
     public static final String OPTION_SIGNATURE = "signature";
     public static final String OPTION_ANNOTATE = "annotate";
@@ -314,7 +314,7 @@ public class DrawActivity extends CollectAbstractActivity {
 
         List<IconMenuItem> items;
         items = ImmutableList.of(new IconMenuItem(R.drawable.ic_save, R.string.keep_changes),
-                new IconMenuItem(R.drawable.ic_delete, R.string.do_not_save));
+                new IconMenuItem(R.drawable.ic_delete, R.string.discard_changes));
 
         final IconMenuListAdapter adapter = new IconMenuListAdapter(this, items);
         listView.setAdapter(adapter);

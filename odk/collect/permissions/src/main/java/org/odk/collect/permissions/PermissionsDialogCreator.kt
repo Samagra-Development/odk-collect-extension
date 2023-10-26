@@ -34,7 +34,8 @@ internal object PermissionsDialogCreatorImpl : PermissionsDialogCreator {
                 activity.getString(R.string.enable_gps)
             ) { _: DialogInterface?, _: Int ->
                 activity.startActivityForResult(
-                    Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 0
+                    Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),
+                    0
                 )
             }
             .setNegativeButton(
@@ -67,6 +68,7 @@ internal object PermissionsDialogCreatorImpl : PermissionsDialogCreator {
                     data = Uri.fromParts("package", activity.packageName, null)
                     activity.startActivity(this)
                 }
+                action.additionalExplanationClosed()
             }
             .create()
             .show()

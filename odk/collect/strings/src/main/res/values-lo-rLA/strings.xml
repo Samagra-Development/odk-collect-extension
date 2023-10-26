@@ -1,25 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Text for the topmost button on the main screen. It should be short and action-oriented.-->
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data">ຕື່ມຂໍ້ມູນໃສ່ແບບຟອມໃໝ່</string>
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">ຕື່ມຂໍ້ມູນໃສ່ແບບຟອມ​ໃໝ່</string>
   <!--Text for an action button on the main screen.-->
-  <string name="review_data">​ດັດ​ແກ້ແບບຟອມທີ່​ບັນທຶກໄວ້</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="review_data_button">​ດັດ​ແກ້ແບບຟອມທີ່​ບັນທຶກໄວ້(%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="send_data">ສົ່ງແບບຟອມທີ່ສຳເລັດແລ້ວ</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="send_data_button">ສົ່ງແບບຟອມທີ່ສຳເລັດແລ້ວ(%s)</string>
   <!--Text for an action button on the main screen.-->
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms">ດາວໂຫຼດແບບຟອມປ້ອນຂໍ້ມູນໃໝ່</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">ລຶບແບບຟອມທີ່ບັນທຶກໄວ້</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="added_on_date_at_time">\'ເພີ່ມ​ເມື່ອ​\' EEE, MMM dd, yyyy \'ເວ​ລາ\' HH:mm</string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="saved_on_date_at_time">\'​ບັນ​ທຶກ​ເມື່ອ​\' EEE, MMM dd, yyyy \'ເວລາ\' HH:mm</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -35,7 +24,6 @@
   <!--Displayed in search boxes for form lists or question types that involve search-->
   <string name="no_items_display">ບໍ່ມີຂໍ້ມູນໃຫ້ສະແດງເທື່ອ</string>
   <string name="no_items_display_forms">ບໍ່ມີຫຍັງສະແດງ.\n\nລອງດາວໂຫຼດ ແລະ ຕື່ມຂໍ້ມູນໃສ່ແບບຟອມໃໝ່</string>
-  <string name="no_items_display_instances">ບໍ່ມີຫຍັງທີ່ຈະສະແດງ. \n\nລອງເຮັດເຄື່ອງໜາຍແບບຟອມວ່າສຳເລັດແລ້ວກ່ອນສົ່ງ</string>
   <!--Starting in Android 12, Android makes it possible to give precise or approximate location permissions to an application. ODK Collect only captures location if the precise location permission is granted.-->
   <!--##############################################
     # FILL BLANK FORM
@@ -47,7 +35,6 @@
   <string name="survey_loading_reading_data_message">ກຳ​ລັງ​ອ່ານ​ຂໍ້​ມູນ​ການ​ສຳ​ຫຼວດ…</string>
   <string name="survey_loading_reading_csv_message">ກຳ​ລັງ​ອ່ານ​ເອ​ກະ​ສານ CSV…</string>
   <string name="parse_error">ບໍ່ສາມາດເປີດແບບຟອມໄດ້</string>
-  <string name="parent_form_not_present">ບໍ່ສາມາດແກ້ໄຂແບບຟອມທີ່ບັນທຶກໄວ້ເນື່ອງຈາກວ່າບໍ່ມີແບບຟອມເປົ່າຫວ່າງດັ່ງກ່າວ ຫຼື ຖືກລົບໄປແລ້ວ.\n\nລະຫັດຟອມ: %1$s</string>
   <!--Displayed when loading a form if that form was previously filled but closed because of a crash or system failure-->
   <string name="savepoint_used">ກູ້ຂໍ້ມູນຄືນຈາກຈຸດທີ່ບັນທຶກໄວ້!</string>
   <!--Displayed in the form filling menu when a form definition specifies multiple languages-->
@@ -55,7 +42,6 @@
   <!--Text for button displayed in the form filling menu to see the form's table of contents-->
   <string name="view_hierarchy">ຂ້າມໄປທີ່</string>
   <!--Text for button displayed in the form filling menu to save the form-->
-  <string name="save_all_answers">ບັນທຶກແບບຟອມ</string>
   <!--Text of button from the form's table of contents to jump to the beginning of the form-->
   <string name="jump_to_beginning">ໄປຫາໜ້າທຳອິດຕົ້ນ</string>
   <!--Text of button from the form's table of contents to jump to the end of the form-->
@@ -81,17 +67,12 @@
   <string name="required_answer_error">ກະລຸນາຕື່ມຄຳຕອບໃສ່ຄຳຖາມນີ້ກ່ອນ</string>
   <string name="survey_internal_error">​ຜິດ​ພາດ​ພາຍ​ໃນ: ຂັ້ນ​ຕອນ​ການ​ເຕືອນ​ລົ້ມ​ເຫຼວ.</string>
   <string name="save_enter_data_description">​ທ່ານຢູ່ຈຸດສີ້ນສຸດຂອງ %s.</string>
-  <string name="save_form_as">ໃສ່ຊື່ແບບຟອມນີ້</string>
-  <string name="save_as_error">ການໃສ່ຊື່ເອກະສານທີ່ຈະບັນທຶກບໍ່​ຕ້ອງຍະຫວ່າງ!</string>
-  <string name="mark_finished">ໝາຍແບບຟອມວ່າໄດ້ສຳເລັດແລ້ວ</string>
-  <string name="quit_entry">ບັນທຶກແບບຟອມ ແລະ ອອກຈາກລະບົບ</string>
   <string name="data_saved_error">ການບັກທຶກແບບຟອມລົ້ມເຫຼວ</string>
   <string name="data_saved_ok">ແບບຟອມໄດ້ຖືກບັນທຶກສຳເລັດແລ້ວ</string>
   <string name="save_point_error">ພໍ້​ບັນ​ຫາ​ໃນ​ລະ​ຫວ່າງບັນ​ທຶກຈຸດ​​ການ​ກູ້​ຄືນ: %s</string>
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <string name="quit_application">ອອກຈາກລະບົບ%s</string>
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
-  <string name="do_not_save">ຍົກເລີກການປ່ຽນແປງ</string>
   <string name="keep_changes">ບັນທຶກການປ່ຽນແປງ</string>
   <string name="saving_form">ກຳລັງບັນທຶກແບບຟອມ</string>
   <string name="survey_saving_validating_message">ກຳ​ລັງ​ກວດ​ກາ​ຄວາມ​ຖືກ​ຕ້ອງ​ຂອງ​ຄຳ​ຕອບ….</string>
@@ -201,6 +182,7 @@
   <string name="provider_disabled_error">ຄຳສັ່ງບັນທຶກຈຸດທີ່ຕັ້ງ GPS ຖືກປິດໃຫ້ໃຊ້ງານ</string>
   <!--Action to go to Android settings. Displayed when location providers are disabled.-->
   <!--Label for a menu item that can be toggled to turn background location tracking on and off during form filling-->
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <!--%1$s is the time taken so far in hh:mm:ss-->
   <!--%1$s is the accuracy required for a point to be automatically saved-->
   <!--%1$s is the number of satellites being used to get location-->
@@ -333,8 +315,6 @@
   <!--Name of setting that defines whether form updates should be automatically downloaded when in "previously downloaded forms only" download mode-->
   <string name="delete_after_send">ລຶບພາຍຫຼັງສົ່ງແລ້ວ</string>
   <string name="delete_after_send_summary">ລຶບຟອມທີ່ສຳເລັດແລ້ວ ແລະ ສື່ ຫຼັງຈາກສົ່ງຫາເສີບເວີ</string>
-  <string name="default_completed">​ຄ່າ​ເລີ່ມ​ຕົ້ນແເມ່ນ ສຳ​ເລັດ​ແລ້ວ</string>
-  <string name="default_completed_summary">ກຳນົດແບບຟອມວ່າສຳ​ເລັດ​ແລ້ວ ໂດຍອັດຕະໂນມັດ</string>
   <string name="constraint_behavior">ລັກສະນະການປະເມີນຜົນແບບມີເງື່ອນໄຂ</string>
   <string name="constraint_behavior_on_swipe">ການກວດ​ສອບ​ເມື່ອປັດເລື່ອນໄປທາງໜ້າ</string>
   <string name="constraint_behavior_on_finalize">ເລື່ອນການກວດສອບໄປຈົນກວ່າການສຳຫຼວດສຳເລັດ</string>
@@ -357,7 +337,6 @@
   <string name="reset_project_settings_title">ຕັ້ງຄ່າຄືນໃໝ່</string>
   <!--Name of a setting that determines whether users can navigate backwards in a form-->
   <!--Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end-->
-  <string name="save_mid">ບັນທຶກແບບຟອມ</string>
   <!--##############################################
      # GOOGLE DRIVE, GOOGLE SHEETS
      ##############################################-->
@@ -410,8 +389,6 @@
     select the wording and where to put the \n for maximum impact in your language.-->
   <!--Text for the button that allows for configuring a project by scanning a QR code. Should be short-->
   <!--Text for the button that allows for manually entering project details. Should be short-->
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <!--Preceded by "Don't have a project yet?" question-->
   <!--Error shown when a user tries to open a form that's in a different project-->
@@ -427,9 +404,15 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

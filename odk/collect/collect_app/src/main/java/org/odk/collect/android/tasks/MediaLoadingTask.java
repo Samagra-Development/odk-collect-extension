@@ -5,12 +5,12 @@ import static org.odk.collect.settings.keys.ProjectKeys.KEY_IMAGE_SIZE;
 import android.net.Uri;
 import android.os.AsyncTask;
 
-import org.odk.collect.android.activities.FormEntryActivity;
+import org.odk.collect.android.activities.FormFillingActivity;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.injection.DaggerUtils;
 import org.odk.collect.android.utilities.ContentUriHelper;
 import org.odk.collect.android.utilities.FileUtils;
-import org.odk.collect.android.utilities.ImageConverter;
+import org.odk.collect.android.utilities.ImageCompressionController;
 import org.odk.collect.android.widgets.BaseImageWidget;
 import org.odk.collect.android.widgets.QuestionWidget;
 import org.odk.collect.androidshared.ui.DialogFragmentUtils;
@@ -27,16 +27,19 @@ public class MediaLoadingTask extends AsyncTask<Uri, Void, File> {
     @Inject
     SettingsProvider settingsProvider;
 
-    private WeakReference<FormEntryActivity> formEntryActivity;
+    @Inject
+    ImageCompressionController imageCompressionController;
 
-    public MediaLoadingTask(FormEntryActivity formEntryActivity, File instanceFile) {
+    private WeakReference<FormFillingActivity> formFillingActivity;
+
+    public MediaLoadingTask(FormFillingActivity formFillingActivity, File instanceFile) {
         this.instanceFile = instanceFile;
-        onAttach(formEntryActivity);
+        onAttach(formFillingActivity);
     }
 
-    public void onAttach(FormEntryActivity formEntryActivity) {
-        this.formEntryActivity = new WeakReference<>(formEntryActivity);
-        DaggerUtils.getComponent(this.formEntryActivity.get()).inject(this);
+    public void onAttach(FormFillingActivity formFillingActivity) {
+        this.formFillingActivity = new WeakReference<>(formFillingActivity);
+        DaggerUtils.getComponent(this.formFillingActivity.get()).inject(this);
     }
 
     @Override
@@ -46,12 +49,12 @@ public class MediaLoadingTask extends AsyncTask<Uri, Void, File> {
 
             File newFile = FileUtils.createDestinationMediaFile(instanceFile.getParent(), extension);
             FileUtils.saveAnswerFileFromUri(uris[0], newFile, Collect.getInstance());
-            QuestionWidget questionWidget = formEntryActivity.get().getWidgetWaitingForBinaryData();
+            QuestionWidget questionWidget = formFillingActivity.get().getWidgetWaitingForBinaryData();
 
             // apply image conversion if the widget is an image widget
             if (questionWidget instanceof BaseImageWidget) {
                 String imageSizeMode = settingsProvider.getUnprotectedSettings().getString(KEY_IMAGE_SIZE);
-                ImageConverter.execute(newFile.getPath(), questionWidget, formEntryActivity.get(), imageSizeMode);
+                imageCompressionController.execute(newFile.getPath(), questionWidget, formFillingActivity.get(), imageSizeMode);
             }
             return newFile;
         }
@@ -60,8 +63,8 @@ public class MediaLoadingTask extends AsyncTask<Uri, Void, File> {
 
     @Override
     protected void onPostExecute(File result) {
-        FormEntryActivity activity = this.formEntryActivity.get();
-        DialogFragmentUtils.dismissDialog(FormEntryActivity.TAG_PROGRESS_DIALOG_MEDIA_LOADING, activity.getSupportFragmentManager());
+        FormFillingActivity activity = this.formFillingActivity.get();
+        DialogFragmentUtils.dismissDialog(FormFillingActivity.TAG_PROGRESS_DIALOG_MEDIA_LOADING, activity.getSupportFragmentManager());
         activity.setWidgetData(result);
     }
 }

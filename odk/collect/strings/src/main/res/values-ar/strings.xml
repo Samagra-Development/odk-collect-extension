@@ -1,29 +1,22 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Text for an action button on the main screen.-->
-  <string name="enter_data">ملء استمارة فارغة</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">ملء استمارة فارغة</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="review_data">تعديل الاستمارة المحفوظة</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="review_data_button">تعديل الاستمارة المحفوظة (%s)</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="send_data">إرسال الاستمارة النهائية</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="send_data_button">إرسال الاستمارة المكتملة (%s)</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="view_sent_forms">عرض الاستمارات المرسلة</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="view_sent_forms_button">عرض الاستمارات المرسلة : (%s)</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms">الحصول على استمارة فارغة</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">حذف الاستمارة المحفوظة</string>
+  <!-- Text for the topmost button on the main screen. It should be short and action-oriented. -->
+  <string name="enter_data">املأ نموذج جديد</string>
+  <!-- Text for an action button on the main screen. -->
+  <string name="review_data">مسودّات</string>
+  <!-- Text for an action button on the main screen. -->
+  <string name="send_data">جاهز للإرسال</string>
+  <!-- Text for an action button on the main screen. -->
+  <string name="view_sent_forms">مرسل</string>
+  <!-- Text for an action button on the main screen. -->
+  <string name="get_forms">حمّل نموذج</string>
+  <!-- Text for an action button on the main screen. -->
+  <string name="manage_files">امسح نموذج</string>
   <string name="version_number">الإصدار: %s</string>
   <string name="id_number">المعرف : %s</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="added_on_date_at_time">\'تمت الاضافة ب\' yyyy, dd MMM, EEE  \'في الساعة\' mm:HH</string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="saved_on_date_at_time">\'تم الحفظ ب\' yyyy, dd MMM, EEE  \'في الساعة\' mm:HH</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -46,15 +39,12 @@
   <string name="sort_by_date_desc">ترتيب حسب التاريخ تصاعدياً</string>
   <string name="sort_by_date_asc">ترتيب حسب التاريخ تنازلياً</string>
   <!--A sort option for blank forms. When this option is selected, the form for which a filled instance was last filled will go first.-->
-  <string name="sort_by_status_asc">ترتيب حسب الحالة تصاعدياً</string>
-  <string name="sort_by_status_desc">ترتيب حسب الحالة تنازلياً</string>
   <string name="filter_the_list">فرز القائمة</string>
   <!--Displayed in search boxes for form lists or question types that involve search-->
   <string name="search">بحث</string>
   <string name="no_items_display">لا يوجد شيء للعرض.</string>
   <string name="no_items_display_forms">لا شيء متاح للعرض./n/n حاول الحصول على نموذج فارغ و قم بتعبئته.</string>
   <string name="no_items_display_sent_forms">لا شيء متاح للعرض./n/n حاول إرسال الاستمارات المكتملة قبل العرض.</string>
-  <string name="no_items_display_instances">لا شيء متاح للعرض./n/n حاول وضع الصيغ النهائية للاستمارات المحفوظة قبل الارسال.</string>
   <string name="not_granted_permission">النشاط الذي تحاول بدء القيام به يحتاج إلى إذن لم تحصل عليه بعد.</string>
   <string name="storage_runtime_permission_denied_title">أذونات التخزين</string>
   <string name="storage_runtime_permission_denied_desc">بدون هذه الأذونات لا يمكن لبرنامج ODK Collect الوصول إلى الاستمارات أو حفظ الإجابات. أعد فتح التطبيق عندما تكون مستعدًا لمنحهم.</string>
@@ -66,8 +56,6 @@
   <string name="record_audio_runtime_permission_denied_desc">بدون هذا الإذن لا يمكن لبرنامج ODK Collect الوصول إلى الميكروفون. يرجى المحاولة مرة أخرى عندما تكون مستعدًا لمنحه.</string>
   <string name="get_accounts_runtime_permission_denied_title">الحصول على إذن الحسابات</string>
   <string name="get_accounts_runtime_permission_denied_desc">بدون هذا الإذن لا يمكن لبرنامج ODK Collect الوصول إلى الحسابات. يرجى المحاولة مرة أخرى عندما تكون مستعدًا لمنحه.</string>
-  <string name="read_phone_state_runtime_permission_denied_title">إذن قراءة حالة الهاتف</string>
-  <string name="read_phone_state_runtime_permission_denied_desc">لا يقوم ODK Collect بإجراء مكالمات ولكنه يحتاج إلى الوصول إلى بعض الخصائص المتعلقة بجهازك مثل رقم الهاتف ومعرف الجهاز.</string>
   <!--##############################################
     # FILL BLANK FORM
     ##############################################-->
@@ -81,7 +69,6 @@
   <string name="survey_loading_reading_csv_message">قراءة ملفات CSV..</string>
   <string name="parse_error">عذراً لا يمكن تحليل الاستمارة.</string>
   <string name="loading_form_failed">حدث خطأ أثناء تحميل الاستمارة. الرجاء المحاولة مرة أخرى.</string>
-  <string name="parent_form_not_present">غير قادر على تعديل هذه الاستمارة المحفوظة لان الاستمارة المقابلة غير موجودة جاليا او قد تم مسحها./n/n اعدادات الاستمارة: %1$s</string>
   <string name="cannot_edit_completed_form">يتعذر تعديل هذه الاستمارة عندما يتم وضع علامة على أنها مكتملة. قد تكون مشفرة.</string>
   <!--Displayed when loading a form if that form was previously filled but closed because of a crash or system failure-->
   <string name="savepoint_used">التغييرات غير محفوظة يرجى استعادتها من نقطة الحفظ!</string>
@@ -90,7 +77,6 @@
   <!--Text for button displayed in the form filling menu to see the form's table of contents-->
   <string name="view_hierarchy">الذهاب الى الموجه</string>
   <!--Text for button displayed in the form filling menu to save the form-->
-  <string name="save_all_answers">حفظ الاستمارة</string>
   <!--Text of button from the form's table of contents to jump to the beginning of the form-->
   <string name="jump_to_beginning">الذهاب إلى البداية</string>
   <!--Text of button from the form's table of contents to jump to the end of the form-->
@@ -126,18 +112,12 @@
   <string name="too_complex_form">هذه الاستمارة معقدة جدًا لهذا الجهاز. حاول تبسيط التعبيرات أو طلب المساعدة في المنتدى.</string>
   <string name="survey_internal_error">خطأ داخلي: فشل الخطأ الموجه.</string>
   <string name="save_enter_data_description">إنّك في نهاية الـ%s.</string>
-  <string name="save_form_as">سمّي هذه الاستمارة</string>
-  <string name="save_as_error">اسم الحفظ لا يمكن أن يكون فارغ!</string>
-  <string name="mark_finished">حدد الاستمارة كاستمارة منتهية</string>
-  <string name="quit_entry">حفظ الاستمارة والخروج</string>
   <string name="data_saved_error">عذرًا، لم يتمّ حفظ الاستمارة!</string>
   <string name="data_saved_ok">تمّ حفظ الاستمارة بنجاح!</string>
   <string name="save_point_error">خطأ في حفظ نقطة الاسترداد %s</string>
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <string name="quit_application">خروج %s</string>
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
-  <string name="no_form_loaded">&gt;لم يتم تحميل أي استمارات&lt;</string>
-  <string name="do_not_save">تجاهل التعديلات</string>
   <string name="keep_changes">حفظ التعديلات</string>
   <string name="saving_form">جاري حفظ الاستمارة</string>
   <string name="survey_saving_validating_message">تدقيق الاجابات…</string>
@@ -207,8 +187,6 @@
   <string name="set_color">تحديد اللون</string>
   <string name="capture_video">سجل فيديو</string>
   <string name="choose_video">إختر فيديو</string>
-  <string name="start_video_capture_instruction">إنقر على الشاشة لبدء التسجيل</string>
-  <string name="stop_video_capture_instruction">بدأ التسجيل. إنقر مجددا للتوقف</string>
   <string name="play_video">تشغيل تسجيل الفيديو</string>
   <string name="choose_file">إختر ملف</string>
   <!--Text for button that deletes a file that is the answer to a question-->
@@ -401,6 +379,7 @@
   <string name="track_location">تتبع الموقع</string>
   <string name="background_location_disabled">تريد هذه الاستمارة تتبع موقعك ولكن تم تعطيل التتبع. يرجى التمكين في القائمة %1$s أعلاه.</string>
   <string name="background_location_enabled">هذه الاستمارة تقوم بتتبع موقعك. يمكنك تعطيل التتبع في القائمة %1$s أعلاه.</string>
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <string name="get_point">البدء بتحديد النقطة</string>
   <string name="geopoint_view_read_only">عرض نقاط الخريطة</string>
   <string name="geoshape_view_read_only">عرض GeoShape</string>
@@ -658,8 +637,6 @@
   <string name="delete_after_send">حذف بعد الارسال</string>
   <string name="delete_after_send_summary">حذف الاستمارة النهائية والوسائط المتعددة بعد ارسالها الى الخادم</string>
   <string name="form_filling_category">تعبئة الاستمارة</string>
-  <string name="default_completed">حدد النموذج كنموذج منتهي</string>
-  <string name="default_completed_summary">اجعل النموذج منتهي بشكل إفتراضي</string>
   <string name="constraint_behavior_title">معالجة القيود</string>
   <string name="constraint_behavior">معالجة القيود جارية</string>
   <string name="constraint_behavior_on_swipe">التدقيق عند السحب باتجاه الامام</string>
@@ -737,13 +714,10 @@
   <!--Name of a setting that determines whether users can navigate backwards in a form-->
   <string name="moving_backwards_title">العودة إلى الوراء</string>
   <string name="moving_backwards_disabled_title">تم تعطيل العودة إلى الوراء</string>
-  <string name="moving_backwards_disabled_message">ضبط الجهاز لمنع المستخدمين من تجاوز هذا الإعداد؟\n\nالتغييرات هي:\n\u2022 تعطيل تحرير الاستمارة المحفوظة \n\u2022 تعطيل حفظ الاستمارة \n\u2022 تعطيل الانتقال إلى الموجه\n\u2022 ضبط معالجة القيد على التحقق من الصحة عند التمرير الأمامي</string>
   <string name="yes">نعم</string>
   <string name="no">لا</string>
   <string name="moving_backwards_enabled_title">تم تمكين التحرك إلى الوراء</string>
-  <string name="moving_backwards_enabled_message">قد ترغب في مراجعة الإعدادات التالية:\n\n\u2022 تحرير الاستمارة المحفوظة \n\u2022 الذهاب إلى الموجه\n\u2022 معالجة القيد</string>
   <!--Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end-->
-  <string name="save_mid">حفظ الاستمارة</string>
   <!--##############################################
      # GOOGLE DRIVE, GOOGLE SHEETS
      ##############################################-->
@@ -792,7 +766,7 @@
   <string name="view_qr_code_fragment_title">رمز QR</string>
   <string name="import_qrcode_sd">استيراد رمز QR</string>
   <string name="successfully_imported_settings">تم استيراد الإعدادات بنجاح</string>
-  <string name="encoding_max_limit">تم الوصول إلى الحد الأقصى من عدد المحارف: لا يمكن توليد كود QR لجميع الإعدادات</string>
+  <string name="encoding_max_limit" tools:ignore="UnusedResources">تم الوصول إلى الحد الأقصى من عدد المحارف: لا يمكن توليد كود QR لجميع الإعدادات</string>
   <string name="share">مشاركة</string>
   <string name="turn_on_flashlight">تشغيل الإضاءة الخلفية</string>
   <string name="turn_off_flashlight">إيقاف الإضاءة الخلفية</string>
@@ -846,8 +820,6 @@
     select the wording and where to put the \n for maximum impact in your language.-->
   <!--Text for the button that allows for configuring a project by scanning a QR code. Should be short-->
   <!--Text for the button that allows for manually entering project details. Should be short-->
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <!--Preceded by "Don't have a project yet?" question-->
   <!--Error shown when a user tries to open a form that's in a different project-->
@@ -863,9 +835,16 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <string name="dismiss_button_text">تجاهل</string>
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

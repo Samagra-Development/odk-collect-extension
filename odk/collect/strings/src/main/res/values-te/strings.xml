@@ -1,29 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Text for the topmost button on the main screen. It should be short and action-oriented.-->
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data">ఖాళీ ఫారం నింపండి</string>
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">ఖాళీ ఫారం నింపండి</string>
   <!--Text for an action button on the main screen.-->
-  <string name="review_data">సేవ్ చేసిన ఫారంను సవరించండి</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="review_data_button">సేవ్ చేసిన ఫారంను సవరించండి (%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="send_data">ఫైనల్ అయిన ఫారం పంపండి</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="send_data_button">ఫైనల్ చేసిన ఫారం పంపండి(%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="view_sent_forms">పంపిన ఫారంను చూడండి</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="view_sent_forms_button">పంపిన ఫారం లను చూడండి (%s)</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms">కొత్త ఫారం డౌన్లోడ్ చేసుకోండి</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">సేవ్ చేసిన ఫారంలను తొలగించండి </string>
   <string name="version_number">వెర్షన్: %s</string>
   <string name="id_number">ID:%s</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="added_on_date_at_time">\'చేర్చిన తేదీ\' EEE, MMM dd, yyyy \'సమయం\' HH:mm</string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="saved_on_date_at_time">\'సేవ్ చేసిన తేదీ\' EEE, MMM dd, yyyy \'సమయం\' HH:mm</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -46,15 +33,12 @@
   <string name="sort_by_date_desc">తేదీ, కొత్తది ముందు</string>
   <string name="sort_by_date_asc">తేదీ, పాతది ముందు</string>
   <!--A sort option for blank forms. When this option is selected, the form for which a filled instance was last filled will go first.-->
-  <string name="sort_by_status_asc">స్టేటస్, మొదట ఖరారు చేయబడింది</string>
-  <string name="sort_by_status_desc">స్టేటస్, మొదట అన్‌ఫైనలైజ్ చేయబడింది</string>
   <string name="filter_the_list">జాబితాను ఫిల్టర్ చేయండి</string>
   <!--Displayed in search boxes for form lists or question types that involve search-->
   <string name="search">వెతకండి</string>
   <string name="no_items_display">చూపించడానికి ఏవీ అందుబాటులో లేవు</string>
   <string name="no_items_display_forms">చూడటానికి ఏ ఫారంలు లేవు.\n\n ఖాళీ ఫారంను పొందడానికి మరియు నింపటానికి ప్రయత్నించండి</string>
   <string name="no_items_display_sent_forms">చూడటానికి ఏ ఫారంలు లేవు.\n\n ముందు ఖరారు చేసిన ఫారంలను పంపడానికి ప్రయత్నించండి.</string>
-  <string name="no_items_display_instances">చూడటానికి ఏ ఫారంలు లేవు.\n\n పంపే ముందు సేవ్ చేసిన ఫారంలను ఫైనల్ చేయడానికి ప్రయత్నించండి.</string>
   <string name="not_granted_permission">మీరు మొదులు పెట్టడానికి ప్రయత్నిస్తున్న పనికి అనుమతి అవసరం. అది మీకు ఇవ్వబడలేదు.</string>
   <string name="storage_runtime_permission_denied_title">నిల్వ ఉంచటానికి అనుమతులు</string>
   <string name="storage_runtime_permission_denied_desc">ఈ అనుమతులు లేకుండా మీ ఫారమ్‌లను యాక్సెస్ చేయలేరు లేదా సమాధానాలను సేవ్ చేయలేరు. మీరు వాటిని మంజూరు చేయడానికి సిద్ధంగా ఉన్నప్పుడు ఆప్ ని తిరిగి తెరవండి.</string>
@@ -66,8 +50,6 @@
   <string name="record_audio_runtime_permission_denied_desc">ఈ అనుమతి లేకుండా మైక్రోఫోన్‌ను యాక్సెస్ చేయలేరు. మీరు మంజూరు చేయడానికి సిద్ధంగా ఉన్నప్పుడు దయచేసి మళ్ళీ ప్రయత్నించండి.</string>
   <string name="get_accounts_runtime_permission_denied_title">ఖాతాల అనుమతి పొందండి</string>
   <string name="get_accounts_runtime_permission_denied_desc">ఈ అనుమతి లేకుండా ఖాతాలను యాక్సెస్ చేయదు. మీరు మంజూరు చేయడానికి సిద్ధంగా ఉన్నప్పుడు దయచేసి మళ్ళీ ప్రయత్నించండి.</string>
-  <string name="read_phone_state_runtime_permission_denied_title">ఫోన్ స్టేట్ అనుమతి చదవండి</string>
-  <string name="read_phone_state_runtime_permission_denied_desc">ODK Collect ఎటువంటి కాల్స్ చేయదు. కాని దీనికి మీ పరికరం గురించిన ఫోన్ నంబర్, పరికరం ID వంటి కొంత సమాచారాన్ని సేకరించవలసి ఉంటుంది.</string>
   <!--##############################################
     # FILL BLANK FORM
     ##############################################-->
@@ -81,7 +63,6 @@
   <string name="survey_loading_reading_csv_message">CSV ఫైళ్ళను చదువుతోంది… </string>
   <string name="parse_error">క్షమించండి, ఫారంను అన్వయించలేకపోయాము.</string>
   <string name="loading_form_failed">ఫారమ్‌ను లోడ్ చేస్తున్నప్పుడు లోపం సంభవించింది. దయచేసి మళ్ళీ ప్రయత్నించండి.</string>
-  <string name="parent_form_not_present">సంబంధిత ఖాళీ ఫారం లేనందున లేదా తొలగించబడినందున ఈ సేవ్ చేసిన ఫారంను సవరించడం సాధ్యం కాలేదు. \ N \ n ఫార్మ్ ఐడి:%1$s</string>
   <string name="cannot_edit_completed_form">ఈ ఫారం గుర్తించబడిన తర్వాత దాన్ని సవరించడం సాధ్యం కాదు. ఇది ఎన్క్రిప్ట్ అయి ఉండవచ్చు.</string>
   <!--Displayed when loading a form if that form was previously filled but closed because of a crash or system failure-->
   <string name="savepoint_used">సేవ్ చేసినప్పటి  నుండి సేవ్ చేయని మార్పులు రికవర్ అయ్యాయి!</string>
@@ -90,7 +71,6 @@
   <!--Text for button displayed in the form filling menu to see the form's table of contents-->
   <string name="view_hierarchy">ప్రాంప్ట్ కు వెళ్ళండి</string>
   <!--Text for button displayed in the form filling menu to save the form-->
-  <string name="save_all_answers">ఫారం ను సేవ్  చెయ్యి </string>
   <!--Text of button from the form's table of contents to jump to the beginning of the form-->
   <string name="jump_to_beginning">మొదటికి వెళ్లు </string>
   <!--Text of button from the form's table of contents to jump to the end of the form-->
@@ -126,18 +106,12 @@
   <string name="too_complex_form">ఈ పరికరం కోసం ఈ ఫారం చాలా క్లిష్టంగా ఉంటుంది. వ్యక్తీకరణలను సరళీకృతం చేయడానికి ప్రయత్నించండి లేదా ఫోరమ్‌లో సహాయం కోసం అడగండి.</string>
   <string name="survey_internal_error">అంతర్గత లోపం: ప్రాంప్ట్ ప్రారంభించే దశ విఫలమైంది.</string>
   <string name="save_enter_data_description">మీరు%sచివరిలో ఉన్నారు.</string>
-  <string name="save_form_as">ఈ ఫారంకు పేరు పెట్టండి</string>
-  <string name="save_as_error">సేవ్ చేసిన పేరు ఖాళీగా ఉండకూడదు!</string>
-  <string name="mark_finished">ఫారంను ఖరారు చేసినట్లుగా గుర్తించండి</string>
-  <string name="quit_entry">ఫారంను సేవ్ చేసి నిష్క్రమించండి</string>
   <string name="data_saved_error">క్షమించండి, ఫారం సేవ్ అవ్వలేదు</string>
   <string name="data_saved_ok">ఫారం విజయవంతంగా సేవ్ చేయబడింది!</string>
   <string name="save_point_error">రికవరీ పాయింట్‌ను సేవ్ చేయడంలో లోపం ఉంది: %s</string>
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <string name="quit_application">Exit %s</string>
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
-  <string name="no_form_loaded">&amp; lt; ఏ ఫారం లోడ్ కాలేదు &amp; gt;</string>
-  <string name="do_not_save">మార్పులు విస్మరించు</string>
   <string name="keep_changes">మార్పులను సేవ్ చెయ్యి</string>
   <string name="saving_form">ఫారం సేవ్ చేయబడుతుంది</string>
   <string name="survey_saving_validating_message">సమాధానాలను ధృవీకరిస్తోంది…</string>
@@ -191,7 +165,7 @@
   <string name="selected_invalid_image">ఎంచుకున్న ఫైల్ చెల్లుబాటు అయ్యే చిత్రం కాదు</string>
   <string name="take_picture_instruction">ఫోటో తీయడానికి స్క్రీన్ పైన నొక్కండి</string>
   <string name="error_front_camera_unavailable">ముందు వైపు కెమెరా ఈ పరికరంలో లేదు</string>
-    <string name="annotate_image">ఫోటో మీద వ్యాఖ్యానం వ్రాయండి </string>
+  <string name="annotate_image">ఫోటో మీద వ్యాఖ్యానం వ్రాయండి </string>
   <!--Dialog heading for saving annotated image-->
   <string name="save_and_close">సేవ్ చేసి క్లోజ్ చెయ్యండి </string>
   <string name="signature_capture">సంతకం పెట్టండి</string>
@@ -202,8 +176,6 @@
   <string name="set_color">రంగును సెట్ చేయండి</string>
   <string name="capture_video">వీడియో రికార్డు చెయ్యి </string>
   <string name="choose_video">వీడియోను ఎంచుకోండి</string>
-  <string name="start_video_capture_instruction">రికార్డింగ్ ప్రారంభించడానికి స్క్రీన్ పైన నొక్కండి</string>
-  <string name="stop_video_capture_instruction">రికార్డింగ్ ప్రారంభమైంది. ఆపడానికి మళ్ళీ నొక్కండి</string>
   <string name="play_video">వీడియో ప్లే చెయ్యి</string>
   <string name="choose_file">ఫైల్‌ను ఎంచుకోండి</string>
   <!--Text for button that deletes a file that is the answer to a question-->
@@ -380,6 +352,7 @@
   <string name="track_location">మీ ప్రదేశాన్ని ట్రాక్ చేయండి</string>
   <string name="background_location_disabled">ఈ ఫారం మీ స్థానాన్ని ట్రాక్ చేయాలనుకుంటుంది కాని ట్రాకింగ్ నిలిపివేయబడింది. దయచేసి పై మెను %1$sలో ప్రారంభించండి.</string>
   <string name="background_location_enabled">ఈ ఫారం మీ స్థానాన్ని ట్రాక్ చేస్తుంది. పై మెను%1$sలో మీరు ట్రాకింగ్‌ను నిలిపివేయవచ్చు.</string>
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <string name="get_point">జియోపాయింట్ ప్రారంభించండి</string>
   <string name="geopoint_view_read_only">జియోపాయింట్ చూడండి</string>
   <string name="get_shape">జియోషాప్ ప్రారంభించండి</string>
@@ -611,8 +584,6 @@
   <string name="delete_after_send">పంపిన తర్వాత తొలగించండి</string>
   <string name="delete_after_send_summary">సర్వర్‌కు పంపిన తర్వాత ఫైనల్ చేసిన ఫారమ్‌లను మరియు మీడియాను తొలగిస్తుంది</string>
   <string name="form_filling_category">ఫారం నింపడం</string>
-  <string name="default_completed">ఆటోమాటిక్ గా ఫైనల్ చెయ్యి </string>
-  <string name="default_completed_summary">ఫారంను ఆటోమేటిక్ గా ఫైనల్ చేసినట్లు గుర్తించండి</string>
   <string name="constraint_behavior_title">పరిమితి ప్రాసెసింగ్</string>
   <string name="constraint_behavior">కంస్ట్రయిన్ట్ ప్రాసెసింగ్ బిహేవియర్ </string>
   <string name="constraint_behavior_on_swipe">ఫార్వర్డ్ స్వైప్ మీద ధృవీకరించండి</string>
@@ -688,13 +659,10 @@
   <!--Name of a setting that determines whether users can navigate backwards in a form-->
   <string name="moving_backwards_title">వెనుకకు వెలుతోంది</string>
   <string name="moving_backwards_disabled_title">వెనుకకు వెళ్లడం నిలిపివేయబడింది</string>
-  <string name="moving_backwards_disabled_message">ఈ సెట్టింగ్‌ను దాటవేయకుండా వినియోగదారులను నిరోధించడానికి పరికరాన్ని కాన్ఫిగర్ చేయాలా?\n\nమార్పులు:\n\u2022 Disable Edit Saved Form\n\u2022 Disable Save Form\n\u2022 Disable Go To Prompt\n\u2022 Set Constraint processing to Validate upon forward swipe</string>
   <string name="yes">అవును</string>
   <string name="no">లేదు</string>
   <string name="moving_backwards_enabled_title">వెనుకకు వెళ్ళటం ఆప్షన్ ప్రారంభించబడింది</string>
-  <string name="moving_backwards_enabled_message">మీరు ఈ క్రింది సెట్టింగులను సమీక్షించాలనుకోవచ్చు: \n\n\u2022 సేవ్ చేసిన ఫారమ్‌ను సవరించండి \n\u2022 ఫారమ్‌ను సేవ్ చేయండి \n\u2022 ప్రాంప్ట్‌కు వెళ్లండి \n\u2022 పరిమితి ప్రాసెసింగ్</string>
   <!--Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end-->
-  <string name="save_mid">ఫారమ్ ను సేవ్ చెయ్యి </string>
   <!--##############################################
      # GOOGLE DRIVE, GOOGLE SHEETS
      ##############################################-->
@@ -742,7 +710,7 @@
   <string name="view_qr_code_fragment_title">QR కోడ్</string>
   <string name="import_qrcode_sd">QR కోడ్‌ను దిగుమతి చేయండి</string>
   <string name="successfully_imported_settings">సెట్టింగులు విజయవంతంగా దిగుమతి చేయబడ్డాయి</string>
-  <string name="encoding_max_limit">గరిష్ట అక్షరాల పరిమితి చేరుకుంది: అన్ని సెట్టింగ్‌ల కోసం QR కోడ్ ఉత్పత్తి చేయబడదు</string>
+  <string name="encoding_max_limit" tools:ignore="UnusedResources">గరిష్ట అక్షరాల పరిమితి చేరుకుంది: అన్ని సెట్టింగ్‌ల కోసం QR కోడ్ ఉత్పత్తి చేయబడదు</string>
   <string name="share">షేర్</string>
   <string name="turn_on_flashlight">ఫ్లాష్ లైట్ ని ఆన్ చెయ్యండి</string>
   <string name="turn_off_flashlight">ఫ్లాష్ లైట్ ని ఆఫ్ చెయ్యండి</string>
@@ -792,8 +760,6 @@
     select the wording and where to put the \n for maximum impact in your language.-->
   <!--Text for the button that allows for configuring a project by scanning a QR code. Should be short-->
   <!--Text for the button that allows for manually entering project details. Should be short-->
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <!--Preceded by "Don't have a project yet?" question-->
   <!--Error shown when a user tries to open a form that's in a different project-->
@@ -809,9 +775,16 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <string name="dismiss_button_text">తొలగించండి</string>
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

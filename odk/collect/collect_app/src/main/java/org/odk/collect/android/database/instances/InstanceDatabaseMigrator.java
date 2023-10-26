@@ -42,6 +42,7 @@ public class InstanceDatabaseMigrator implements DatabaseMigrator {
 
     @SuppressWarnings({"checkstyle:FallThrough"})
     public void onUpgrade(SQLiteDatabase db, int oldVersion) {
+        Timber.w("Instances db upgrade from version: %s", oldVersion);
         switch (oldVersion) {
             case 1:
                 upgradeToVersion2(db);
@@ -54,6 +55,9 @@ public class InstanceDatabaseMigrator implements DatabaseMigrator {
             case 5:
                 upgradeToVersion6(db, INSTANCES_TABLE_NAME);
                 break;
+            case 6:
+                // Remember to bump the database version number in {@link org.odk.collect.android.database.DatabaseConstants}
+                // upgradeToVersion7(db);
             default:
                 Timber.i("Unknown version %d", oldVersion);
         }

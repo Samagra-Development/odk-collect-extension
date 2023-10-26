@@ -20,6 +20,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyAbove;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyBelow;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
@@ -40,7 +41,6 @@ import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 import static org.odk.collect.android.support.matchers.CustomMatchers.withIndex;
-import static org.odk.collect.androidtest.NestedScrollToAction.nestedScrollTo;
 
 import android.app.Activity;
 import android.app.Instrumentation;
@@ -64,7 +64,7 @@ import org.odk.collect.android.TestSettingsProvider;
 import org.odk.collect.android.preferences.GuidanceHint;
 import org.odk.collect.android.storage.StoragePathProvider;
 import org.odk.collect.android.support.pages.FormEntryPage;
-import org.odk.collect.android.support.rules.FormActivityTestRule;
+import org.odk.collect.android.support.rules.BlankFormTestRule;
 import org.odk.collect.android.support.rules.TestRuleChain;
 import org.odk.collect.androidtest.RecordedIntentsRule;
 import org.odk.collect.settings.keys.ProjectKeys;
@@ -80,7 +80,7 @@ public class FieldListUpdateTest {
 
     private static final String FIELD_LIST_TEST_FORM = "fieldlist-updates.xml";
 
-    public FormActivityTestRule rule = new FormActivityTestRule(
+    public BlankFormTestRule rule = new BlankFormTestRule(
             FIELD_LIST_TEST_FORM,
             "fieldlist-updates",
             Collections.singletonList("fruits.csv")
@@ -233,7 +233,7 @@ public class FieldListUpdateTest {
 
         // Selecting A1 for level 2 should reveal options for A1 at level 3
         onView(withText("A1")).perform(click());
-        onView(withText("A1A")).perform(nestedScrollTo());
+        onView(withText("A1A")).perform(scrollTo());
         onView(withText("A1A")).check(matches(isDisplayed()));
         onView(withText("B1")).check(doesNotExist());
         onView(withText("C1")).check(doesNotExist());
@@ -248,10 +248,10 @@ public class FieldListUpdateTest {
 
         onView(withText("A")).perform(click());
 
-        onView(withText("A1")).perform(nestedScrollTo(), click());
-        onView(withText("A1B")).perform(nestedScrollTo(), click());
+        onView(withText("A1")).perform(scrollTo(), click());
+        onView(withText("A1B")).perform(scrollTo(), click());
 
-        onView(withText("Level1")).perform(nestedScrollTo(), longClick());
+        onView(withText("Level1")).perform(scrollTo(), longClick());
         onView(withText(R.string.clear_answer)).perform(click());
         onView(withText(R.string.discard_answer)).perform(click());
 
@@ -267,10 +267,10 @@ public class FieldListUpdateTest {
                 .clickGoUpIcon()
                 .clickOnGroup("Cascading select minimal")
                 .clickOnQuestion("Level1")
-                .assertTextDoesNotExist("A1", "B1", "C1", "A1A") // No choices should be shown for levels 2 and 3 when no selection is made for level 1
+                .assertTextsDoNotExist("A1", "B1", "C1", "A1A") // No choices should be shown for levels 2 and 3 when no selection is made for level 1
                 .openSelectMinimalDialog(0)
                 .clickOnText("C") // Selecting C for level 1 should only reveal options for C at level 2
-                .assertTextDoesNotExist("A1", "B1")
+                .assertTextsDoNotExist("A1", "B1")
                 .openSelectMinimalDialog(1)
                 .clickOnText("C1")
                 .assertTextDoesNotExist("A1A")
@@ -278,11 +278,11 @@ public class FieldListUpdateTest {
                 .clickOnText("A") // Selecting A for level 1 should reveal options for A at level 2
                 .openSelectMinimalDialog(1)
                 .assertText("A1")
-                .assertTextDoesNotExist("A1A", "B1", "C1")
+                .assertTextsDoNotExist("A1A", "B1", "C1")
                 .clickOnText("A1") // Selecting A1 for level 2 should reveal options for A1 at level 3
                 .openSelectMinimalDialog(2)
                 .assertText("A1A")
-                .assertTextDoesNotExist("B1A", "B1", "C1");
+                .assertTextsDoNotExist("B1A", "B1", "C1");
     }
 
     @Test
@@ -306,7 +306,7 @@ public class FieldListUpdateTest {
 
         onView(withText("Target10-15")).check(doesNotExist());
 
-        // FormEntryActivity expects an image at a fixed path so copy the app logo there
+        // FormFillingActivity expects an image at a fixed path so copy the app logo there
         Bitmap icon = BitmapFactory.decodeResource(ApplicationProvider.getApplicationContext().getResources(), R.drawable.notes);
         File tmpJpg = new File(new StoragePathProvider().getTmpImageFilePath());
         tmpJpg.createNewFile();
@@ -380,7 +380,7 @@ public class FieldListUpdateTest {
                 .clickOnGroup("Search in field-list")
                 .clickOnQuestion("Source15")
                 .openSelectMinimalDialog()
-                .assertText("Mango", "Oranges", "Strawberries")
+                .assertTexts("Mango", "Oranges", "Strawberries")
                 .clickOnText("Strawberries")
                 .assertText("Target15")
                 .assertSelectMinimalDialogAnswer("Strawberries");

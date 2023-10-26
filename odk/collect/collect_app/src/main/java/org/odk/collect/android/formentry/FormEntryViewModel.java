@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
@@ -22,8 +21,9 @@ import org.odk.collect.android.exception.ExternalDataException;
 import org.odk.collect.android.exception.JavaRosaException;
 import org.odk.collect.android.formentry.audit.AuditEvent;
 import org.odk.collect.android.formentry.questions.SelectChoiceUtils;
-import org.odk.collect.android.javarosawrapper.FailedConstraint;
+import org.odk.collect.android.javarosawrapper.FailedValidationResult;
 import org.odk.collect.android.javarosawrapper.FormController;
+import org.odk.collect.android.javarosawrapper.ValidationResult;
 import org.odk.collect.android.widgets.interfaces.SelectChoiceLoader;
 import org.odk.collect.androidshared.livedata.MutableNonNullLiveData;
 import org.odk.collect.androidshared.livedata.NonNullLiveData;
@@ -45,7 +45,7 @@ public class FormEntryViewModel extends ViewModel implements SelectChoiceLoader 
     private final MutableNonNullLiveData<Boolean> hasBackgroundRecording = new MutableNonNullLiveData<>(false);
     private final MutableLiveData<FormIndex> currentIndex = new MutableLiveData<>(null);
     private final MutableNonNullLiveData<Boolean> isLoading = new MutableNonNullLiveData<>(false);
-    private final MutableLiveData<FailedConstraint> failedConstraint = new MutableLiveData<>(null);
+    private final MutableLiveData<ValidationResult> validationResult = new MutableLiveData<>(null);
     @NonNull
     private final FormSessionRepository formSessionRepository;
     private final String sessionId;
@@ -68,8 +68,8 @@ public class FormEntryViewModel extends ViewModel implements SelectChoiceLoader 
         this.formSessionRepository = formSessionRepository;
 
         this.sessionId = sessionId;
-        formSessionObserver = observe(formSessionRepository.get(this.sessionId), formController -> {
-            this.formController = formController;
+        formSessionObserver = observe(formSessionRepository.get(this.sessionId), formSession -> {
+            this.formController = formSession.getFormController();
 
             boolean hasBackgroundRecording = formController.getFormDef().hasAction(RecordAudioActionHandler.ELEMENT_NAME);
             this.hasBackgroundRecording.setValue(hasBackgroundRecording);
@@ -96,8 +96,8 @@ public class FormEntryViewModel extends ViewModel implements SelectChoiceLoader 
         return error;
     }
 
-    public LiveData<FailedConstraint> getFailedConstraint() {
-        return failedConstraint;
+    public LiveData<ValidationResult> getValidationResult() {
+        return validationResult;
     }
 
     public NonNullLiveData<Boolean> isLoading() {
@@ -188,8 +188,6 @@ public class FormEntryViewModel extends ViewModel implements SelectChoiceLoader 
         }, updateSuccess -> {
             isLoading.setValue(false);
 
-            formController.getAuditEventLogger().flush();
-
             if (updateSuccess) {
                 try {
                     formController.stepToNextScreenEvent();
@@ -210,8 +208,6 @@ public class FormEntryViewModel extends ViewModel implements SelectChoiceLoader 
             return saveScreenAnswersToFormController(answers, false);
         }, updateSuccess -> {
             isLoading.setValue(false);
-
-            formController.getAuditEventLogger().flush();
 
             if (updateSuccess) {
                 try {
@@ -240,9 +236,9 @@ public class FormEntryViewModel extends ViewModel implements SelectChoiceLoader 
         }
 
         try {
-            FailedConstraint result = formController.saveAllScreenAnswers(answers, evaluateConstraints);
-            if (result != null) {
-                failedConstraint.postValue(result);
+            ValidationResult result = formController.saveAllScreenAnswers(answers, evaluateConstraints);
+            if (result instanceof FailedValidationResult) {
+                validationResult.postValue(result);
                 return false;
             }
         } catch (JavaRosaException e) {
@@ -295,29 +291,27 @@ public class FormEntryViewModel extends ViewModel implements SelectChoiceLoader 
         formSessionRepository.clear(sessionId);
     }
 
-    public static class Factory implements ViewModelProvider.Factory {
+    public void validate() {
+        isLoading.setValue(true);
+        scheduler.immediate(
+                () -> {
+                    ValidationResult result = null;
+                    try {
+                        result = formController.validateAnswers(true);
+                    } catch (JavaRosaException e) {
+                        error.postValue(new NonFatal(e.getMessage()));
+                    }
 
-        private final Supplier<Long> clock;
-        private final Scheduler scheduler;
-        private final FormSessionRepository formSessionRepository;
-        private String sessionId;
+                    return result;
+                }, result -> {
+                    isLoading.setValue(false);
 
-        public Factory(Supplier<Long> clock, Scheduler scheduler, FormSessionRepository formSessionRepository) {
-            this.clock = clock;
-            this.scheduler = scheduler;
-            this.formSessionRepository = formSessionRepository;
-        }
-
-        public void setSessionId(String sessionId) {
-            this.sessionId = sessionId;
-        }
-
-        @SuppressWarnings("unchecked")
-        @NonNull
-        @Override
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new FormEntryViewModel(clock, scheduler, formSessionRepository, sessionId);
-        }
+                    if (result instanceof FailedValidationResult) {
+                        refresh();
+                    }
+                    validationResult.setValue(result);
+                }
+        );
     }
 
     public abstract static class FormError {

@@ -1,22 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Text for the topmost button on the main screen. It should be short and action-oriented.-->
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data">പുതിയ ഫോം പൂരിപ്പിക്കുക</string>
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">പുതിയ ഫോം പൂരിപ്പിക്കുക</string>
   <!--Text for an action button on the main screen.-->
-  <string name="review_data">സേവ് ചെയ്ത ഫോമിൽ മാറ്റം വരുത്തുക </string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
   <!--Text for an action button on the main screen.-->
-  <string name="send_data">അവസാനിപ്പിച്ച ഫോം അയക്കുക </string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
   <!--Text for an action button on the main screen.-->
-  <string name="view_sent_forms">അയച്ച ഫോം കാണുക </string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms">പുതിയ ഫോം എടുക്കുക </string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">സേവ് ചെയ്ത ഫോം ഡിലീറ്റ് ചെയ്യുക </string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -30,8 +20,6 @@
   <string name="sort_by_date_desc">തിയതി, പുതിയത് ആദ്യം </string>
   <string name="sort_by_date_asc">തിയതി, പഴയത് ആദ്യം</string>
   <!--A sort option for blank forms. When this option is selected, the form for which a filled instance was last filled will go first.-->
-  <string name="sort_by_status_asc">സ്റ്റാറ്റസ് , അവസാനിപ്പിച്ചത് ആദ്യം </string>
-  <string name="sort_by_status_desc">സ്റ്റാറ്റസ്, അവസാനിപ്പിക്കാത്തത് ആദ്യം </string>
   <!--Displayed in search boxes for form lists or question types that involve search-->
   <string name="search">തിരയുക</string>
   <string name="no_items_display">സ്‌ക്രീനിൽ കാണിക്കുവാൻ ഒന്നും ലഭ്യം അല്ല </string>
@@ -56,7 +44,6 @@
   <string name="change_language">ഭാഷ മാറ്റുക</string>
   <!--Text for button displayed in the form filling menu to see the form's table of contents-->
   <!--Text for button displayed in the form filling menu to save the form-->
-  <string name="save_all_answers">ഫോം സേവ് ചെയ്യുക </string>
   <!--Text of button from the form's table of contents to jump to the beginning of the form-->
   <string name="jump_to_beginning">തുടക്കത്തിലേക്ക് പോകുക </string>
   <!--Text of button from the form's table of contents to jump to the end of the form-->
@@ -78,13 +65,10 @@
   <string name="delete_repeat_confirm">ഗ്രൂപ്പ് \" %s\" ഉം അതിന്റെ എല്ലാ ഉപ-ഗ്രൂപ്പുകളും നീക്കംചെയ്യണോ?</string>
   <string name="delete_repeat_no">റദ്ദാക്കുക</string>
   <string name="required_answer_error">ക്ഷമിക്കണം, ഈ ഉത്തരം അത്യാവശ്യമാണ്</string>
-  <string name="save_form_as">ഈ ഫോമിന് പേര് നൽകുക</string>
-  <string name="save_as_error">സേവ് ചെയ്ത പേര് ശൂന്യമാകാൻ പാടുള്ളതല്ല</string>
-  <string name="mark_finished">ഫോം അവസാനിപ്പിച്ചതായി അടയാളപ്പെടുത്തുക</string>
   <string name="data_saved_error">ക്ഷമിക്കണം, ഫോർമ് സംരക്ഷിക്കുന്നത് പരാജയപ്പെട്ടു!</string>
   <string name="data_saved_ok">ഫോർമ് വിജയകരമായി സംരക്ഷിച്ചു!</string>
   <string name="save_point_error">വീണ്ടെടുക്കൽ പോയിന്റ് സംരക്ഷിക്കുന്നതിൽ പിശക്/പ്രമാദം: 1 %s</string>
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
   <!--Displayed when form filling is attempted to be launched by intent but the intent URI is incorrect-->
   <!--Displayed when form filling is attempted to be launched by intent but the intent URI mime type is unknown-->
@@ -173,6 +157,7 @@
     tile caches, and are not shown in the UI.-->
   <!--Action to go to Android settings. Displayed when location providers are disabled.-->
   <!--Label for a menu item that can be toggled to turn background location tracking on and off during form filling-->
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <!--%1$s is the time taken so far in hh:mm:ss-->
   <!--%1$s is the accuracy required for a point to be automatically saved-->
   <!--%1$s is the number of satellites being used to get location-->
@@ -262,8 +247,6 @@
   <!--Frequency for requesting blank form updates from the server-->
   <!--Frequency for requesting blank form updates from the server-->
   <!--Name of setting that defines whether form updates should be automatically downloaded when in "previously downloaded forms only" download mode-->
-  <string name="default_completed">അന്തിമ സ്ഥിരമായത്</string>
-  <string name="default_completed_summary">സ്ഥിരമായി അന്തിമമായി മാർക്ക് ഫോം അടയാളപ്പെടുത്തുക</string>
   <!--Name of setting for enabling guidance hints while filling forms. Guidance hints are meant for training or other specialized contexts.-->
   <!--Guidance hints can be displayed behind an icon that must be tapped to reveal the hint.-->
   <!--Title for setting to let the user switch between using Collect or another app (on the device) for recording audio-->
@@ -277,7 +260,6 @@
   <string name="delete_project">ഡിലീറ്റ് </string>
   <!--Name of a setting that determines whether users can navigate backwards in a form-->
   <!--Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end-->
-  <string name="save_mid">ഫോം സേവ് ചെയ്യുക </string>
   <!--##############################################
      # GOOGLE DRIVE, GOOGLE SHEETS
      ##############################################-->
@@ -317,8 +299,6 @@
     select the wording and where to put the \n for maximum impact in your language.-->
   <!--Text for the button that allows for configuring a project by scanning a QR code. Should be short-->
   <!--Text for the button that allows for manually entering project details. Should be short-->
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <!--Preceded by "Don't have a project yet?" question-->
   <!--Error shown when a user tries to open a form that's in a different project-->
@@ -334,9 +314,15 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

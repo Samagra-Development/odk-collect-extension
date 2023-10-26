@@ -8,12 +8,6 @@ object AnalyticsEvents {
     const val SET_SERVER = "SetServer"
 
     /**
-     * Track changes to the Google Sheets fallback submission URL setting. The action should be
-     * a hash of the URL.
-     */
-    const val SET_FALLBACK_SHEETS_URL = "SetFallbackSheetsUrl"
-
-    /**
      * Track video requests with high resolution setting turned off. The action should be a hash of
      * the form definition.
      */
@@ -142,21 +136,6 @@ object AnalyticsEvents {
     const val INSTANCE_PROVIDER_DELETE = "InstanceProviderDelete"
 
     /**
-     * Tracks how many forms include an accuracy threshold for the default `geopoint` question
-     */
-    const val ACCURACY_THRESHOLD = "AccuracyThreshold"
-
-    /**
-     * Tracks how many forms use default accuracy thresholds for the default `geopoint` question
-     */
-    const val ACCURACY_THRESHOLD_DEFAULT = "AccuracyThresholdDefault"
-
-    /**
-     * Tracks how often form details with invalid hashes are provided by a server
-     */
-    const val INVALID_FORM_HASH = "InvalidFormHash"
-
-    /**
      * Tracks how often "cellular_only" option is used in auto send
      */
     const val CELLULAR_ONLY = "CellularOnly"
@@ -172,12 +151,21 @@ object AnalyticsEvents {
     const val EDIT_FINALIZED_FORM = "EditFinalizedForm"
 
     /**
-     * Tracks how often manually specified instance name is used
+     * Tracks how often the Text Number widget appears in forms and how often it's used with the
+     * `thousand-sep` appearance.
      */
-    const val MANUALLY_SPECIFIED_INSTANCE_NAME = "ManuallySpecifiedInstanceName"
+    const val TEXT_NUMBER_WIDGET = "TextNumberWidget"
+    const val TEXT_NUMBER_WIDGET_WITH_THOUSANDS_SEPARATOR = "TextNumberWidgetWithThousandsSeparator"
 
     /**
-     * Tracks how often automatically specified instance name is used
+     * Tracks how many users cancel the permission dialog vs how many go through the permissions
+     * request flow.
      */
-    const val AUTOMATICALLY_SPECIFIED_INSTANCE_NAME = "AutomaticallySpecifiedInstanceName"
+    const val PERMISSIONS_DIALOG_CANCEL = "PermissionsDialogCancel"
+    const val PERMISSIONS_DIALOG_OK = "PermissionsDialogOK"
+
+    /**
+     * Tracks how often forms are validated
+     */
+    const val CHECK_FOR_ERRORS = "CheckForErrors"
 }

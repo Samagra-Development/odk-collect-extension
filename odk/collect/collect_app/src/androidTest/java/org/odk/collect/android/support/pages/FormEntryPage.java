@@ -4,6 +4,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeRight;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -19,11 +20,9 @@ import static org.odk.collect.android.support.matchers.CustomMatchers.withIndex;
 import android.os.Build;
 
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.espresso.Espresso;
 
 import org.hamcrest.Matchers;
 import org.odk.collect.android.R;
-import org.odk.collect.android.support.ActivityHelpers;
 import org.odk.collect.android.support.WaitFor;
 import org.odk.collect.android.utilities.FlingRegister;
 
@@ -46,6 +45,11 @@ public class FormEntryPage extends Page<FormEntryPage> {
         });
 
         assertToolbarTitle(formName);
+
+        // Check we are not on the Form Hierarchy page
+        assertTextDoesNotExist(R.string.jump_to_beginning);
+        assertTextDoesNotExist(R.string.jump_to_end);
+        
         return this;
     }
 
@@ -65,10 +69,16 @@ public class FormEntryPage extends Page<FormEntryPage> {
         return page;
     }
 
-    public MainMenuPage fillOutAndSave(QuestionAndAnswer... questionsAndAnswers) {
+    public <D extends Page<D>> D fillOutAndSave(D destination, QuestionAndAnswer... questionsAndAnswers) {
+        return fillOut(questionsAndAnswers)
+                .pressBack(new SaveOrDiscardFormDialog<>(destination))
+                .clickSaveChanges();
+    }
+
+    public MainMenuPage fillOutAndFinalize(QuestionAndAnswer... questionsAndAnswers) {
         return fillOut(questionsAndAnswers)
                 .swipeToEndScreen()
-                .clickSaveAndExit();
+                .clickFinalize();
     }
 
     public FormEntryPage swipeToNextQuestion(String questionText) {
@@ -110,6 +120,11 @@ public class FormEntryPage extends Page<FormEntryPage> {
         return this;
     }
 
+    public FormEndPage swipeToEndScreen(String instanceName) {
+        flingLeft();
+        return WaitFor.waitFor(() -> new FormEndPage(instanceName).assertOnPage());
+    }
+
     public FormEndPage swipeToEndScreen() {
         flingLeft();
         return WaitFor.waitFor(() -> new FormEndPage(formName).assertOnPage());
@@ -132,12 +147,7 @@ public class FormEntryPage extends Page<FormEntryPage> {
     }
 
     public FormEntryPage clickOptionsIcon() {
-        tryAgainOnFail(() -> {
-            Espresso.openActionBarOverflowOrOptionsMenu(ActivityHelpers.getActivity());
-            assertText(R.string.project_settings);
-        });
-
-        return this;
+        return clickOptionsIcon(R.string.project_settings);
     }
 
     public ProjectSettingsPage clickGeneralSettings() {
@@ -196,6 +206,19 @@ public class FormEntryPage extends Page<FormEntryPage> {
 
     public FormEntryPage clickSave() {
         onView(withId(R.id.menu_save)).perform(click());
+        return this;
+    }
+
+    public FormEntryPage clickSaveWithError(int errorMsg) {
+        onView(withId(R.id.menu_save)).perform(click());
+
+        if (Build.VERSION.SDK_INT < 30) {
+            checkIsToastWithMessageDisplayed(errorMsg);
+        } else {
+            assertText(errorMsg);
+            clickOKOnDialog();
+        }
+
         return this;
     }
 
@@ -262,6 +285,7 @@ public class FormEntryPage extends Page<FormEntryPage> {
     }
 
     public FormEntryPage answerQuestion(int index, String answer) {
+        onView(withIndex(withClassName(endsWith("Text")), index)).perform(scrollTo());
         onView(withIndex(withClassName(endsWith("Text")), index)).perform(replaceText(answer));
         return this;
     }
@@ -350,16 +374,39 @@ public class FormEntryPage extends Page<FormEntryPage> {
         return this;
     }
 
-    public MainMenuPage pressBackAndIgnoreChanges() {
-        return closeSoftKeyboard()
-                .pressBack(new SaveOrIgnoreDialog<>(formName, new MainMenuPage()))
-                .clickIgnoreChanges();
+    public FormEntryPage assertConstraintNotDisplayed(String constraintText) {
+        // Constraints warnings show as dialogs in Android 11+
+        if (Build.VERSION.SDK_INT < 30) {
+            assertToastNotDisplayed(constraintText);
+        } else {
+            assertOnPage();
+        }
+
+        return this;
     }
 
-    public <D extends Page<D>> D pressBackAndIgnoreChanges(D destination) {
+    public MainMenuPage pressBackAndDiscardChanges() {
         return closeSoftKeyboard()
-                .pressBack(new SaveOrIgnoreDialog<D>(formName, destination))
-                .clickIgnoreChanges();
+                .pressBack(new SaveOrDiscardFormDialog<>(new MainMenuPage()))
+                .clickDiscardChanges();
+    }
+
+    public <D extends Page<D>> D pressBackAndDiscardChanges(D destination) {
+        return closeSoftKeyboard()
+                .pressBack(new SaveOrDiscardFormDialog<>(destination))
+                .clickDiscardChanges();
+    }
+
+    public MainMenuPage pressBackAndDiscardForm() {
+        return closeSoftKeyboard()
+                .pressBack(new SaveOrDiscardFormDialog<>(new MainMenuPage()))
+                .clickDiscardForm();
+    }
+
+    public <D extends Page<D>> D pressBackAndDiscardForm(D destination) {
+        return closeSoftKeyboard()
+                .pressBack(new SaveOrDiscardFormDialog<D>(destination))
+                .clickDiscardForm();
     }
 
     public FormEntryPage assertBackgroundLocationSnackbarShown() {

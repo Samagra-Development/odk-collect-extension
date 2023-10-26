@@ -14,24 +14,25 @@
 
 package org.odk.collect.android.activities;
 
+import static org.odk.collect.android.utilities.ApplicationConstants.SortingOrder.BY_DATE_ASC;
+import static org.odk.collect.android.utilities.ApplicationConstants.SortingOrder.BY_DATE_DESC;
+import static org.odk.collect.android.utilities.ApplicationConstants.SortingOrder.BY_NAME_ASC;
+import static org.odk.collect.android.utilities.ApplicationConstants.SortingOrder.BY_NAME_DESC;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
@@ -43,6 +44,7 @@ import org.odk.collect.android.analytics.AnalyticsEvents;
 import org.odk.collect.android.analytics.AnalyticsUtils;
 import org.odk.collect.android.dao.CursorLoaderFactory;
 import org.odk.collect.android.database.instances.DatabaseInstanceColumns;
+import org.odk.collect.android.external.FormUriActivity;
 import org.odk.collect.android.external.InstancesContract;
 import org.odk.collect.android.formlists.sorting.FormListSortingOption;
 import org.odk.collect.android.injection.DaggerUtils;
@@ -52,13 +54,10 @@ import org.odk.collect.android.utilities.FormsRepositoryProvider;
 import org.odk.collect.androidshared.ui.multiclicksafe.MultiClickGuard;
 import org.odk.collect.forms.Form;
 import org.odk.collect.forms.instances.Instance;
-import org.odk.collect.settings.keys.ProjectKeys;
 
 import java.util.Arrays;
 
 import javax.inject.Inject;
-
-import timber.log.Timber;
 
 /**
  * Responsible for displaying all the valid instances in the instance directory.
@@ -66,7 +65,7 @@ import timber.log.Timber;
  * @author Yaw Anokwa (yanokwa@gmail.com)
  * @author Carl Hartung (carlhartung@gmail.com)
  */
-public class InstanceChooserList extends InstanceListActivity implements AdapterView.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class InstanceChooserList extends AppListActivity implements AdapterView.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
     private static final String INSTANCE_LIST_ACTIVITY_SORTING_ORDER = "instanceListActivitySortingOrder";
     private static final String VIEW_SENT_FORM_SORTING_ORDER = "ViewSentFormSortingOrder";
 
@@ -80,97 +79,46 @@ public class InstanceChooserList extends InstanceListActivity implements Adapter
     @Inject
     FormsRepositoryProvider formsRepositoryProvider;
 
+    private final ActivityResultLauncher<Intent> formLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        setResult(RESULT_OK, result.getData());
+        finish();
+    });
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.form_chooser_list);
-        // WARNING: Custom ODK changes
-        getWindow().setStatusBarColor(getColor(settingsProvider.getUnprotectedSettings().getString(ProjectKeys.FORM_ACTIVITY_PRIMARY_COLOR)));
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            toolbar.setBackgroundColor(getColor(settingsProvider.getUnprotectedSettings().getString(ProjectKeys.FORM_ACTIVITY_TOOLBAR_BACKGROUND_COLOR)));
-            toolbar.setTitleTextColor(getColor(settingsProvider.getUnprotectedSettings().getString(ProjectKeys.FORM_ACTIVITY_TOOLBAR_FOREGROUND_COLOR)));
-            Drawable drawable = toolbar.getOverflowIcon();
-            if (drawable != null) {
-                drawable = DrawableCompat.wrap(drawable);
-                DrawableCompat.setTint(drawable.mutate(), getColor(settingsProvider.getUnprotectedSettings().getString(ProjectKeys.FORM_ACTIVITY_TOOLBAR_FOREGROUND_COLOR)));
-                toolbar.setOverflowIcon(drawable);
-            }
-        }
         DaggerUtils.getComponent(this).inject(this);
 
         String formMode = getIntent().getStringExtra(ApplicationConstants.BundleKeys.FORM_MODE);
         if (formMode == null || ApplicationConstants.FormModes.EDIT_SAVED.equalsIgnoreCase(formMode)) {
-
             setTitle(getString(R.string.review_data));
             editMode = true;
-            sortingOptions = Arrays.asList(
-                    new FormListSortingOption(
-                            R.drawable.ic_sort_by_alpha,
-                            R.string.sort_by_name_asc
-                    ),
-                    new FormListSortingOption(
-                            R.drawable.ic_sort_by_alpha,
-                            R.string.sort_by_name_desc
-                    ),
-                    new FormListSortingOption(
-                            R.drawable.ic_access_time,
-                            R.string.sort_by_date_desc
-                    ),
-                    new FormListSortingOption(
-                            R.drawable.ic_access_time,
-                            R.string.sort_by_date_asc
-                    ),
-                    new FormListSortingOption(
-                            R.drawable.ic_assignment_turned_in,
-                            R.string.sort_by_status_asc
-                    ),
-                    new FormListSortingOption(
-                            R.drawable.ic_assignment_late,
-                            R.string.sort_by_status_desc
-                    )
-            );
         } else {
             setTitle(getString(R.string.view_sent_forms));
-
-            sortingOptions = Arrays.asList(
-                    new FormListSortingOption(
-                            R.drawable.ic_sort_by_alpha,
-                            R.string.sort_by_name_asc
-                    ),
-                    new FormListSortingOption(
-                            R.drawable.ic_sort_by_alpha,
-                            R.string.sort_by_name_desc
-                    ),
-                    new FormListSortingOption(
-                            R.drawable.ic_access_time,
-                            R.string.sort_by_date_desc
-                    ),
-                    new FormListSortingOption(
-                            R.drawable.ic_access_time,
-                            R.string.sort_by_date_asc
-                    )
-            );
             ((TextView) findViewById(android.R.id.empty)).setText(R.string.no_items_display_sent_forms);
         }
 
-        init();
-    }
+        sortingOptions = Arrays.asList(
+                new FormListSortingOption(
+                        R.drawable.ic_sort_by_alpha,
+                        R.string.sort_by_name_asc
+                ),
+                new FormListSortingOption(
+                        R.drawable.ic_sort_by_alpha,
+                        R.string.sort_by_name_desc
+                ),
+                new FormListSortingOption(
+                        R.drawable.ic_access_time,
+                        R.string.sort_by_date_desc
+                ),
+                new FormListSortingOption(
+                        R.drawable.ic_access_time,
+                        R.string.sort_by_date_asc
+                )
+        );
 
-    // WARNING: Custom ODK changes
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        boolean isSuccessful = super.onCreateOptionsMenu(menu);
-        for (int i = 0; i < menu.size(); i++) {
-            Drawable menuIcon = menu.getItem(i).getIcon();
-            if (menuIcon != null) {
-                menu.getItem(i).getIcon().setColorFilter(
-                        getColor(settingsProvider.getUnprotectedSettings().getString(ProjectKeys.FORM_ACTIVITY_TOOLBAR_FOREGROUND_COLOR)),
-                        PorterDuff.Mode.SRC_IN
-                );
-            }
-        }
-        return isSuccessful;
+        init();
     }
 
     private void init() {
@@ -193,6 +141,7 @@ public class InstanceChooserList extends InstanceListActivity implements Adapter
                 if (Intent.ACTION_PICK.equals(action)) {
                     // caller is waiting on a picked form
                     setResult(RESULT_OK, new Intent().setData(instanceUri));
+                    finish();
                 } else {
                     // the form can be edited if it is incomplete or if, when it was
                     // marked as complete, it was determined that it could be edited
@@ -208,21 +157,22 @@ public class InstanceChooserList extends InstanceListActivity implements Adapter
                                 DO_NOT_EXIT);
                         return;
                     }
-                    // caller wants to view/edit a form, so launch formentryactivity
+                    // caller wants to view/edit a form, so launch FormFillingActivity
                     Intent parentIntent = this.getIntent();
-                    Intent intent = new Intent(this, FormEntryActivity.class);
+                    Intent intent = new Intent(this, FormUriActivity.class);
                     intent.setAction(Intent.ACTION_EDIT);
                     intent.setData(instanceUri);
                     String formMode = parentIntent.getStringExtra(ApplicationConstants.BundleKeys.FORM_MODE);
                     if (formMode == null || ApplicationConstants.FormModes.EDIT_SAVED.equalsIgnoreCase(formMode)) {
                         logFormEdit(c);
                         intent.putExtra(ApplicationConstants.BundleKeys.FORM_MODE, ApplicationConstants.FormModes.EDIT_SAVED);
+                        formLauncher.launch(intent);
                     } else {
                         intent.putExtra(ApplicationConstants.BundleKeys.FORM_MODE, ApplicationConstants.FormModes.VIEW_SENT);
+                        startActivity(intent);
+                        finish();
                     }
-                    startActivity(intent);
                 }
-                finish();
             } else {
                 TextView disabledCause = view.findViewById(R.id.form_subtitle2);
                 Toast.makeText(this, disabledCause.getText(), Toast.LENGTH_SHORT).show();
@@ -307,14 +257,22 @@ public class InstanceChooserList extends InstanceListActivity implements Adapter
         alertDialog.show();
     }
 
-    // WARNING: Custom ODK changes
-    private int getColor(String hash) {
-        try {
-            return Color.parseColor(hash);
+    protected String getSortingOrder() {
+        String sortingOrder = DatabaseInstanceColumns.DISPLAY_NAME + " COLLATE NOCASE ASC, " + DatabaseInstanceColumns.STATUS + " DESC";
+        switch (getSelectedSortingOrder()) {
+            case BY_NAME_ASC:
+                sortingOrder = DatabaseInstanceColumns.DISPLAY_NAME + " COLLATE NOCASE ASC, " + DatabaseInstanceColumns.STATUS + " DESC";
+                break;
+            case BY_NAME_DESC:
+                sortingOrder = DatabaseInstanceColumns.DISPLAY_NAME + " COLLATE NOCASE DESC, " + DatabaseInstanceColumns.STATUS + " DESC";
+                break;
+            case BY_DATE_ASC:
+                sortingOrder = DatabaseInstanceColumns.LAST_STATUS_CHANGE_DATE + " ASC";
+                break;
+            case BY_DATE_DESC:
+                sortingOrder = DatabaseInstanceColumns.LAST_STATUS_CHANGE_DATE + " DESC";
+                break;
         }
-        catch (Exception e) {
-            Timber.e(new IllegalArgumentException("Invalid color hash"));
-            return 0xffffff;
-        }
+        return sortingOrder;
     }
 }

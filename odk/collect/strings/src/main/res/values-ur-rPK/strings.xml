@@ -1,25 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Text for the topmost button on the main screen. It should be short and action-oriented.-->
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data">خالی فارم پر کریں</string>
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">خالی فارم پر کریں</string>
   <!--Text for an action button on the main screen.-->
-  <string name="review_data">محفوظ شدہ فارم کی تدوین کریں</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="review_data_button">محفوظ شدہ فارم (‎%s‏) کی تدوین کریں</string>
   <!--Text for an action button on the main screen.-->
-  <string name="send_data">حتمی فارم کو بھیجیں</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="send_data_button">حتمی فارم (‎%s‏) کو بھیجیں</string>
   <!--Text for an action button on the main screen.-->
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms">خالی فارم حاصل کریں</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">محفوظ شدہ فارم کو مٹا دیں۔</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="added_on_date_at_time">‎\'‏Added on‎\' EEE, MMM dd, yyyy \'‏at‎\' HH:mm‏</string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="saved_on_date_at_time">‎\'‏Saved on‎\' EEE, MMM dd, yyyy \'‏at‎\' HH:mm‏</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -29,12 +18,15 @@
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="sending_failed_on_date_at_time">‎\'‏Sending failed on‎\' EEE, MMM dd, yyyy \'‏at‎\' HH:mm‏</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
+  <string name="submission_deleted">جمع کرانے کو حذف کر دیا گیا</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
+  <string name="deleted_form">حذف شدہ فارم</string>
+  <string name="sort_the_list">فہرست ترتیب دیں</string>
   <!--A sort option for blank forms. When this option is selected, the form for which a filled instance was last filled will go first.-->
+  <string name="filter_the_list">فہرست کو فلٹر کریں۔</string>
   <!--Displayed in search boxes for form lists or question types that involve search-->
   <string name="no_items_display">دکھانے کیلے کچھ بھی نہیں ہے</string>
   <string name="no_items_display_forms">دکھانے کیلئےکچھ نہیں ہے؟؟ خالی فارم حاصل کرنے اور پر کرنے کی کوشش کریں</string>
-  <string name="no_items_display_instances">دکھانے کیلئےکچھ نہیں ہے؟؟ْ۔ محفوظ شدہ فارم (ز) کو بھیجنےسے پہلےمکمل کریں</string>
   <!--Starting in Android 12, Android makes it possible to give precise or approximate location permissions to an application. ODK Collect only captures location if the precise location permission is granted.-->
   <!--##############################################
     # FILL BLANK FORM
@@ -43,7 +35,6 @@
   <string name="finished_disk_scan">سکئننگ ختم ہو گئ ۔ تمام فائل لوڈ کئےگئے</string>
   <string name="loading_form">فارم لوڈ ہو رہا ہے</string>
   <string name="parse_error">معافی، فارم کا تجزیہ نہیں ہو سکا</string>
-  <string name="parent_form_not_present">اس محفوظ شدہ فارم کی تدوین نہیں ہو رہی، کیونکہ اسکا مماثل خالی فارم موجود نہیں یا پھر مٹا یا گیا ہے، ِِ؟؟؟؟ فارم کی شناخت: ‎%1$s‏</string>
   <!--Displayed when loading a form if that form was previously filled but closed because of a crash or system failure-->
   <string name="savepoint_used">سیو پوائنٹ سے حاصل شدہ غیر محفوظ شدہ تبدیلیاں</string>
   <!--Displayed in the form filling menu when a form definition specifies multiple languages-->
@@ -51,7 +42,6 @@
   <!--Text for button displayed in the form filling menu to see the form's table of contents-->
   <string name="view_hierarchy">پرامپٹ (prompt) پر جایئں</string>
   <!--Text for button displayed in the form filling menu to save the form-->
-  <string name="save_all_answers">فارم کو محفوظ کریں</string>
   <!--Text of button from the form's table of contents to jump to the beginning of the form-->
   <string name="jump_to_beginning">شروع پر چلیں</string>
   <!--Text of button from the form's table of contents to jump to the end of the form-->
@@ -78,17 +68,12 @@
   <string name="invalid_answer_error">معافی، یہ جواب ناقابل عمل ہے</string>
   <string name="required_answer_error">معافی، یہ جواب دینا ضروری ہے</string>
   <string name="save_enter_data_description">آپ ‎%s‏ کے آخر پر ہیں۔</string>
-  <string name="save_form_as">اس فارم کو نام دیں</string>
-  <string name="save_as_error">محفوظ کیا گیا نام خالی نہیں ہونا چاہئے</string>
-  <string name="mark_finished">فارم کو حتمی کردیں</string>
-  <string name="quit_entry">فارم کو محفوظ کرکے نکل جایئں</string>
   <string name="data_saved_error">معافی, فارم محفوظ نہیں ہوسکا</string>
   <string name="data_saved_ok">فارم کامیابی سے محفوظ کیا گیا</string>
   <string name="save_point_error">ریکوری پوانٹ سیو کرتے وقت خرابی: %s</string>
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <string name="quit_application">‎%s‏ سے نکل جائیں</string>
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
-  <string name="do_not_save">تبدیلیاں نظرانداز کریں</string>
   <string name="keep_changes">تبدیلیوں کو محفوظ کریں</string>
   <string name="saving_form">فارم محفوظ ہو رہا ہے</string>
   <!--Displayed when form filling is attempted to be launched by intent but the intent URI is incorrect-->
@@ -173,6 +158,7 @@
   <string name="provider_disabled_error">معافی، مقام فراہم کرنے والے نااہل کئے گئے ہیں</string>
   <!--Action to go to Android settings. Displayed when location providers are disabled.-->
   <!--Label for a menu item that can be toggled to turn background location tracking on and off during form filling-->
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <!--%1$s is the time taken so far in hh:mm:ss-->
   <!--%1$s is the accuracy required for a point to be automatically saved-->
   <!--%1$s is the number of satellites being used to get location-->
@@ -303,8 +289,6 @@
   <!--Frequency for requesting blank form updates from the server-->
   <!--Frequency for requesting blank form updates from the server-->
   <!--Name of setting that defines whether form updates should be automatically downloaded when in "previously downloaded forms only" download mode-->
-  <string name="default_completed">حتمی کیا گیا زیر استعمال</string>
-  <string name="default_completed_summary">فارم کو (default) مکمل بنا دیں</string>
   <string name="constraint_behavior">ترکیبی عمل کو روکیں</string>
   <string name="constraint_behavior_on_swipe">آگے سوائپ پر توثیق کریں</string>
   <string name="constraint_behavior_on_finalize">توثیق کو حتمی ہونے تک موءخر کردیں</string>
@@ -330,7 +314,6 @@
   <!--Name of a setting that determines whether users can navigate backwards in a form-->
   <string name="moving_backwards_title">پیچھے جائیں</string>
   <!--Protected setting. When enabled, users are allowed to save forms while filling them. When disabled, users are only allowed to save forms when they reach their end-->
-  <string name="save_mid">فارم کو محفوظ کریں</string>
   <!--##############################################
      # GOOGLE DRIVE, GOOGLE SHEETS
      ##############################################-->
@@ -376,8 +359,6 @@
     select the wording and where to put the \n for maximum impact in your language.-->
   <!--Text for the button that allows for configuring a project by scanning a QR code. Should be short-->
   <!--Text for the button that allows for manually entering project details. Should be short-->
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <!--Preceded by "Don't have a project yet?" question-->
   <!--Error shown when a user tries to open a form that's in a different project-->
@@ -393,9 +374,16 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <string name="dismiss_button_text">ختم کریں</string>
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

@@ -18,6 +18,7 @@ package org.odk.collect.android.feature.formentry;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intending;
@@ -25,9 +26,11 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.isInternal;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.StringEndsWith.endsWith;
@@ -35,7 +38,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.odk.collect.android.support.matchers.CustomMatchers.withIndex;
 import static org.odk.collect.android.support.FileUtils.copyFileFromAssets;
-import static org.odk.collect.androidtest.NestedScrollToAction.nestedScrollTo;
 
 import android.app.Activity;
 import android.app.Instrumentation;
@@ -47,6 +49,7 @@ import android.os.Environment;
 
 import androidx.core.content.FileProvider;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.matcher.ViewMatchers;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -54,10 +57,9 @@ import org.junit.rules.RuleChain;
 import org.odk.collect.android.BuildConfig;
 import org.odk.collect.android.R;
 import org.odk.collect.android.application.Collect;
-import org.odk.collect.android.support.rules.FormActivityTestRule;
+import org.odk.collect.android.support.rules.BlankFormTestRule;
 import org.odk.collect.android.support.rules.TestRuleChain;
 import org.odk.collect.androidtest.RecordedIntentsRule;
-import org.odk.collect.settings.keys.ProjectKeys;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,7 +70,7 @@ import java.io.IOException;
 public class IntentGroupTest {
     private static final String INTENT_GROUP_FORM = "intent-group.xml";
 
-    public FormActivityTestRule rule = new FormActivityTestRule(INTENT_GROUP_FORM, "intent-group");
+    public BlankFormTestRule rule = new BlankFormTestRule(INTENT_GROUP_FORM, "intent-group");
 
     @Rule
     public RuleChain copyFormChain = TestRuleChain.chain()
@@ -122,7 +124,7 @@ public class IntentGroupTest {
         resultIntent.setClipData(clipData);
         resultIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, resultIntent));
-        onView(withText("This is buttonText")).perform(nestedScrollTo(), click());
+        onView(withText("This is buttonText")).perform(scrollTo(), click());
 
         assertImageWidgetWithAnswer();
         assertAudioWidgetWithAnswer();
@@ -156,7 +158,7 @@ public class IntentGroupTest {
         resultIntent.setClipData(clipData);
         resultIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, resultIntent));
-        onView(withText("This is buttonText")).perform(nestedScrollTo(), click());
+        onView(withText("This is buttonText")).perform(scrollTo(), click());
 
         onView(withIndex(withClassName(endsWith("EditText")), 0)).check(matches(withText("")));
         onView(withIndex(withClassName(endsWith("EditText")), 1)).check(matches(withText("")));
@@ -205,7 +207,7 @@ public class IntentGroupTest {
     }
 
     private void assertImageWidgetWithoutAnswer() {
-        onView(withTagValue(is("ImageView"))).check(doesNotExist());
+        onView(allOf(withTagValue(is("ImageView")), withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))).check(doesNotExist());
         onView(withId(R.id.capture_image)).check(doesNotExist());
         onView(withId(R.id.choose_image)).check(doesNotExist());
     }
@@ -215,7 +217,7 @@ public class IntentGroupTest {
     }
 
     private void assertVideoWidgetWithoutAnswer() {
-        onView(withText(is("Video external"))).perform(nestedScrollTo()).check(matches(isDisplayed()));
+        onView(withText(is("Video external"))).perform(scrollTo()).check(matches(isDisplayed()));
         onView(withId(R.id.play_video)).check(matches(not(isDisplayed())));
     }
 
@@ -224,22 +226,22 @@ public class IntentGroupTest {
     }
 
     private void assertImageWidgetWithAnswer() {
-        onView(withTagValue(is("ImageView"))).perform(nestedScrollTo()).check(matches(isDisplayed()));
+        onView(allOf(withTagValue(is("ImageView")), withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))).check(matches(not(doesNotExist())));
         onView(withId(R.id.capture_image)).check(doesNotExist());
         onView(withId(R.id.choose_image)).check(doesNotExist());
     }
 
     private void assertAudioWidgetWithAnswer() {
-        onView(withId(R.id.audio_controller)).perform(nestedScrollTo()).check(matches(isDisplayed()));
+        onView(withId(R.id.audio_controller)).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     private void assertVideoWidgetWithAnswer() {
-        onView(withId(R.id.play_video)).perform(nestedScrollTo()).check(matches(isDisplayed()));
+        onView(withId(R.id.play_video)).perform(scrollTo()).check(matches(isDisplayed()));
         onView(withId(R.id.play_video)).check(matches(isEnabled()));
     }
 
     private void assertFileWidgetWithAnswer() {
-        onView(withTagValue(is("ArbitraryFileWidgetAnswer"))).perform(nestedScrollTo()).check(matches(isDisplayed()));
+        onView(withTagValue(is("ArbitraryFileWidgetAnswer"))).perform(scrollTo()).check(matches(isDisplayed()));
     }
 
     private Uri createTempFile(String name, String extension) throws IOException {
@@ -254,6 +256,6 @@ public class IntentGroupTest {
     }
 
     private Uri getUriForFile(File file) {
-        return FileProvider.getUriForFile(Collect.getInstance(), ProjectKeys.APP_PROVIDER + ".provider", file);
+        return FileProvider.getUriForFile(Collect.getInstance(), BuildConfig.APPLICATION_ID + ".provider", file);
     }
 }

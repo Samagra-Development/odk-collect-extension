@@ -14,6 +14,13 @@
 
 package org.odk.collect.android.fragments;
 
+import static org.odk.collect.android.utilities.ApplicationConstants.SortingOrder.BY_DATE_ASC;
+import static org.odk.collect.android.utilities.ApplicationConstants.SortingOrder.BY_DATE_DESC;
+import static org.odk.collect.android.utilities.ApplicationConstants.SortingOrder.BY_NAME_ASC;
+import static org.odk.collect.android.utilities.ApplicationConstants.SortingOrder.BY_NAME_DESC;
+import static org.odk.collect.android.utilities.ApplicationConstants.SortingOrder.BY_STATUS_ASC;
+import static org.odk.collect.android.utilities.ApplicationConstants.SortingOrder.BY_STATUS_DESC;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -58,7 +65,7 @@ import timber.log.Timber;
  * @author Carl Hartung (carlhartung@gmail.com)
  * @author Yaw Anokwa (yanokwa@gmail.com)
  */
-public class SavedFormListFragment extends InstanceListFragment implements DeleteInstancesListener, View.OnClickListener {
+public class SavedFormListFragment extends FileManagerFragment implements DeleteInstancesListener, View.OnClickListener {
     private static final String DATA_MANAGER_LIST_SORTING_ORDER = "dataManagerListSortingOrder";
 
     DeleteInstancesTask deleteInstancesTask;
@@ -227,26 +234,29 @@ public class SavedFormListFragment extends InstanceListFragment implements Delet
 
     @Override
     public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.delete_button) {
-            int checkedItemCount = getCheckedCount();
-            if (checkedItemCount > 0) {
-                createDeleteInstancesDialog();
-            } else {
-                ToastUtils.showShortToast(requireContext(), R.string.noselect_error);
-            }
-        } else if (id == R.id.toggle_button) {
-            ListView lv = getListView();
-            boolean allChecked = toggleChecked(lv);
-            if (allChecked) {
-                for (int i = 0; i < lv.getCount(); i++) {
-                    selectedInstances.add(lv.getItemIdAtPosition(i));
+        switch (v.getId()) {
+            case R.id.delete_button:
+                int checkedItemCount = getCheckedCount();
+                if (checkedItemCount > 0) {
+                    createDeleteInstancesDialog();
+                } else {
+                    ToastUtils.showShortToast(requireContext(), R.string.noselect_error);
                 }
-            } else {
-                selectedInstances.clear();
-            }
-            toggleButtonLabel(toggleButton, getListView());
-            deleteButton.setEnabled(allChecked);
+                break;
+
+            case R.id.toggle_button:
+                ListView lv = getListView();
+                boolean allChecked = toggleChecked(lv);
+                if (allChecked) {
+                    for (int i = 0; i < lv.getCount(); i++) {
+                        selectedInstances.add(lv.getItemIdAtPosition(i));
+                    }
+                } else {
+                    selectedInstances.clear();
+                }
+                toggleButtonLabel(toggleButton, getListView());
+                deleteButton.setEnabled(allChecked);
+                break;
         }
     }
 
@@ -254,5 +264,30 @@ public class SavedFormListFragment extends InstanceListFragment implements Delet
     public void onLoadFinished(@NonNull @NotNull Loader<Cursor> loader, Cursor cursor) {
         super.onLoadFinished(loader, cursor);
         hideProgressBarAndAllow();
+    }
+
+    private String getSortingOrder() {
+        String sortOrder = DatabaseInstanceColumns.DISPLAY_NAME + " COLLATE NOCASE ASC, " + DatabaseInstanceColumns.STATUS + " DESC";
+        switch (getSelectedSortingOrder()) {
+            case BY_NAME_ASC:
+                sortOrder = DatabaseInstanceColumns.DISPLAY_NAME + " COLLATE NOCASE ASC, " + DatabaseInstanceColumns.STATUS + " DESC";
+                break;
+            case BY_NAME_DESC:
+                sortOrder = DatabaseInstanceColumns.DISPLAY_NAME + " COLLATE NOCASE DESC, " + DatabaseInstanceColumns.STATUS + " DESC";
+                break;
+            case BY_DATE_ASC:
+                sortOrder = DatabaseInstanceColumns.LAST_STATUS_CHANGE_DATE + " ASC";
+                break;
+            case BY_DATE_DESC:
+                sortOrder = DatabaseInstanceColumns.LAST_STATUS_CHANGE_DATE + " DESC";
+                break;
+            case BY_STATUS_ASC:
+                sortOrder = DatabaseInstanceColumns.STATUS + " ASC, " + DatabaseInstanceColumns.DISPLAY_NAME + " COLLATE NOCASE ASC";
+                break;
+            case BY_STATUS_DESC:
+                sortOrder = DatabaseInstanceColumns.STATUS + " DESC, " + DatabaseInstanceColumns.DISPLAY_NAME + " COLLATE NOCASE ASC";
+                break;
+        }
+        return sortOrder;
     }
 }

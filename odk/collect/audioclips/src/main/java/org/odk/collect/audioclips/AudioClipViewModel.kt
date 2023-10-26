@@ -3,9 +3,9 @@ package org.odk.collect.audioclips
 import android.media.MediaPlayer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
 import org.odk.collect.async.Cancellable
 import org.odk.collect.async.Scheduler
 import java.io.File
@@ -13,7 +13,6 @@ import java.io.IOException
 import java.util.LinkedList
 import java.util.Queue
 import java.util.function.Supplier
-import kotlin.jvm.Throws
 
 class AudioClipViewModel(private val mediaPlayerFactory: Supplier<MediaPlayer>, private val scheduler: Scheduler) : ViewModel(), MediaPlayer.OnCompletionListener {
 
@@ -58,7 +57,7 @@ class AudioClipViewModel(private val mediaPlayerFactory: Supplier<MediaPlayer>, 
     }
 
     fun isPlaying(clipID: String): LiveData<Boolean> {
-        return Transformations.map(currentlyPlaying) { value ->
+        return currentlyPlaying.map { value ->
             if (isCurrentPlayingClip(clipID, value)) {
                 !value!!.isPaused
             } else {
@@ -193,7 +192,7 @@ class AudioClipViewModel(private val mediaPlayerFactory: Supplier<MediaPlayer>, 
         mediaPlayer.prepare()
     }
 
-    private class CurrentlyPlaying internal constructor(val clip: Clip, val isPaused: Boolean, val playlist: Queue<Clip>) {
+    private class CurrentlyPlaying(val clip: Clip, val isPaused: Boolean, val playlist: Queue<Clip>) {
 
         val clipID: String
             get() = clip.clipID

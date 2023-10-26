@@ -31,7 +31,6 @@ import android.widget.ProgressBar;
 
 import org.odk.collect.android.R;
 import org.odk.collect.android.formlists.sorting.FormListSortingOption;
-import org.odk.collect.android.utilities.SnackbarUtils;
 
 import java.util.Arrays;
 
@@ -129,8 +128,9 @@ public abstract class FileManagerFragment extends AppListFragment implements Loa
         deleteButton.setEnabled(areCheckedItems());
 
         if (getListView().getCount() == 0) {
-            toggleButton.setEnabled(false);
+            getView().findViewById(R.id.buttons).setVisibility(View.GONE);
         } else {
+            getView().findViewById(R.id.buttons).setVisibility(View.VISIBLE);
             toggleButton.setEnabled(true);
         }
     }
@@ -161,9 +161,5 @@ public abstract class FileManagerFragment extends AppListFragment implements Loa
     protected void showProgressBar() {
         progressBar.setVisibility(View.VISIBLE);
         progressBarVisible = true;
-    }
-
-    protected void showSnackbar(@NonNull String result) {
-        SnackbarUtils.showShortSnackbar(llParent, result);
     }
 }

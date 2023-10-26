@@ -56,7 +56,7 @@ class SwitchProjectTest {
             .startBlankForm("Two Question")
             .swipeToNextQuestion("What is your age?")
             .swipeToEndScreen()
-            .clickSaveAndExit()
+            .clickSaveAsDraft()
             .clickEditSavedForm(1)
             .assertText("Two Question")
             .pressBack(MainMenuPage())
@@ -78,8 +78,8 @@ class SwitchProjectTest {
 
             // Fill form
             .startBlankForm("One Question Entity")
-            .fillOutAndSave(FormEntryPage.QuestionAndAnswer("Name", "Alice"))
-            .clickEditSavedForm(1)
+            .fillOutAndFinalize(FormEntryPage.QuestionAndAnswer("Name", "Alice"))
+            .clickSendFinalizedForm(1)
             .assertText("One Question Entity")
             .pressBack(MainMenuPage())
 
@@ -111,7 +111,7 @@ class SwitchProjectTest {
             .pressBack(MainMenuPage())
 
             // Check instances
-            .clickSendFinalizedForm(1)
+            .clickEditSavedForm(1)
             .assertText("Two Question")
             .pressBack(MainMenuPage())
 

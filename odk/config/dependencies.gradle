@@ -113,6 +113,6 @@ ext {
             robolectric_shadows_multidex    : "org.robolectric:shadows-multidex:${versions.robolectric}",
             uiautomator                     : "androidx.test.uiautomator:uiautomator:2.2.0",
             rx_java                         : "io.reactivex.rxjava3:rxjava:3.1.5",
-            rx_android                      :"io.reactivex.rxjava3:rxandroid:3.0.0"
+            rx_android                      : "io.reactivex.rxjava3:rxandroid:3.0.0"
     ]
 }

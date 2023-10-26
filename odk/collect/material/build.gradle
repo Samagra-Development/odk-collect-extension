@@ -1,17 +1,19 @@
+import dependencies.Dependencies
+import dependencies.Versions
+
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
 }
 
-apply from: '../../config/dependencies.gradle'
-apply from: '../../config/quality.gradle'
+apply from: '../config/quality.gradle'
 
 android {
-    compileSdkVersion versions.android_compile_sdk
+    compileSdkVersion Versions.android_compile_sdk
 
     defaultConfig {
-        minSdkVersion versions.android_min_sdk
-        targetSdkVersion versions.android_target_sdk
+        minSdkVersion Versions.android_min_sdk
+        targetSdkVersion Versions.android_target_sdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -38,23 +40,22 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring packages.desugar
+    coreLibraryDesugaring Dependencies.desugar
 
-    implementation packages.androidx_appcompat
-    implementation packages.android_material
-    implementation packages.androidx_fragment
-    implementation packages.kotlin_stdlib
+    implementation Dependencies.androidx_appcompat
+    implementation Dependencies.android_material
+    implementation Dependencies.androidx_fragment_ktx
+    implementation Dependencies.kotlin_stdlib
     implementation project(':odk:collect:androidshared')
-    implementation project(':odk:collect:strings')
 
     debugImplementation project(':odk:collect:fragmentstest')
 
     testImplementation project(':odk:collect:testshared')
 
-    testImplementation packages.junit
-    testImplementation packages.androidx_test_ext_junit
-    testImplementation packages.androidx_test_espresso_core
-    testImplementation packages.hamcrest
-    testImplementation packages.mockito_core
-    testImplementation packages.robolectric
+    testImplementation Dependencies.junit
+    testImplementation Dependencies.androidx_test_ext_junit
+    testImplementation Dependencies.androidx_test_espresso_core
+    testImplementation Dependencies.hamcrest
+    testImplementation Dependencies.mockito_kotlin
+    testImplementation Dependencies.robolectric
 }

@@ -33,7 +33,7 @@ import org.mockito.stubbing.Answer;
 import org.odk.collect.android.exception.JavaRosaException;
 import org.odk.collect.android.formentry.audit.AuditEventLogger;
 import org.odk.collect.android.formentry.support.InMemFormSessionRepository;
-import org.odk.collect.android.javarosawrapper.FailedConstraint;
+import org.odk.collect.android.javarosawrapper.FailedValidationResult;
 import org.odk.collect.android.javarosawrapper.FormController;
 import org.odk.collect.android.support.MockFormEntryPromptBuilder;
 import org.odk.collect.testshared.FakeScheduler;
@@ -68,7 +68,7 @@ public class FormEntryViewModelTest {
 
         scheduler = new FakeScheduler();
 
-        formSessionRepository.set("blah", formController);
+        formSessionRepository.set("blah", formController, mock());
         viewModel = new FormEntryViewModel(mock(Supplier.class), scheduler, formSessionRepository, "blah");
     }
 
@@ -196,7 +196,6 @@ public class FormEntryViewModelTest {
         scheduler.runBackground();
         InOrder verifier = inOrder(formController, auditEventLogger);
         verifier.verify(formController).saveAllScreenAnswers(answers, false);
-        verifier.verify(auditEventLogger).flush();
         verifier.verify(formController).stepToNextScreenEvent();
         verifier.verify(auditEventLogger).flush();
     }
@@ -229,19 +228,33 @@ public class FormEntryViewModelTest {
 
     @Test
     public void moveForward_whenThereIsAFailedConstraint_setsFailedConstraint() throws Exception {
-        FailedConstraint failedConstraint = new FailedConstraint(startingIndex, 0);
-        when(formController.saveAllScreenAnswers(any(), anyBoolean())).thenReturn(failedConstraint);
+        FailedValidationResult failedValidationResult = new FailedValidationResult(startingIndex, 0);
+        when(formController.saveAllScreenAnswers(any(), anyBoolean())).thenReturn(failedValidationResult);
 
         viewModel.moveForward(new HashMap<>());
         scheduler.runBackground();
 
-        assertThat(getOrAwaitValue(viewModel.getFailedConstraint()), equalTo(failedConstraint));
+        assertThat(getOrAwaitValue(viewModel.getValidationResult()), equalTo(failedValidationResult));
+    }
+
+    /**
+     * We don't want to flush the log before answers are actually committed.
+     */
+    @Test
+    public void moveForward_whenThereIsAFailedConstraint_doesNotFlushAuditLog() throws Exception {
+        FailedValidationResult failedValidationResult = new FailedValidationResult(startingIndex, 0);
+        when(formController.saveAllScreenAnswers(any(), anyBoolean())).thenReturn(failedValidationResult);
+
+        viewModel.moveForward(new HashMap<>());
+        scheduler.runBackground();
+
+        verify(auditEventLogger, never()).flush();
     }
 
     @Test
     public void moveForward_whenThereIsAFailedConstraint_doesNotStepToNextEvent() throws Exception {
-        FailedConstraint failedConstraint = new FailedConstraint(startingIndex, 0);
-        when(formController.saveAllScreenAnswers(any(), anyBoolean())).thenReturn(failedConstraint);
+        FailedValidationResult failedValidationResult = new FailedValidationResult(startingIndex, 0);
+        when(formController.saveAllScreenAnswers(any(), anyBoolean())).thenReturn(failedValidationResult);
 
         viewModel.moveForward(new HashMap<>());
         scheduler.runBackground();
@@ -297,7 +310,6 @@ public class FormEntryViewModelTest {
         scheduler.runBackground();
         InOrder verifier = inOrder(formController, auditEventLogger);
         verifier.verify(formController).saveAllScreenAnswers(answers, false);
-        verifier.verify(auditEventLogger).flush();
         verifier.verify(formController).stepToPreviousScreenEvent();
         verifier.verify(auditEventLogger).flush();
     }
@@ -357,5 +369,25 @@ public class FormEntryViewModelTest {
 
         scheduler.runBackground();
         assertThat(getOrAwaitValue(viewModel.isLoading()), equalTo(false));
+    }
+
+    @Test
+    public void validate_setsLoadingToTrueWhileBackgroundWorkHappens() {
+        assertThat(getOrAwaitValue(viewModel.isLoading()), equalTo(false));
+
+        viewModel.validate();
+        assertThat(getOrAwaitValue(viewModel.isLoading()), equalTo(true));
+
+        scheduler.runBackground();
+        assertThat(getOrAwaitValue(viewModel.isLoading()), equalTo(false));
+    }
+
+    @Test
+    public void validate_whenThereIsAnErrorValidating_setsError() throws Exception {
+        when(formController.validateAnswers(true)).thenThrow(new JavaRosaException(new IOException("OH NO")));
+
+        viewModel.validate();
+        scheduler.runBackground();
+        assertThat(viewModel.getError().getValue(), equalTo(new NonFatal("OH NO")));
     }
 }

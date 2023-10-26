@@ -12,6 +12,7 @@ import android.app.Application;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -25,7 +26,8 @@ import org.odk.collect.android.support.TestDependencies;
 import org.odk.collect.android.support.pages.FormEndPage;
 import org.odk.collect.android.support.pages.FormEntryPage;
 import org.odk.collect.android.support.pages.MainMenuPage;
-import org.odk.collect.android.support.pages.SaveOrIgnoreDialog;
+import org.odk.collect.android.support.pages.SaveOrDiscardFormDialog;
+import org.odk.collect.android.support.pages.SendFinalizedFormPage;
 import org.odk.collect.android.support.rules.CollectTestRule;
 import org.odk.collect.android.support.rules.TestRuleChain;
 import org.odk.collect.audiorecorder.recording.AudioRecorder;
@@ -39,15 +41,18 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 @RunWith(AndroidJUnit4.class)
 public class BackgroundAudioRecordingTest {
 
     private StubAudioRecorder stubAudioRecorderViewModel;
 
-    private RevokeableRecordAudioPermissionsChecker permissionsChecker;
-    private ControllableRecordAudioPermissionsProvider permissionsProvider;
-    public final TestDependencies testDependencies = new TestDependencies() {
+    private final RevokeableRecordAudioPermissionsChecker permissionsChecker = new RevokeableRecordAudioPermissionsChecker(ApplicationProvider.getApplicationContext());
+    private final ControllableRecordAudioPermissionsProvider permissionsProvider = new ControllableRecordAudioPermissionsProvider(permissionsChecker);
+    private Long currentTimeMillis = System.currentTimeMillis();
+
+    private final TestDependencies testDependencies = new TestDependencies() {
 
         @Override
         public AudioRecorder providesAudioRecorder(Application application) {
@@ -68,20 +73,17 @@ public class BackgroundAudioRecordingTest {
 
         @Override
         public PermissionsChecker providesPermissionsChecker(Context context) {
-            if (permissionsChecker == null) {
-                permissionsChecker = new RevokeableRecordAudioPermissionsChecker(context);
-            }
-
             return permissionsChecker;
         }
 
         @Override
         public PermissionsProvider providesPermissionsProvider(PermissionsChecker permissionsChecker) {
-            if (permissionsProvider == null) {
-                permissionsProvider = new ControllableRecordAudioPermissionsProvider(permissionsChecker);
-            }
-
             return permissionsProvider;
+        }
+
+        @Override
+        public Supplier<Long> providesClock() {
+            return () -> currentTimeMillis;
         }
     };
 
@@ -103,7 +105,7 @@ public class BackgroundAudioRecordingTest {
                 .swipeToEndScreen();
         assertThat(stubAudioRecorderViewModel.isRecording(), is(true));
 
-        formEndPage.clickSaveAndExit();
+        formEndPage.clickFinalize();
         assertThat(stubAudioRecorderViewModel.isRecording(), is(false));
 
         File instancesDir = new File(testDependencies.storagePathProvider.getOdkDirPath(StorageSubdirectory.INSTANCES));
@@ -125,7 +127,7 @@ public class BackgroundAudioRecordingTest {
                 .swipeToEndScreen();
         assertThat(stubAudioRecorderViewModel.isRecording(), is(true));
 
-        formEndPage.clickSaveAndExit();
+        formEndPage.clickFinalize();
         assertThat(stubAudioRecorderViewModel.isRecording(), is(false));
 
         File instancesDir = new File(testDependencies.storagePathProvider.getOdkDirPath(StorageSubdirectory.INSTANCES));
@@ -142,7 +144,7 @@ public class BackgroundAudioRecordingTest {
                 .copyForm("one-question-background-audio.xml")
                 .startBlankForm("One Question")
                 .closeSoftKeyboard()
-                .pressBack(new SaveOrIgnoreDialog<>("One Question", new MainMenuPage()))
+                .pressBack(new SaveOrDiscardFormDialog<>(new MainMenuPage()))
                 .clickSaveChanges();
     }
 
@@ -159,8 +161,8 @@ public class BackgroundAudioRecordingTest {
         assertThat(stubAudioRecorderViewModel.getLastRecording(), is(nullValue()));
 
         formEntryPage.closeSoftKeyboard()
-                .pressBack(new SaveOrIgnoreDialog<>("One Question", new MainMenuPage()))
-                .clickIgnoreChanges()
+                .pressBack(new SaveOrDiscardFormDialog<>(new MainMenuPage()))
+                .clickDiscardForm()
                 .startBlankForm("One Question");
 
         assertThat(stubAudioRecorderViewModel.isRecording(), is(false));
@@ -179,6 +181,24 @@ public class BackgroundAudioRecordingTest {
 
         permissionsProvider.additionalExplanationClosed();
         new MainMenuPage().assertOnPage();
+    }
+
+    @Test
+    public void viewForm_doesNotRecordAudio() {
+        rule.startAtMainMenu()
+                .setServer(testDependencies.server.getURL())
+                .copyForm("one-question-background-audio.xml")
+                .startBlankForm("One Question")
+                .fillOutAndFinalize(new FormEntryPage.QuestionAndAnswer("what is your age", "17"))
+                .clickSendFinalizedForm(1)
+                .clickSelectAll()
+                .clickSendSelected()
+                .clickOK(new SendFinalizedFormPage())
+                .pressBack(new MainMenuPage())
+                .clickViewSentForm(1)
+                .clickOnForm("One Question");
+
+        assertThat(stubAudioRecorderViewModel.isRecording(), is(false));
     }
 
     private static class RevokeableRecordAudioPermissionsChecker extends ContextCompatPermissionChecker {

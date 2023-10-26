@@ -20,20 +20,21 @@ import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
 import org.odk.collect.android.R;
-import org.odk.collect.android.activities.FormEntryActivity;
+import org.odk.collect.android.activities.FormFillingActivity;
 import org.odk.collect.android.storage.StoragePathProvider;
 import org.odk.collect.android.storage.StorageSubdirectory;
 import org.odk.collect.android.support.ActivityHelpers;
 import org.odk.collect.android.support.pages.AddNewRepeatDialog;
-import org.odk.collect.android.support.rules.CollectTestRule;
-import org.odk.collect.android.support.rules.TestRuleChain;
 import org.odk.collect.android.support.pages.BlankFormSearchPage;
-import org.odk.collect.android.support.pages.ExitFormDialog;
 import org.odk.collect.android.support.pages.FillBlankFormPage;
 import org.odk.collect.android.support.pages.FormEndPage;
 import org.odk.collect.android.support.pages.FormEntryPage;
+import org.odk.collect.android.support.pages.FormHierarchyPage;
 import org.odk.collect.android.support.pages.MainMenuPage;
 import org.odk.collect.android.support.pages.ProjectSettingsPage;
+import org.odk.collect.android.support.pages.SaveOrDiscardFormDialog;
+import org.odk.collect.android.support.rules.CollectTestRule;
+import org.odk.collect.android.support.rules.TestRuleChain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,23 +50,13 @@ public class FillBlankFormTest {
             .around(rule);
 
     @Test
-    public void subtext_ShouldDisplayAdditionalInformation() {
-        //TestCase2
-        rule.startAtMainMenu()
-                .copyForm("all-widgets.xml")
-                .clickFillBlankForm()
-                .checkIsFormSubtextDisplayed();
-
-    }
-
-    @Test
     public void exitDialog_ShouldDisplaySaveAndIgnoreOptions() {
         //TestCase6 , TestCase9
         rule.startAtMainMenu()
                 .copyForm("all-widgets.xml")
                 .startBlankForm("All widgets")
-                .pressBack(new ExitFormDialog("All widgets"))
-                .assertText(R.string.keep_changes)
+                .pressBack(new SaveOrDiscardFormDialog<>(new MainMenuPage()))
+                .assertText(R.string.save_as_draft)
                 .assertText(R.string.do_not_save)
                 .clickOnString(R.string.do_not_save)
                 .checkIsIdDisplayed(R.id.enter_data)
@@ -107,21 +98,20 @@ public class FillBlankFormTest {
                 .copyForm("1560_DateData.xml")
                 .startBlankForm("1560_DateData")
                 .checkIsTranslationDisplayed("Jan 01, 1900", "01 ene. 1900")
-                .swipeToEndScreen()
-                .clickSaveAndExit()
+                .swipeToEndScreen("01/01/00")
+                .clickFinalize()
 
                 .copyForm("1560_IntegerData.xml")
                 .startBlankForm("1560_IntegerData")
                 .assertText("5")
-                .swipeToEndScreen()
-                .assertText("5")
-                .clickSaveAndExit()
+                .swipeToEndScreen("5")
+                .clickFinalize()
 
                 .copyForm("1560_IntegerData_instanceID.xml")
                 .startBlankForm("1560_IntegerData_instanceID")
                 .assertText("5")
                 .swipeToEndScreen()
-                .clickSaveAndExit();
+                .clickFinalize();
     }
 
     @Test
@@ -222,8 +212,8 @@ public class FillBlankFormTest {
                 .clickOnText("No")
                 .swipeToNextQuestion("Any other notes?")
                 .swipeToEndScreen()
-                .clickSaveAndExit()
-                .checkIsToastWithMessageDisplayed(R.string.data_saved_ok);
+                .clickFinalize()
+                .checkIsSnackbarWithMessageDisplayed(R.string.form_saved);
     }
 
     @Test
@@ -241,7 +231,7 @@ public class FillBlankFormTest {
                 .clickOnText("Granny Smith")
                 .swipeToNextQuestion("Varieties (relative reference)")
                 .swipeToEndScreen()
-                .clickSaveAndExit();
+                .clickFinalize();
     }
 
     @Test
@@ -316,8 +306,8 @@ public class FillBlankFormTest {
                 .clickOnText("Mango")
                 .clickOnText("Oranges")
                 .swipeToEndScreen()
-                .clickSaveAndExit()
-                .checkIsToastWithMessageDisplayed(R.string.data_saved_ok);
+                .clickFinalize()
+                .checkIsSnackbarWithMessageDisplayed(R.string.form_saved);
     }
 
     @Test
@@ -335,7 +325,7 @@ public class FillBlankFormTest {
             firstQuestionAnswers.add(getQuestionText());
             formEntryPage.swipeToNextQuestion("Your random once value:");
             secondQuestionAnswers.add(getQuestionText());
-            formEntryPage.swipeToEndScreen().clickSaveAndExit();
+            formEntryPage.swipeToEndScreen().clickFinalize();
         }
 
         assertNotSame(firstQuestionAnswers.get(0), firstQuestionAnswers.get(1));
@@ -353,7 +343,7 @@ public class FillBlankFormTest {
             formEntryPage.inputText("3");
             formEntryPage.swipeToNextQuestion("Your random number was");
             firstQuestionAnswers.add(getQuestionText());
-            formEntryPage.swipeToEndScreen().clickSaveAndExit();
+            formEntryPage.swipeToEndScreen().clickFinalize();
         }
 
         assertNotSame(firstQuestionAnswers.get(0), firstQuestionAnswers.get(1));
@@ -369,34 +359,31 @@ public class FillBlankFormTest {
                 .startBlankFormWithError("g6Error")
                 .clickOK(new FormEntryPage("g6Error"))
                 .swipeToEndScreen()
-                .clickSaveAndExit()
-                .checkIsToastWithMessageDisplayed(R.string.data_saved_ok);
+                .clickFinalize()
+                .checkIsSnackbarWithMessageDisplayed(R.string.form_saved);
 
         new MainMenuPage()
                 .copyForm("g6Error2.xml")
                 .startBlankForm("g6Error2")
-                .inputText("bla")
                 .swipeToNextQuestionWithError()
                 .clickOK(new FormEntryPage("g6Error2"))
                 .swipeToEndScreen()
-                .inputText("ble")
-                .clickSaveAndExit()
-                .checkIsToastWithMessageDisplayed(R.string.data_saved_ok);
+                .clickFinalize()
+                .checkIsSnackbarWithMessageDisplayed(R.string.form_saved);
 
         new MainMenuPage()
                 .copyForm("emptyGroupFieldList.xml")
                 .clickFillBlankForm()
                 .clickOnEmptyForm("emptyGroupFieldList")
-                .clickSaveAndExit()
-                .checkIsToastWithMessageDisplayed(R.string.data_saved_ok);
+                .clickFinalize()
+                .checkIsSnackbarWithMessageDisplayed(R.string.form_saved);
 
         new MainMenuPage()
                 .copyForm("emptyGroupFieldList2.xml")
                 .startBlankForm("emptyGroupFieldList2")
-                .inputText("nana")
                 .swipeToEndScreen()
-                .clickSaveAndExit()
-                .checkIsToastWithMessageDisplayed(R.string.data_saved_ok);
+                .clickFinalize()
+                .checkIsSnackbarWithMessageDisplayed(R.string.form_saved);
     }
 
     @Test
@@ -406,8 +393,8 @@ public class FillBlankFormTest {
                 .copyForm("metadata2.xml")
                 .clickFillBlankForm()
                 .clickOnEmptyForm("metadata2")
-                .clickSaveAndExit()
-                .checkIsToastWithMessageDisplayed(R.string.data_saved_ok);
+                .clickFinalize()
+                .checkIsSnackbarWithMessageDisplayed(R.string.form_saved);
     }
 
     @Test
@@ -441,7 +428,7 @@ public class FillBlankFormTest {
                 .clickOnText("Jaggu")
                 .swipeToNextQuestion("Comments")
                 .swipeToEndScreen()
-                .clickSaveAndExit();
+                .clickFinalize();
     }
 
     @Test
@@ -548,7 +535,7 @@ public class FillBlankFormTest {
                 .swipeToNextQuestion("C value")
                 .swipeToNextQuestionWithRepeatGroup("null")
                 .clickOnDoNotAdd(new FormEndPage("Event: odk-new-repeat"))
-                .clickSaveAndExit();
+                .clickFinalize();
     }
 
     @Test
@@ -563,7 +550,7 @@ public class FillBlankFormTest {
                 .swipeToNextQuestion("My value")
                 .assertText("5")
                 .swipeToEndScreen()
-                .clickSaveAndExit();
+                .clickFinalize();
     }
 
     @Test
@@ -588,7 +575,7 @@ public class FillBlankFormTest {
                 .startBlankForm("3403_ODK Version 1.23.3 Tester")
                 .clickOnText("New Farmer Registration")
                 .scrollToAndClickText("Insemination")
-                .scrollToAndAssertText("New Farmer Registration");
+                .assertText("New Farmer Registration");
     }
 
     @Test
@@ -602,7 +589,7 @@ public class FillBlankFormTest {
                 .assertText("File: " + formsDirPath + "/search_and_select-media/nombre.csv is missing.")
                 .assertText("File: " + formsDirPath + "/search_and_select-media/nombre2.csv is missing.")
                 .swipeToEndScreen()
-                .clickSaveAndExit()
+                .clickFinalize()
 
                 .copyForm("select_one_external.xml")
                 .startBlankForm("cascading select test")
@@ -612,7 +599,7 @@ public class FillBlankFormTest {
                 .swipeToNextQuestion("city")
                 .assertText("File: " + formsDirPath + "/select_one_external-media/itemsets.csv is missing.")
                 .swipeToEndScreen()
-                .clickSaveAndExit()
+                .clickFinalize()
 
                 .copyForm("fieldlist-updates_nocsv.xml")
                 .startBlankForm("fieldlist-updates")
@@ -622,24 +609,7 @@ public class FillBlankFormTest {
                 .clickOnQuestion("Source15")
                 .assertText("File: " + formsDirPath + "/fieldlist-updates_nocsv-media/fruits.csv is missing.")
                 .swipeToEndScreen()
-                .clickSaveAndExit();
-    }
-
-    @Test
-    public void changedName_shouldNotDisappearAfterScreenRotation() {
-        //TestCase13
-        rule.startAtMainMenu()
-                .copyForm("all-widgets.xml")
-                .startBlankForm("All widgets")
-                .clickGoToArrow()
-                .clickJumpEndButton()
-                .clickOnId(R.id.save_name)
-                .inputText("submission")
-                .closeSoftKeyboard()
-                .rotateToLandscape(new FormEntryPage("All widgets"))
-                .assertText("submission")
-                .rotateToPortrait(new FormEntryPage("All widgets"))
-                .assertText("submission");
+                .clickFinalize();
     }
 
     @Test
@@ -689,9 +659,9 @@ public class FillBlankFormTest {
                 .clickGoToArrow()
                 .clickGoUpIcon()
                 .checkIfElementInHierarchyMatchesToText("Group Name", 0)
-                .rotateToLandscape(new FormEntryPage("Repeat Group"))
+                .rotateToLandscape(new FormHierarchyPage("Repeat Group"))
                 .checkIfElementInHierarchyMatchesToText("Group Name", 0)
-                .rotateToPortrait(new FormEntryPage("Repeat Group"))
+                .rotateToPortrait(new FormHierarchyPage("Repeat Group"))
                 .checkIfElementInHierarchyMatchesToText("Group Name", 0);
     }
 
@@ -709,8 +679,8 @@ public class FillBlankFormTest {
     }
 
     private String getQuestionText() {
-        FormEntryActivity formEntryActivity = (FormEntryActivity) ActivityHelpers.getActivity();
-        FrameLayout questionContainer = formEntryActivity.findViewById(R.id.text_container);
+        FormFillingActivity formFillingActivity = (FormFillingActivity) ActivityHelpers.getActivity();
+        FrameLayout questionContainer = formFillingActivity.findViewById(R.id.text_container);
         TextView questionView = (TextView) questionContainer.getChildAt(0);
         return questionView.getText().toString();
     }

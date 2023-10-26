@@ -6,6 +6,7 @@ import org.odk.collect.android.R
 import org.odk.collect.android.analytics.AnalyticsEvents
 import org.odk.collect.android.databinding.FirstLaunchLayoutBinding
 import org.odk.collect.android.injection.DaggerUtils
+import org.odk.collect.android.mainmenu.MainMenuActivity
 import org.odk.collect.android.projects.CurrentProjectProvider
 import org.odk.collect.android.projects.ManualProjectCreatorDialog
 import org.odk.collect.android.projects.QrCodeProjectCreatorDialog
@@ -15,9 +16,10 @@ import org.odk.collect.androidshared.ui.GroupClickListener.addOnClickListener
 import org.odk.collect.projects.Project
 import org.odk.collect.projects.ProjectsRepository
 import org.odk.collect.settings.SettingsProvider
+import org.odk.collect.strings.localization.LocalizedActivity
 import javax.inject.Inject
 
-class FirstLaunchActivity : CollectAbstractActivity() {
+class FirstLaunchActivity : LocalizedActivity() {
 
     @Inject
     lateinit var projectsRepository: ProjectsRepository

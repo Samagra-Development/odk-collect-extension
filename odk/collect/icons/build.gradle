@@ -1,17 +1,19 @@
+import dependencies.Dependencies
+import dependencies.Versions
+
 plugins {
     id 'com.android.library'
 }
 apply plugin: 'kotlin-android'
 
-apply from: '../../config/dependencies.gradle'
-apply from: '../../config/quality.gradle'
+apply from: '../config/quality.gradle'
 
 android {
-    compileSdkVersion versions.android_compile_sdk
+    compileSdkVersion Versions.android_compile_sdk
 
     defaultConfig {
-        minSdkVersion versions.android_min_sdk
-        targetSdkVersion versions.android_target_sdk
+        minSdkVersion Versions.android_min_sdk
+        targetSdkVersion Versions.android_target_sdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -31,5 +33,5 @@ android {
 }
 
 dependencies {
-    implementation packages.android_material
+    implementation Dependencies.android_material
 }

@@ -11,8 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.odk.collect.analytics.Analytics;
 import org.odk.collect.android.R;
 import org.odk.collect.android.activities.FormHierarchyActivity;
+import org.odk.collect.android.analytics.AnalyticsEvents;
 import org.odk.collect.android.formentry.backgroundlocation.BackgroundLocationViewModel;
 import org.odk.collect.android.formentry.questions.AnswersProvider;
 import org.odk.collect.android.javarosawrapper.FormController;
@@ -152,6 +154,12 @@ public class FormEntryMenuDelegate implements MenuDelegate {
                 backgroundAudioViewModel.setBackgroundRecordingEnabled(true);
             }
 
+            return true;
+        } else if (item.getItemId() == R.id.menu_validate) {
+            Analytics.log(AnalyticsEvents.CHECK_FOR_ERRORS, "form");
+
+            formEntryViewModel.saveScreenAnswersToFormController(answersProvider.getAnswers(), false);
+            formEntryViewModel.validate();
             return true;
         } else {
             return false;

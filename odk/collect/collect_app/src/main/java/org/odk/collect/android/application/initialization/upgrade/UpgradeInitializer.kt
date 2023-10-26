@@ -21,7 +21,7 @@ class UpgradeInitializer(
         AppUpgrader(
             MetaKeys.LAST_LAUNCHED,
             settingsProvider.getMetaSettings(),
-            1,
+            BuildConfig.VERSION_CODE,
             BeforeProjectsInstallDetector(context),
             listOf(
                 existingProjectMigrator,

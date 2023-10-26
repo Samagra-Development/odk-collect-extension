@@ -1,29 +1,18 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Text for the topmost button on the main screen. It should be short and action-oriented.-->
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data">Попълване на бланка</string>
   <!--Text for an action button on the main screen.-->
-  <string name="enter_data_button">Попълване на бланка</string>
   <!--Text for an action button on the main screen.-->
-  <string name="review_data">Редактиране на записан формуляр</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="review_data_button">Редактиране на записан формуляр (%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="send_data">Изпращане на завършен формуляр</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="send_data_button">Изпращане на завършен формуляр (%s)</string>
   <!--Text for an action button on the main screen.-->
-  <string name="view_sent_forms">Преглед на изпратен формуляр</string>
-  <!--Text for an action button on the main screen. A form count is provided in parentheses.-->
-  <string name="view_sent_forms_button">Преглед на изпратен формуляр (%s)</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="get_forms">Изтегляне на бланка</string>
-  <!--Text for an action button on the main screen.-->
-  <string name="manage_files">Изтриване на записан формуляр</string>
+  <string name="saved_forms">Запазени формуляри</string>
   <string name="version_number">Версия: %s</string>
   <string name="id_number">ID: %s</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="added_on_date_at_time">\'Добавено на\' EEE, MMM dd, yyyy \'в\' HH:mm</string>
+  <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
+  <string name="updated_on_date_at_time">\'Обновено на\' EEE, MMM dd, yyyy \'в\' HH:mm</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="saved_on_date_at_time">\'Записано на\' EEE, MMM dd, yyyy \'в\' HH:mm</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
@@ -35,9 +24,33 @@
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
   <string name="deleted_on_date_at_time">\'Изтрито на\' EEE, MMM dd, yyyy \'в\' HH:mm</string>
   <!--Please format date appropriately for your language: http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html-->
+  <string name="modified_on_date_at_time">\'Редактирано на\' EEE, MMM dd, yyyy \'в\' HH:mm</string>
+  <string name="encrypted_form">Криптиран формуляр</string>
+  <string name="deleted_form">Изтрит формуляр</string>
+  <string name="sort_the_list">Подреждане на списъка</string>
+  <string name="sort_by">Подреди по</string>
+  <string name="sort_by_name_asc">Име, А-Я</string>
+  <string name="sort_by_name_desc">Име, Я-А</string>
+  <string name="sort_by_date_desc">Дата, първо най-новите</string>
+  <string name="sort_by_date_asc">Дата, първо най-старите</string>
   <!--A sort option for blank forms. When this option is selected, the form for which a filled instance was last filled will go first.-->
+  <string name="sort_by_last_saved">Първо последно записаните</string>
+  <string name="filter_the_list">Филтриране на списъка</string>
   <!--Displayed in search boxes for form lists or question types that involve search-->
+  <string name="search">Търсене</string>
+  <string name="no_items_display">Няма нищо за показване.</string>
+  <string name="no_items_display_forms">Няма нищо за показване.\n\nИзтеглете и попълнете бланка.</string>
+  <string name="no_items_display_sent_forms">Няма нищо за показване.\n\nПърво изпратете приключени формуляри.</string>
+  <string name="not_granted_permission">Тази дейност изисква допълнително разрешение, което не е одобрено.</string>
+  <string name="storage_runtime_permission_denied_title">Резрешения за хранилището</string>
+  <string name="storage_runtime_permission_denied_desc">Без тези разрешения, приложението няма достъп до вашите формуляри и не може да попълва такива. </string>
+  <string name="location_runtime_permissions_denied_title">Рарешения за местоположението</string>
   <!--Starting in Android 12, Android makes it possible to give precise or approximate location permissions to an application. ODK Collect only captures location if the precise location permission is granted.-->
+  <string name="location_runtime_permissions_denied_desc">Без разрешението за <b>Точно местоположение</b> Collect не може да запише вашето местоположение. Моля, опитайте пак, когато сте готови да го одобрите.</string>
+  <string name="camera_runtime_permission_denied_title">Разрешение за камера</string>
+  <string name="camera_runtime_permission_denied_desc">Без това разрешение Collect няма достъп до камерата на устройството. Моля, опитайте пак, когато сте готови да го одобрите.</string>
+  <string name="record_audio_runtime_permission_denied_title">Разрешение за запис на аудио</string>
+  <string name="record_audio_runtime_permission_denied_desc">Без това разрешение Collect няма достъп до микрофона на устройството. Моля, опитайте пак, когато сте готови да го одобрите.</string>
   <!--##############################################
     # FILL BLANK FORM
     ##############################################-->
@@ -53,7 +66,7 @@
   <!--Displayed below repeat names in a form's table of contents-->
   <!--This sentence is used in the dialog for adding repeats and will be completed by a singular noun usually. Examples would be ‘Add “observation”?’ or ‘Add “Reading”?’. If the phrase doesn’t make sense in your language you can add a word like “new”, being careful of gender/plural.-->
   <!--Title of overlay menu displayed when long pressing on a question in a form-->
-  <!--Dialog title when exiting a form. The name of the form will be included-->
+  <!--Dialog title when exiting a drawing view. The name of the kind of drawing will be included-->
   <!--Used when exiting a form filling session in which a form was not properly loaded. &lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
   <!--Displayed when form filling is attempted to be launched by intent but the intent URI is incorrect-->
   <!--Displayed when form filling is attempted to be launched by intent but the intent URI mime type is unknown-->
@@ -108,6 +121,7 @@
     tile caches, and are not shown in the UI.-->
   <!--Action to go to Android settings. Displayed when location providers are disabled.-->
   <!--Label for a menu item that can be toggled to turn background location tracking on and off during form filling-->
+  <!--Text of an option available when filling out a form. Tapping this option checks the form for constraint or required violations and navigates the user back to the first field with an error.-->
   <!--%1$s is the time taken so far in hh:mm:ss-->
   <!--%1$s is the accuracy required for a point to be automatically saved-->
   <!--%1$s is the number of satellites being used to get location-->
@@ -235,8 +249,6 @@
     select the wording and where to put the \n for maximum impact in your language.-->
   <!--Text for the button that allows for configuring a project by scanning a QR code. Should be short-->
   <!--Text for the button that allows for manually entering project details. Should be short-->
-  <!--Immediately followed by "Configure" which is a link to configure a Google Drive project-->
-  <!--Preceded by "My project uses Google Drive." Tapping opens a dialog to configure a Google Drive Project-->
   <!--Immediately followed by "Try Collect" which is a link to create a demo project-->
   <!--Preceded by "Don't have a project yet?" question-->
   <!--Error shown when a user tries to open a form that's in a different project-->
@@ -252,9 +264,15 @@
     # Crash handling
     ##############################################-->
   <!--##############################################
+    # Google Drive deprecation
+    ##############################################-->
+  <!--##############################################
     # Developer tools
     ##############################################-->
   <!--Section title in settings-->
   <!--Option provided in the Developer tools settings to force an application crash-->
   <!--An uncaught exception is an exception that is not handled by ODK Collect and so will force the application to close-->
+  <!--##############################################
+    # Form saved Snackbar
+    ##############################################-->
 </resources>

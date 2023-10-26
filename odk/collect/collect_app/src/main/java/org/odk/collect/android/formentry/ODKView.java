@@ -60,11 +60,9 @@ import org.odk.collect.android.audio.AudioHelper;
 import org.odk.collect.android.exception.ExternalParamsException;
 import org.odk.collect.android.exception.JavaRosaException;
 import org.odk.collect.android.externaldata.ExternalAppsUtils;
-import org.odk.collect.android.formentry.media.AudioHelperFactory;
 import org.odk.collect.android.formentry.media.PromptAutoplayer;
 import org.odk.collect.android.formentry.questions.QuestionTextSizeHelper;
 import org.odk.collect.android.javarosawrapper.FormController;
-import org.odk.collect.android.listeners.SwipeHandler;
 import org.odk.collect.android.listeners.WidgetValueChangedListener;
 import org.odk.collect.android.utilities.ContentUriHelper;
 import org.odk.collect.android.utilities.ExternalAppIntentProvider;
@@ -122,9 +120,6 @@ public class ODKView extends SwipeHandler.View implements OnLongClickListener, W
     private WidgetValueChangedListener widgetValueChangedListener;
 
     @Inject
-    public AudioHelperFactory audioHelperFactory;
-
-    @Inject
     PermissionsProvider permissionsProvider;
 
     @Inject
@@ -147,12 +142,12 @@ public class ODKView extends SwipeHandler.View implements OnLongClickListener, W
      * @param groups          the group hierarchy that this question or field list is in
      * @param advancingPage   whether this view is being created after a forward swipe through the
      */
-    public ODKView(ComponentActivity context, final FormEntryPrompt[] questionPrompts, FormEntryCaption[] groups, boolean advancingPage, QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry, AudioPlayer audioPlayer, AudioRecorder audioRecorder, FormEntryViewModel formEntryViewModel, InternalRecordingRequester internalRecordingRequester, ExternalAppRecordingRequester externalAppRecordingRequester) {
+    public ODKView(ComponentActivity context, final FormEntryPrompt[] questionPrompts, FormEntryCaption[] groups, boolean advancingPage, QuestionMediaManager questionMediaManager, WaitingForDataRegistry waitingForDataRegistry, AudioPlayer audioPlayer, AudioRecorder audioRecorder, FormEntryViewModel formEntryViewModel, InternalRecordingRequester internalRecordingRequester, ExternalAppRecordingRequester externalAppRecordingRequester, AudioHelper audioHelper) {
         super(context);
         viewLifecycle = ((ScreenContext) context).getViewLifecycle();
 
         getComponent(context).inject(this);
-        this.audioHelper = audioHelperFactory.create(context);
+        this.audioHelper = audioHelper;
         inflate(getContext(), R.layout.odk_view, this); // keep in an xml file to enable the vertical scrollbar
 
         // when the grouped fields are populated by an external app, this will get true.
@@ -572,7 +567,7 @@ public class ODKView extends SwipeHandler.View implements OnLongClickListener, W
 
     @Nullable
     @Override
-    public NestedScrollView getVerticalScrollView() {
+    public NestedScrollView verticalScrollView() {
         return findViewById(R.id.odk_view_container);
     }
 

@@ -17,32 +17,51 @@ class FormMediaDownloader(
     private val formSource: FormSource
 ) {
 
+    @JvmOverloads
     @Throws(IOException::class, FormSourceException::class, InterruptedException::class)
     fun download(
         formToDownload: ServerFormDetails,
-        files: List<MediaFile>,
         tempMediaPath: String,
         tempDir: File,
-        stateListener: OngoingWorkListener
+        stateListener: OngoingWorkListener,
+        test: Boolean = false
     ): Boolean {
         var atLeastOneNewMediaFileDetected = false
         val tempMediaDir = File(tempMediaPath).also { it.mkdir() }
 
-        files.forEachIndexed { i, mediaFile ->
+        formToDownload.manifest!!.mediaFiles.forEachIndexed { i, mediaFile ->
             stateListener.progressUpdate(i + 1)
 
             val tempMediaFile = File(tempMediaDir, mediaFile.filename)
 
-            searchForExistingMediaFile(formToDownload, mediaFile).let {
+            val existingFile = searchForExistingMediaFile(formToDownload, mediaFile)
+            existingFile.let {
                 if (it != null) {
-                    copyFile(it, tempMediaFile)
+                    if (getMd5Hash(it).contentEquals(mediaFile.hash)) {
+                        copyFile(it, tempMediaFile)
+                    } else {
+                        val existingFileHash = getMd5Hash(it)
+                        val file = formSource.fetchMediaFile(mediaFile.downloadUrl)
+                        interuptablyWriteFile(file, tempMediaFile, tempDir, stateListener)
+
+                        if (!getMd5Hash(tempMediaFile).contentEquals(existingFileHash)) {
+                            if (test) {
+                                throw Exception("Content does not equal")
+                            }
+                            atLeastOneNewMediaFileDetected = true
+                        }
+                    }
                 } else {
-                    atLeastOneNewMediaFileDetected = true
+                    if (test) {
+                        throw Exception("File does not exist")
+                    }
                     val file = formSource.fetchMediaFile(mediaFile.downloadUrl)
                     interuptablyWriteFile(file, tempMediaFile, tempDir, stateListener)
+                    atLeastOneNewMediaFileDetected = true
                 }
             }
         }
+
         return atLeastOneNewMediaFileDetected
     }
 
@@ -51,12 +70,12 @@ class FormMediaDownloader(
         mediaFile: MediaFile
     ): File? {
         val allFormVersions = formsRepository.getAllByFormId(formToDownload.formId)
-        return allFormVersions.map { form: Form ->
+        return allFormVersions.sortedByDescending {
+            it.date
+        }.map { form: Form ->
             File(form.formMediaPath, mediaFile.filename)
         }.firstOrNull { file: File ->
-            val currentFileHash = getMd5Hash(file)
-            val downloadFileHash = mediaFile.hash
-            file.exists() && currentFileHash.contentEquals(downloadFileHash)
+            file.exists()
         }
     }
 }
