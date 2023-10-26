@@ -51,7 +51,7 @@ To setup ODK extensions library and ODK Central Server locally follow our step-b
 ## Versions
 
 * Current version: 0.0.1
-    * Based on ODK Release: [v2022.4.4](https://github.com/getodk/collect/releases/tag/v2022.4.4)
+  * Based on ODK Release: [v2022.4.4](https://github.com/getodk/collect/releases/tag/v2022.4.4)
 
 ## Integration
 
@@ -223,9 +223,9 @@ documentation [here](./odk/extension/README.md#forminstanceinteractor-interface)
 ### StorageInteractor
 
 StorageInteractor interface provides a set of methods for performing basic storage utility tasks in
-an application. It includes methods for managing preferences using the default shared preference 
-file, creating and deleting files and folders in the app's internal storage, and checking the 
-availability of free space on the device. These methods allow developers to easily handle 
+an application. It includes methods for managing preferences using the default shared preference
+file, creating and deleting files and folders in the app's internal storage, and checking the
+availability of free space on the device. These methods allow developers to easily handle
 storage-related operations in their applications. Refer to the technical
 documentation [here](./odk/extension/README.md#storageinteractor-interface).
 

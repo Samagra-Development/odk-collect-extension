@@ -2,15 +2,14 @@ package io.samagra.oce_sample
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-
 import io.samagra.odk.collect.extension.interactors.FormsDatabaseInteractor
 import io.samagra.odk.collect.extension.interactors.FormsInteractor
 import io.samagra.odk.collect.extension.interactors.FormsNetworkInteractor
@@ -124,6 +123,15 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                     is FormStateEvent.OnFormSaved -> Timber.tag("FORM EVENT").d("Form with id: %s was saved. Saved instance path: %s", event.formId, event.instancePath)
                     is FormStateEvent.OnFormUploadFailed -> Timber.tag("FORM EVENT").d("Form upload failed for form id: %s. Reason: %s", event.formId, event.errorMessage)
                     is FormStateEvent.OnFormUploaded -> Timber.tag("FORM EVENT").d("Form with id: %s was uploaded", event.formId)
+                    is FormStateEvent.OnFormSubmitted -> {
+                        val i = Intent(this@ODKFeatureTesterActivity, JSONViewActivity::class.java)
+                        i.putExtra("jsonData", event.jsonData)
+                        startActivity(i)
+                        Timber.tag("FORM EVENT").d("Form with id: %s was submitted and converted json data: %s", event.formId, event.jsonData)
+                    }
+                    is FormStateEvent.OnFormCompleted -> {
+                        Timber.tag("FORM EVENT").d("Form completed with path: %s", event.instance.instanceFilePath)
+                    }
                 }
                 progressBar.visibility = View.INVISIBLE
             }

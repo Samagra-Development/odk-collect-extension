@@ -19,6 +19,8 @@ package org.odk.collect.android.openrosa;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.odk.collect.shared.settings.Settings;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -64,7 +66,8 @@ public interface OpenRosaHttpInterface {
                                             @NonNull List<File> fileList,
                                             @NonNull URI uri,
                                             @Nullable HttpCredentialsInterface credentials,
-                                            @NonNull long contentLength) throws Exception;
+                                            @NonNull long contentLength,
+                                            @NonNull Settings generalSettings) throws Exception;
 
     interface FileToContentTypeMapper {
 

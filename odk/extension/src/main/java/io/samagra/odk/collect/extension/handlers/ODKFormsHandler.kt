@@ -72,6 +72,15 @@ class ODKFormsHandler @Inject constructor(
         openForm(form, context)
     }
 
+    override fun markSubmissionComplete(instance:Instance){
+        instancesRepository
+            .save(
+                Instance.Builder(instance)
+                    .status(Instance.STATUS_SUBMITTED)
+                    .build()
+            )
+    }
+
     override fun prefillForm(formId: String, tagValueMap: HashMap<String, String>) {
         CoroutineScope(Job()).launch {
             val form = formsDatabaseInteractor.getLatestFormById(formId)
