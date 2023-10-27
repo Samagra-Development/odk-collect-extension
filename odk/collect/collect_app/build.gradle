@@ -1,11 +1,10 @@
-apply plugin: 'com.android.application'
-apply from: '../config/quality.gradle'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: "com.google.android.gms.oss-licenses-plugin"
+apply from: '../../config/quality.gradle'
+apply from: '../../config/jacoco.gradle'
+apply from: '../../config/dependencies.gradle'
 
 import com.android.ddmlib.DdmPreferences
-import dependencies.Dependencies
-import dependencies.Versions
 
 DdmPreferences.setTimeOut(60000)
 
@@ -65,16 +64,15 @@ def googleMapsApiKey = secrets.getProperty('GOOGLE_MAPS_API_KEY', '')
 def mapboxAccessToken = secrets.getProperty('MAPBOX_ACCESS_TOKEN', '')
 
 android {
-    compileSdkVersion Versions.android_compile_sdk
+    compileSdkVersion versions.android_compile_sdk
 
     buildFeatures {
         viewBinding true
     }
 
     defaultConfig {
-        applicationId('org.odk.collect.android')
-        minSdkVersion Versions.android_min_sdk
-        targetSdkVersion Versions.android_target_sdk
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
         versionCode LEGACY_BUILD_NUMBER_OFFSET + getMasterCommitCount()
         versionName getVersionName()
         testInstrumentationRunner('androidx.test.runner.AndroidJUnitRunner')
@@ -186,6 +184,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     testOptions {
         unitTests {
             includeAndroidResources = true
@@ -228,7 +230,7 @@ configurations.all {
         // Newer Jackson versions cannot be ued until Collect minSDK >= 26 (https://github.com/FasterXML/jackson-databind#android)
         force 'com.fasterxml.jackson.core:jackson-databind:2.13.5'
     }
-    
+
     transitive = true
 }
 
@@ -237,7 +239,7 @@ dependencies {
         mavenLocal() // Only used for javarosa_local dependency
     }
 
-    coreLibraryDesugaring Dependencies.desugar
+    coreLibraryDesugaring packages.desugar
 
     implementation project(':odk:collect:shared')
     implementation project(':odk:collect:androidshared')
@@ -273,150 +275,155 @@ dependencies {
         implementation project(':odk:collect:mapbox')
     }
 
-    implementation Dependencies.androidx_startup
-    implementation Dependencies.androidx_core_ktx
-    implementation Dependencies.androidx_browser
-    implementation Dependencies.androidx_appcompat
-    implementation Dependencies.androidx_work_runtime
+    implementation packages.androidx_startup
+    implementation packages.androidx_core_ktx
+    implementation packages.androidx_browser
+    implementation packages.androidx_appcompat
+    implementation packages.androidx_work_runtime
 
-    implementation Dependencies.androidx_cardview
-    implementation Dependencies.androidx_multidex
-    implementation Dependencies.androidx_preference_ktx
-    implementation Dependencies.androidx_fragment_ktx
+    implementation packages.androidx_cardview
+    implementation packages.androidx_exinterface
+    implementation packages.androidx_multidex
+    implementation packages.androidx_preference_ktx
+    implementation packages.androidx_fragment_ktx
 
-    implementation Dependencies.android_material
-    implementation Dependencies.android_flexbox
+    implementation packages.android_material
+    implementation packages.android_flexbox
 
-    implementation Dependencies.play_services_auth
-    implementation Dependencies.play_services_maps
-    implementation Dependencies.play_services_location
-    implementation Dependencies.play_services_oss_licenses
+    implementation packages.play_services_auth
+    implementation packages.play_services_maps
+    implementation packages.play_services_location
+    implementation packages.play_services_oss_licenses
 
-    implementation Dependencies.firebase_analytics
-    implementation Dependencies.firebase_crashlytics
+    implementation packages.firebase_analytics
+    implementation packages.firebase_crashlytics
 
-    implementation Dependencies.guava
+    implementation packages.guava
 
-    implementation Dependencies.squareup_okhttp
-    implementation Dependencies.squareup_okhttp_tls
-    implementation Dependencies.burgstaller_okhttp_digest
-    
-    implementation Dependencies.persian_joda_time
-    implementation Dependencies.myanmar_calendar
-    implementation Dependencies.bikram_sambat
-    implementation Dependencies.rarepebble_colorpicker
-    implementation Dependencies.commons_io
-    implementation (Dependencies.opencsv) {
+    implementation packages.squareup_okhttp
+    implementation packages.squareup_okhttp_tls
+    implementation packages.burgstaller_okhttp_digest
+
+    implementation packages.persian_joda_time
+    implementation packages.myanmar_calendar
+    implementation packages.bikram_sambat
+    implementation packages.rarepebble_colorpicker
+    implementation packages.commons_io
+    implementation(packages.opencsv) {
         exclude group: 'commons-logging'
     }
-    implementation(Dependencies.javarosa) {
+    implementation(packages.javarosa) {
         exclude group: 'commons-io'
         exclude group: 'joda-time'
         exclude group: 'org.slf4j'
         exclude group: 'org.hamcrest', module: 'hamcrest-all'
     }
-    implementation(Dependencies.google_api_client_android) {
+    implementation(packages.google_api_client_android) {
         exclude group: 'org.apache.httpcomponents'
         exclude group: 'com.google.guava'
     }
-    implementation(Dependencies.google_api_services_drive) {
+    implementation(packages.google_api_services_drive) {
         exclude group: 'org.apache.httpcomponents'
         exclude group: 'com.google.guava'
     }
-    implementation(Dependencies.google_api_services_sheets) {
+    implementation(packages.google_api_services_sheets) {
         exclude group: 'org.apache.httpcomponents'
         exclude group: 'com.google.guava'
     }
 
-    implementation Dependencies.timber
-    implementation Dependencies.slf4j_api
-    implementation Dependencies.slf4j_timber
+    implementation packages.timber
+    implementation packages.slf4j_api
+    implementation packages.slf4j_timber
 
-    implementation Dependencies.zxing_android_embedded
+    implementation packages.zxing_android_embedded
 
-    implementation Dependencies.danlew_android_joda
+    implementation packages.danlew_android_joda
 
     // Android Architecture Components:
-    implementation Dependencies.androidx_lifecycle_runtime_ktx
-    implementation Dependencies.androidx_lifecycle_livedata_ktx
-    implementation Dependencies.androidx_viewpager2
+    implementation packages.androidx_lifecycle_extensions
+    implementation packages.androidx_lifecycle_runtime_ktx
+    implementation packages.androidx_lifecycle_livedata_ktx
+    implementation packages.androidx_viewpager2
 
     // Dagger:
-    implementation Dependencies.dagger
-    annotationProcessor Dependencies.dagger_compiler
+    implementation packages.dagger
+    annotationProcessor packages.dagger_compiler
 
     // Needed for injection into Robolectric tests
-    testAnnotationProcessor Dependencies.dagger_compiler
+    testAnnotationProcessor packages.dagger_compiler
 
     // Dagger Android:
-    implementation Dependencies.dagger_android
-    annotationProcessor Dependencies.dagger_android_processor
+    implementation packages.dagger_android
+    annotationProcessor packages.dagger_android_processor
 
-    implementation Dependencies.armen101_audio_recorder_view
+    implementation packages.armen101_audio_recorder_view
 
-    implementation(Dependencies.mp4parser_muxer) {
+    implementation(packages.mp4parser_muxer) {
         exclude group: 'org.hamcrest'
     }
 
-    implementation Dependencies.splashscreen
+    implementation packages.splashscreen
 
     testImplementation project(':odk:collect:formstest')
 
     // Testing-only dependencies
-    testImplementation Dependencies.junit
-    testImplementation Dependencies.mockito_inline
-    testImplementation Dependencies.mockito_kotlin
+    testImplementation packages.junit
+    testImplementation packages.mockito_core
+    testImplementation packages.mockito_inline
+    testImplementation packages.mockito_kotlin
 
     testImplementation project(':odk:collect:androidtest')
     testImplementation(project(path: ':odk:collect:testshared')) {
-        exclude group: 'org.robolectric' // Some tests in `collect_app` don't work with newer Robolectric
+        exclude group: 'org.robolectric'
+        // Some tests in `collect_app` don't work with newer Robolectric
     }
     testImplementation(project(":odk:collect:shadows"))
 
-    testImplementation Dependencies.robolectric
+    testImplementation packages.robolectric
 
-    testImplementation Dependencies.androidx_test_ext_junit
-    testImplementation Dependencies.androidx_arch_core_testing
-    testImplementation Dependencies.robolectric_shadows_multidex
-    testImplementation Dependencies.okhttp3_mockwebserver
-    testImplementation Dependencies.squareup_okhttp_tls
+    testImplementation packages.androidx_test_ext_junit
+    testImplementation packages.androidx_arch_core_testing
+    testImplementation packages.robolectric_shadows_multidex
+    testImplementation packages.okhttp3_mockwebserver
+    testImplementation packages.squareup_okhttp_tls
 
-    testImplementation Dependencies.hamcrest
+    testImplementation packages.hamcrest
 
-    testImplementation Dependencies.androidx_test_espresso_core
-    testImplementation Dependencies.androidx_test_espresso_intents
-    testImplementation Dependencies.androidx_test_core_ktx
+    testImplementation packages.androidx_test_espresso_core
+    testImplementation packages.androidx_test_espresso_intents
+    testImplementation packages.androidx_test_core_ktx
 
     androidTestImplementation project(':odk:collect:androidtest')
 
     // Used to generate documentation screenshots.
-    androidTestImplementation Dependencies.fastlane_screengrab
-    androidTestImplementation Dependencies.mockito_android
-    androidTestImplementation Dependencies.androidx_test_ext_junit
-    androidTestImplementation Dependencies.androidx_test_espresso_core
-    androidTestImplementation Dependencies.androidx_arch_core_testing
-    androidTestImplementation Dependencies.androidx_test_espresso_contrib
-    androidTestImplementation(Dependencies.androidx_test_espresso_intents) {
+    androidTestImplementation packages.fastlane_screengrab
+    androidTestImplementation packages.mockito_android
+    androidTestImplementation packages.androidx_test_ext_junit
+    androidTestImplementation packages.androidx_test_espresso_core
+    androidTestImplementation packages.androidx_arch_core_testing
+    androidTestImplementation packages.androidx_test_espresso_contrib
+    androidTestImplementation(packages.androidx_test_espresso_intents) {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
 
-    androidTestImplementation Dependencies.okhttp3_mockwebserver
-    androidTestImplementation Dependencies.androidx_work_testing
-    androidTestImplementation Dependencies.uiautomator
+    androidTestImplementation packages.okhttp3_mockwebserver
+    androidTestImplementation packages.androidx_work_testing
+    androidTestImplementation packages.uiautomator
 
-    debugImplementation project(':odk:collect:fragmentstest')
-    debugImplementation(project(':odk:collect:testshared')) {
-        exclude group: 'org.robolectric' // Some tests in `collect_app` don't work with newer Robolectric
+    testImplementation project(path: ':odk:collect:fragmentstest')
+    testImplementation(project(path: ':odk:collect:testshared')) {
+        exclude group: 'org.robolectric'
+        // Some tests in `collect_app` don't work with newer Robolectric
     }
 
     // Real LeakCanary for debug builds only: notifications, analysis, etc
-    debugImplementation Dependencies.leakcanary
+//    debugImplementation packages.leakcanary
 }
 
 // Must be at bottom to prevent dependency collisions
 // https://developers.google.com/android/guides/google-services-plugin
-apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services'
 
 // Must be after google-services to prevent build failure
 // https://stackoverflow.com/a/67995305
-apply plugin: 'com.google.firebase.crashlytics'
+//apply plugin: 'com.google.firebase.crashlytics'

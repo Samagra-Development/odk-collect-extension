@@ -1,17 +1,15 @@
-import dependencies.Dependencies
-import dependencies.Versions
-
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
-apply from: '../config/quality.gradle'
+apply from: '../../config/quality.gradle'
+apply from: '../../config/dependencies.gradle'
 
 android {
-    compileSdkVersion Versions.android_compile_sdk
+    compileSdkVersion versions.android_compile_sdk
 
     defaultConfig {
-        minSdkVersion Versions.android_min_sdk
-        targetSdkVersion Versions.android_target_sdk
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -31,9 +29,9 @@ android {
     namespace 'org.odk.collect.servicetest'
 }
 dependencies {
-    coreLibraryDesugaring Dependencies.desugar
+    coreLibraryDesugaring packages.desugar
 
-    implementation Dependencies.androidx_lifecycle_runtime_ktx
-    implementation Dependencies.robolectric
+    implementation packages.androidx_lifecycle_runtime_ktx
+    implementation packages.robolectric
 }
 

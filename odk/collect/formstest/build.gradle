@@ -1,11 +1,10 @@
-import dependencies.Dependencies
-
 plugins {
     id 'java-library'
     id 'kotlin'
 }
 
-apply from: '../config/quality.gradle'
+apply from: '../../config/dependencies.gradle'
+apply from: '../../config/quality.gradle'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -15,9 +14,9 @@ java {
 dependencies {
     implementation project(':odk:collect:forms')
     implementation project(':odk:collect:shared')
-    implementation Dependencies.kotlin_stdlib
-    implementation Dependencies.commons_io
-    implementation Dependencies.junit
-    implementation Dependencies.mockito_kotlin
-    implementation Dependencies.hamcrest
+    implementation packages.kotlin_stdlib
+    implementation packages.commons_io
+    implementation packages.junit
+    implementation packages.mockito_kotlin
+    implementation packages.hamcrest
 }

@@ -7,14 +7,15 @@ plugins {
     id 'kotlin-kapt'
 }
 
-apply from: '../config/quality.gradle'
+apply from: '../../config/dependencies.gradle'
+apply from: '../../config/quality.gradle'
 
 android {
-    compileSdkVersion Versions.android_compile_sdk
+    compileSdkVersion versions.android_compile_sdk
 
     defaultConfig {
-        minSdkVersion Versions.android_min_sdk
-        targetSdkVersion Versions.android_target_sdk
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -31,6 +32,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
     testOptions {
         unitTests {
             includeAndroidResources = true
@@ -40,11 +45,11 @@ android {
 }
 
 dependencies {
-    implementation Dependencies.androidx_core_ktx
+    implementation packages.androidx_core_ktx
     implementation project(':odk:collect:shared')
 
     testImplementation project(':odk:collect:testshared')
-    testImplementation Dependencies.mockito_kotlin
-    testImplementation Dependencies.junit
-    testImplementation Dependencies.hamcrest
+    testImplementation packages.mockito_kotlin
+    testImplementation packages.junit
+    testImplementation packages.hamcrest
 }

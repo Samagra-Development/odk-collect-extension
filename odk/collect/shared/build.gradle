@@ -1,11 +1,10 @@
-import dependencies.Dependencies
-
 plugins {
     id 'java-library'
     id 'kotlin'
 }
 
-apply from: '../config/quality.gradle'
+apply from: '../../config/dependencies.gradle'
+apply from: '../../config/quality.gradle'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -13,9 +12,9 @@ java {
 }
 
 dependencies {
-    implementation Dependencies.kotlin_stdlib
-    implementation Dependencies.emoji_java
+    implementation packages.kotlin_stdlib
+    implementation packages.emoji_java
 
-    testImplementation Dependencies.junit
-    testImplementation Dependencies.hamcrest
+    testImplementation packages.junit
+    testImplementation packages.hamcrest
 }

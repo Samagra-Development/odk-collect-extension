@@ -1,13 +1,14 @@
-import dependencies.Versions
+
 
 apply plugin: 'com.android.library'
 
+apply from: '../../config/dependencies.gradle'
 android {
-    compileSdkVersion Versions.android_compile_sdk
+    compileSdkVersion versions.android_compile_sdk
 
     defaultConfig {
-        minSdkVersion Versions.android_min_sdk
-        targetSdkVersion Versions.android_target_sdk
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'

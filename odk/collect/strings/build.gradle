@@ -1,21 +1,20 @@
-import dependencies.Dependencies
-import dependencies.Versions
-
 plugins {
     id 'com.android.library'
 }
 apply plugin: 'kotlin-android'
 
-apply from: '../config/quality.gradle'
+apply from: '../../config/dependencies.gradle'
+apply from: '../../config/quality.gradle'
 
 android {
-    compileSdkVersion Versions.android_compile_sdk
+    compileSdkVersion versions.android_compile_sdk
 
     defaultConfig {
-        minSdkVersion Versions.android_min_sdk
-        targetSdkVersion Versions.android_target_sdk
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
     }
 
     buildTypes {
@@ -39,7 +38,8 @@ android {
 }
 
 dependencies {
-    implementation Dependencies.androidx_core_ktx
+    implementation packages.androidx_core_ktx
+    implementation packages.androidx_appcompat
 
     /**
      * We need to expose [AppCompatActivity] for classes in separate modules that
@@ -47,10 +47,10 @@ dependencies {
      */
     api Dependencies.androidx_appcompat
 
-    testImplementation Dependencies.junit
-    testImplementation Dependencies.hamcrest
-    testImplementation Dependencies.androidx_test_ext_junit
-    testImplementation Dependencies.robolectric
+    testImplementation packages.junit
+    testImplementation packages.hamcrest
+    testImplementation packages.androidx_test_ext_junit
+    testImplementation packages.robolectric
 }
 repositories {
     mavenCentral()

@@ -1,24 +1,22 @@
-import dependencies.Dependencies
-import dependencies.Versions
-
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
 }
 
-apply from: '../config/quality.gradle'
+apply from: '../../config/dependencies.gradle'
+apply from: '../../config/quality.gradle'
 
 android {
-    compileSdkVersion Versions.android_compile_sdk
+    compileSdkVersion versions.android_compile_sdk
 
     buildFeatures {
         viewBinding true
     }
 
     defaultConfig {
-        minSdkVersion Versions.android_min_sdk
-        targetSdkVersion Versions.android_target_sdk
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -36,6 +34,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
     testOptions {
         unitTests {
             includeAndroidResources = true
@@ -45,31 +47,31 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring Dependencies.desugar
+    coreLibraryDesugaring packages.desugar
 
     implementation project(':odk:collect:icons')
     implementation project(':odk:collect:strings')
     implementation project(':odk:collect:shared')
     implementation project(':odk:collect:async')
-    implementation Dependencies.kotlin_stdlib
-    implementation Dependencies.androidx_core_ktx
-    implementation Dependencies.androidx_lifecycle_livedata_ktx
-    implementation Dependencies.android_material
-    implementation Dependencies.androidx_fragment_ktx
-    implementation Dependencies.androidx_preference_ktx
-    implementation Dependencies.timber
-    implementation Dependencies.androidx_exinterface
+    implementation packages.kotlin_stdlib
+    implementation packages.androidx_core_ktx
+    implementation packages.androidx_lifecycle_livedata_ktx
+    implementation packages.android_material
+    implementation packages.androidx_fragment_ktx
+    implementation packages.androidx_preference_ktx
+    implementation packages.timber
+    implementation packages.androidx_exinterface
 
     testImplementation project(':odk:collect:testshared')
-    testImplementation Dependencies.junit
-    testImplementation Dependencies.androidx_test_ext_junit
-    testImplementation Dependencies.androidx_test_espresso_core
-    testImplementation Dependencies.robolectric
-    testImplementation Dependencies.mockito_kotlin
-    testImplementation Dependencies.androidx_arch_core_testing
+    testImplementation packages.junit
+    testImplementation packages.androidx_test_ext_junit
+    testImplementation packages.androidx_test_espresso_core
+    testImplementation packages.robolectric
+    testImplementation packages.mockito_kotlin
+    testImplementation packages.androidx_arch_core_testing
 
-    androidTestImplementation Dependencies.androidx_test_ext_junit
-    androidTestImplementation Dependencies.junit
+    androidTestImplementation packages.androidx_test_ext_junit
+    androidTestImplementation packages.junit
 
     debugImplementation project(':odk:collect:fragmentstest')
 }

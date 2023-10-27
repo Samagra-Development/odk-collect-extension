@@ -1,19 +1,17 @@
-import dependencies.Dependencies
-import dependencies.Versions
-
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
 }
 
-apply from: '../config/quality.gradle'
+apply from: '../../config/dependencies.gradle'
+apply from: '../../config/quality.gradle'
 
 android {
-    compileSdkVersion Versions.android_compile_sdk
+    compileSdkVersion versions.android_compile_sdk
 
     defaultConfig {
-        minSdkVersion Versions.android_min_sdk
-        targetSdkVersion Versions.android_target_sdk
+        minSdkVersion versions.android_min_sdk
+        targetSdkVersion versions.android_target_sdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -28,6 +26,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 
     testOptions {
@@ -46,14 +48,14 @@ dependencies {
     implementation project(path: ':odk:collect:strings')
     implementation project(path: ':odk:collect:androidshared')
 
-    implementation Dependencies.androidx_core_ktx
-    implementation Dependencies.androidx_appcompat
-    implementation Dependencies.androidx_recyclerview
-    implementation Dependencies.android_material
+    implementation packages.androidx_core_ktx
+    implementation packages.androidx_appcompat
+    implementation packages.androidx_recyclerview
+    implementation packages.android_material
 
     testImplementation project(path: ':odk:collect:androidtest')
     testImplementation project(path: ':odk:collect:testshared')
 
-    testImplementation Dependencies.androidx_test_ext_junit
-    testImplementation Dependencies.androidx_test_espresso_core
+    testImplementation packages.androidx_test_ext_junit
+    testImplementation packages.androidx_test_espresso_core
 }
