@@ -237,6 +237,11 @@ public class FormHierarchyActivity extends LocalizedActivity implements DeleteRe
 
         configureButtons(formController);
 
+        // WARNING: Custom ODK Changes
+        if (getIntent().getBooleanExtra(FormHierarchyActivity.EXTRA_JUMP_TO_BEGINNING, false)) {
+            jumpBeginningButton.callOnClick();
+        }
+
         restoreInstanceState(savedInstanceState);
 
         refreshView();
@@ -350,26 +355,22 @@ public class FormHierarchyActivity extends LocalizedActivity implements DeleteRe
             return true;
         }
 
-        switch (item.getItemId()) {
-            case R.id.menu_delete_child:
-                DialogFragmentUtils.showIfNotShowing(DeleteRepeatDialogFragment.class, getSupportFragmentManager());
-                return true;
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_delete_child) {
+            DialogFragmentUtils.showIfNotShowing(DeleteRepeatDialogFragment.class, getSupportFragmentManager());
+            return true;
+        } else if (itemId == R.id.menu_add_repeat) {
+            formEntryViewModel.getFormController().jumpToIndex(repeatGroupPickerIndex);
+            formEntryViewModel.jumpToNewRepeat();
+            formEntryViewModel.addRepeat();
 
-            case R.id.menu_add_repeat:
-                formEntryViewModel.getFormController().jumpToIndex(repeatGroupPickerIndex);
-                formEntryViewModel.jumpToNewRepeat();
-                formEntryViewModel.addRepeat();
-
-                finish();
-                return true;
-
-            case R.id.menu_go_up:
-                goUpLevel();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+            finish();
+            return true;
+        } else if (itemId == R.id.menu_go_up) {
+            goUpLevel();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

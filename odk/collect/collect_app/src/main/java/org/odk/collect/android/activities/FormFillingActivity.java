@@ -2258,6 +2258,8 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
                             formControllerAvailable(formController);
                             Intent intent = new Intent(this, FormHierarchyActivity.class);
                             intent.putExtra(FormHierarchyActivity.EXTRA_SESSION_ID, sessionId);
+                            // WARNING: Custom ODK Changes
+                            intent.putExtra(FormHierarchyActivity.EXTRA_JUMP_TO_BEGINNING, getIntent().getBooleanExtra(FormHierarchyActivity.EXTRA_JUMP_TO_BEGINNING, false));
                             startActivityForResult(intent, RequestCodes.HIERARCHY_ACTIVITY);
                         }
                     });
