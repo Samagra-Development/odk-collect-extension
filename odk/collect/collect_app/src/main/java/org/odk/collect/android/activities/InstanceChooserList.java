@@ -22,8 +22,12 @@ import static org.odk.collect.android.utilities.ApplicationConstants.SortingOrde
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
@@ -33,6 +37,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
@@ -54,10 +60,13 @@ import org.odk.collect.android.utilities.FormsRepositoryProvider;
 import org.odk.collect.androidshared.ui.multiclicksafe.MultiClickGuard;
 import org.odk.collect.forms.Form;
 import org.odk.collect.forms.instances.Instance;
+import org.odk.collect.settings.keys.ProjectKeys;
 
 import java.util.Arrays;
 
 import javax.inject.Inject;
+
+import timber.log.Timber;
 
 /**
  * Responsible for displaying all the valid instances in the instance directory.
@@ -88,6 +97,19 @@ public class InstanceChooserList extends AppListActivity implements AdapterView.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.form_chooser_list);
+        // WARNING: Custom ODK changes
+        getWindow().setStatusBarColor(getColor(settingsProvider.getUnprotectedSettings().getString(ProjectKeys.FORM_ACTIVITY_PRIMARY_COLOR)));
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.setBackgroundColor(getColor(settingsProvider.getUnprotectedSettings().getString(ProjectKeys.FORM_ACTIVITY_TOOLBAR_BACKGROUND_COLOR)));
+            toolbar.setTitleTextColor(getColor(settingsProvider.getUnprotectedSettings().getString(ProjectKeys.FORM_ACTIVITY_TOOLBAR_FOREGROUND_COLOR)));
+            Drawable drawable = toolbar.getOverflowIcon();
+            if (drawable != null) {
+                drawable = DrawableCompat.wrap(drawable);
+                DrawableCompat.setTint(drawable.mutate(), getColor(settingsProvider.getUnprotectedSettings().getString(ProjectKeys.FORM_ACTIVITY_TOOLBAR_FOREGROUND_COLOR)));
+                toolbar.setOverflowIcon(drawable);
+            }
+        }
         DaggerUtils.getComponent(this).inject(this);
 
         String formMode = getIntent().getStringExtra(ApplicationConstants.BundleKeys.FORM_MODE);
@@ -119,6 +141,22 @@ public class InstanceChooserList extends AppListActivity implements AdapterView.
         );
 
         init();
+    }
+
+    // WARNING: Custom ODK changes
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean isSuccessful = super.onCreateOptionsMenu(menu);
+        for (int i = 0; i < menu.size(); i++) {
+            Drawable menuIcon = menu.getItem(i).getIcon();
+            if (menuIcon != null) {
+                menu.getItem(i).getIcon().setColorFilter(
+                        getColor(settingsProvider.getUnprotectedSettings().getString(ProjectKeys.FORM_ACTIVITY_TOOLBAR_FOREGROUND_COLOR)),
+                        PorterDuff.Mode.SRC_IN
+                );
+            }
+        }
+        return isSuccessful;
     }
 
     private void init() {
@@ -274,5 +312,16 @@ public class InstanceChooserList extends AppListActivity implements AdapterView.
                 break;
         }
         return sortingOrder;
+    }
+
+    // WARNING: Custom ODK changes
+    private int getColor(String hash) {
+        try {
+            return Color.parseColor(hash);
+        }
+        catch (Exception e) {
+            Timber.e(new IllegalArgumentException("Invalid color hash"));
+            return 0xffffff;
+        }
     }
 }

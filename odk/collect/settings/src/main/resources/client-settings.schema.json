@@ -211,6 +211,24 @@
         },
         "background_recording": {
           "type": "boolean"
+        },
+        "form_activity_toolbar_background_color": {
+          "type": "string"
+        },
+        "form_activity_toolbar_foreground_color": {
+          "type": "string"
+        },
+        "form_activity_primary_color": {
+          "type": "string"
+        },
+        "form_activity_footer_color": {
+          "type": "string"
+        },
+        "form_activity_navigation_button_background_color": {
+          "type": "string"
+        },
+        "form_activity_navigation_button_foreground_color": {
+          "type": "string"
         }
       }
     },
