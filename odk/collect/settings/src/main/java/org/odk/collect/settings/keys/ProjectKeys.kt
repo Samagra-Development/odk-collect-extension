@@ -78,4 +78,6 @@ object ProjectKeys {
 
     const val GOOGLE_DRIVE_DEPRECATION_LEARN_MORE_CLICKED = "gd_lear_more_clicked"
     const val GOOGLE_DRIVE_DEPRECATION_BANNER_DISMISSED = "gd_banner_dismissed"
+
+    const val APP_PROVIDER = "";
 }

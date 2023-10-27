@@ -16,10 +16,10 @@ package org.odk.collect.android.utilities
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import org.odk.collect.android.BuildConfig
 import org.odk.collect.android.R
 import org.odk.collect.androidshared.system.IntentLauncher
 import org.odk.collect.androidshared.ui.ToastUtils
+import org.odk.collect.settings.keys.ProjectKeys
 import timber.log.Timber
 import java.io.File
 
@@ -50,7 +50,8 @@ class MediaUtils(private val intentLauncher: IntentLauncher, private val content
 
         val contentUri = contentUriProvider.getUriForFile(
             context,
-            BuildConfig.APPLICATION_ID + ".provider",
+            //TODO pass from apps
+            ProjectKeys.APP_PROVIDER + ".provider",
             file
         )
 

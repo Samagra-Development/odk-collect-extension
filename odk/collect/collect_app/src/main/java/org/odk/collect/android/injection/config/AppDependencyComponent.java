@@ -39,8 +39,10 @@ import org.odk.collect.android.formentry.repeats.DeleteRepeatDialogFragment;
 import org.odk.collect.android.formentry.saving.SaveAnswerFileErrorDialogFragment;
 import org.odk.collect.android.formentry.saving.SaveFormProgressDialogFragment;
 import org.odk.collect.android.formlists.blankformlist.BlankFormListActivity;
+import org.odk.collect.android.formmanagement.FormDownloader;
 import org.odk.collect.android.formmanagement.FormSourceProvider;
 import org.odk.collect.android.formmanagement.InstancesAppState;
+import org.odk.collect.android.formmanagement.ServerFormsDetailsFetcher;
 import org.odk.collect.android.formmanagement.matchexactly.SyncStatusAppState;
 import org.odk.collect.android.fragments.AppListFragment;
 import org.odk.collect.android.fragments.BarCodeScannerFragment;
@@ -328,4 +330,8 @@ public interface AppDependencyComponent {
     NetworkStateProvider networkStateProvider();
 
     EntitiesRepositoryProvider entitiesRepositoryProvider();
+
+    ServerFormsDetailsFetcher providesServerFormsDetailsFetcher();
+
+    FormDownloader providesFormDownloader();
 }

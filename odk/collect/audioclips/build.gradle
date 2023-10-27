@@ -4,7 +4,7 @@ apply from: '../../config/dependencies.gradle'
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
-apply from: '../config/quality.gradle'
+apply from: '../../config/quality.gradle'
 
 android {
     compileSdkVersion versions.android_compile_sdk

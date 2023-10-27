@@ -1,6 +1,3 @@
-import dependencies.Dependencies
-import dependencies.Versions
-
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
@@ -8,6 +5,7 @@ plugins {
 }
 
 apply from: '../config/quality.gradle'
+apply from: '../../config/dependencies.gradle'
 
 android {
     compileSdkVersion Versions.android_compile_sdk

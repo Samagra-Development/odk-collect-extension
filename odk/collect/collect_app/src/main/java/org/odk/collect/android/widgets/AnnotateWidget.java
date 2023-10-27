@@ -35,6 +35,7 @@ import org.odk.collect.android.utilities.FileUtils;
 import org.odk.collect.android.utilities.QuestionMediaManager;
 import org.odk.collect.android.widgets.interfaces.ButtonClickListener;
 import org.odk.collect.android.widgets.utilities.WaitingForDataRegistry;
+import org.odk.collect.settings.keys.ProjectKeys;
 
 import java.io.File;
 import java.util.Locale;
@@ -174,8 +175,9 @@ public class AnnotateWidget extends BaseImageWidget implements ButtonClickListen
         // the size. boo.
 
         try {
+            // TODO: pass from app
             Uri uri = new ContentUriProvider().getUriForFile(getContext(),
-                    BuildConfig.APPLICATION_ID + ".provider",
+                    ProjectKeys.APP_PROVIDER + ".provider",
                     new File(tmpImageFilePath));
             // if this gets modified, the onActivityResult in
             // FormEntyActivity will also need to be updated.

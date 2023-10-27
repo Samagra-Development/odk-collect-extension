@@ -1,0 +1,67 @@
+plugins {
+    id "com.android.library"
+    id "kotlin-android"
+    id "kotlin-kapt"
+    id "androidx.navigation.safeargs.kotlin"
+}
+
+
+apply from: '../../config/quality.gradle'
+apply from: '../../config/dependencies.gradle'
+
+android {
+    compileSdk = versions.android_compile_sdk
+
+    defaultConfig {
+        minSdk = versions.android_min_sdk
+        targetSdk = versions.android_target_sdk
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources true
+        }
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    coreLibraryDesugaring packages.desugar
+
+    implementation(project(":odk:collect:strings"))
+    implementation(project(":odk:collect:shared"))
+    implementation(project(":odk:collect:androidshared"))
+
+    implementation packages.kotlin_stdlib
+    implementation packages.androidx_appcompat
+    implementation packages.android_material
+    implementation packages.androidx_navigation_fragment_ktx
+    implementation packages.androidx_navigation_ui
+    implementation packages.dagger
+    kapt packages.dagger_compiler
+
+    testImplementation packages.junit
+    testImplementation packages.robolectric
+}

@@ -84,6 +84,9 @@ public class FormHierarchyActivity extends LocalizedActivity implements DeleteRe
 
     public static final int RESULT_ADD_REPEAT = 2;
     public static final String EXTRA_SESSION_ID = "session_id";
+
+    public static final String EXTRA_JUMP_TO_BEGINNING = "jump_to_beginning";
+
     /**
      * The questions and repeats at the current level.
      * Recreated every time {@link #refreshView()} is called.

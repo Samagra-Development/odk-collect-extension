@@ -24,7 +24,6 @@ import org.json.JSONObject;
 import org.odk.collect.analytics.Analytics;
 import org.odk.collect.analytics.BlockableFirebaseAnalytics;
 import org.odk.collect.analytics.NoopAnalytics;
-import org.odk.collect.android.BuildConfig;
 import org.odk.collect.android.R;
 import org.odk.collect.android.application.CollectSettingsChangeHandler;
 import org.odk.collect.android.application.MapboxClassInstanceCreator;
@@ -276,12 +275,14 @@ public class AppDependencyModule {
 
     @Provides
     public VersionInformation providesVersionInformation() {
-        return new VersionInformation(() -> BuildConfig.VERSION_NAME);
+        //TODO pass from apps
+        return new VersionInformation(() -> "1");
     }
 
     @Provides
     public FileProvider providesFileProvider(Context context) {
-        return filePath -> getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", new File(filePath));
+        //TODO pass from apps
+        return filePath -> getUriForFile(context, ProjectKeys.APP_PROVIDER + ".provider", new File(filePath));
     }
 
     @Provides
