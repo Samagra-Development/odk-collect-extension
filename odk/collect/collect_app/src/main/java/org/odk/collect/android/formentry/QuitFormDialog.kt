@@ -42,41 +42,29 @@ object QuitFormDialog {
     ): AlertDialog {
         val saveAsDraft = settingsProvider.getProtectedSettings()
             .getBoolean(ProtectedProjectKeys.KEY_SAVE_MID)
-        val lastSavedTime = formSaveViewModel.lastSavedTime
+        val saveByDefault = if (saveAsDraft) settingsProvider.getProtectedSettings()
+            .getBoolean(ProtectedProjectKeys.KEY_SAVE_BY_DEFAULT) else false
 
         val binding = QuitFormDialogLayoutBinding.inflate(activity.layoutInflater)
         val dialog = MaterialAlertDialogBuilder(activity)
             .setTitle(
-                if (saveAsDraft) {
-                    R.string.quit_form_title
-                } else {
-                    R.string.quit_form_continue_title
-                }
+                formSaveViewModel.formName ?: "unnamed form"
             )
             .setView(binding.root)
             .create()
 
         binding.saveExplanation.text = if (!saveAsDraft) {
-            if (lastSavedTime != null) {
-                val string = activity.getString(R.string.discard_changes_warning)
-                SimpleDateFormat(string, Locale.getDefault()).format(lastSavedTime)
-            } else {
-                activity.getString(R.string.discard_form_warning)
-            }
-        } else if (lastSavedTime != null) {
-            val string = activity.getString(R.string.save_explanation_with_last_saved)
-            SimpleDateFormat(string, Locale.getDefault()).format(lastSavedTime)
+            activity.getString(R.string.confirm_exit_without_save)
         } else {
-            activity.getString(R.string.save_explanation)
+            if (saveByDefault) {
+                activity.getString(R.string.confirm_exit_with_save)
+            }
+            else {
+                activity.getString(R.string.confirm_exit)
+            }
         }
 
-        binding.discardChanges.setText(
-            if (lastSavedTime != null) {
-                R.string.discard_changes
-            } else {
-                R.string.do_not_save
-            }
-        )
+        binding.discardChanges.isVisible = !saveByDefault
 
         binding.discardChanges.setOnClickListener {
             formSaveViewModel.ignoreChanges()
@@ -85,8 +73,8 @@ object QuitFormDialog {
             dialog.dismiss()
         }
 
-        binding.keepEditingOutlined.isVisible = saveAsDraft
-        binding.keepEditingFilled.isVisible = !saveAsDraft
+        binding.keepEditingOutlined.isVisible = false
+        binding.keepEditingFilled.isVisible = true
 
         binding.keepEditingOutlined.setOnClickListener {
             dialog.dismiss()

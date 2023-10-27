@@ -331,6 +331,9 @@
         "save_mid": {
           "type": "boolean"
         },
+        "save_by_default": {
+          "type": "boolean"
+        },
         "mark_as_finalized": {
           "type": "boolean",
           "deprecated": true
