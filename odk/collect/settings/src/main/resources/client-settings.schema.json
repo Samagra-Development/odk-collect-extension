@@ -334,6 +334,12 @@
         "save_by_default": {
           "type": "boolean"
         },
+        "exit_on_save": {
+          "type": "boolean"
+        },
+        "exit_on_back": {
+          "type": "boolean"
+        },
         "mark_as_finalized": {
           "type": "boolean",
           "deprecated": true

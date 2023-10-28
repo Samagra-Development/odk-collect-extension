@@ -200,6 +200,7 @@ import org.odk.collect.permissions.PermissionsChecker;
 import org.odk.collect.permissions.PermissionsProvider;
 import org.odk.collect.settings.SettingsProvider;
 import org.odk.collect.settings.keys.ProjectKeys;
+import org.odk.collect.settings.keys.ProtectedProjectKeys;
 import org.odk.collect.strings.localization.LocalizedActivity;
 
 import java.io.File;
@@ -1103,8 +1104,14 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
         if (itemId == R.id.menu_languages) {
             createLanguageDialog();
             return true;
-        } else if (itemId == R.id.menu_save) {// don't exit
-            saveForm(false, false, null, true);
+        } else if (itemId == R.id.menu_save) {
+            // WARNING: Custom ODK Change, exit on save
+            saveForm(
+                    settingsProvider.getProtectedSettings().getBoolean(ProtectedProjectKeys.KEY_EXIT_ON_SAVE),
+                    false,
+                    null,
+                    true
+            );
             return true;
         }
 
@@ -2035,10 +2042,16 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
                     DialogFragmentUtils.showIfNotShowing(RecordingWarningDialogFragment.class, getSupportFragmentManager());
                     return true;
                 }
-
-                QuitFormDialog.show(this, formSaveViewModel, formEntryViewModel, settingsProvider, () -> {
-                    saveForm(true, false, null, true);
-                });
+                // WARNING: Custom ODK Changes, back button behaviour changed
+                FormController formController = getFormController();
+                if (!settingsProvider.getProtectedSettings().getBoolean(ProtectedProjectKeys.KEY_EXIT_ON_BACK) && formController != null && !formController.isCurrentQuestionFirstInForm()) {
+                    backButton.callOnClick();
+                }
+                else {
+                    QuitFormDialog.show(this, formSaveViewModel, formEntryViewModel, settingsProvider, () -> {
+                        saveForm(true, false, null, true);
+                    });
+                }
                 return true;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 if (event.isAltPressed() && !swipeHandler.beenSwiped()) {

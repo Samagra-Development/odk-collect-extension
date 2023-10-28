@@ -41,6 +41,8 @@ object ProtectedProjectKeys {
     const val KEY_SAVE_MID = "save_mid"
     const val KEY_SAVE_BY_DEFAULT = "save_by_default"
     const val KEY_SAVE_AS_DRAFT = "save_as_draft"
+    const val KEY_EXIT_ON_BACK = "exit_on_back"
+    const val KEY_EXIT_ON_SAVE = "exit_on_save"
     const val KEY_FINALIZE = "finalize"
 
     const val ALLOW_OTHER_WAYS_OF_EDITING_FORM = "allow_other_ways_of_editing_form"
@@ -82,6 +84,8 @@ object ProtectedProjectKeys {
         KEY_JUMP_TO,
         KEY_SAVE_MID,
         KEY_SAVE_BY_DEFAULT,
+        KEY_EXIT_ON_SAVE,
+        KEY_EXIT_ON_BACK,
         KEY_SAVE_AS_DRAFT,
         KEY_FINALIZE,
         ALLOW_OTHER_WAYS_OF_EDITING_FORM
