@@ -21,6 +21,7 @@ import android.os.AsyncTask;
 
 import org.odk.collect.android.R;
 import org.odk.collect.android.application.Collect;
+import org.odk.collect.android.events.FormEventBus;
 import org.odk.collect.android.formmanagement.FormDownloadException;
 import org.odk.collect.android.formmanagement.FormDownloader;
 import org.odk.collect.android.formmanagement.ServerFormDetails;
@@ -70,10 +71,12 @@ public class DownloadFormsTask extends
                 }, this::isCancelled);
 
                 results.put(serverFormDetails, null);
+                FormEventBus.INSTANCE.formDownloaded(serverFormDetails.getFormId());
             } catch (FormDownloadException.DownloadingInterrupted e) {
                 return emptyMap();
             } catch (FormDownloadException e) {
                 results.put(serverFormDetails, e);
+                FormEventBus.INSTANCE.formDownloadFailed(serverFormDetails.getFormId(), e.getMessage());
             }
 
             index++;

@@ -4,10 +4,6 @@ apply from: '../../config/quality.gradle'
 apply from: '../../config/jacoco.gradle'
 apply from: '../../config/dependencies.gradle'
 
-import com.android.ddmlib.DdmPreferences
-
-DdmPreferences.setTimeOut(60000)
-
 ant.condition(property: 'os', value: 'windows') {
     os(family: 'windows')
 }
@@ -192,6 +188,8 @@ dependencies {
     implementation packages.bikram_sambat
     implementation packages.rarepebble_colorpicker
     implementation packages.commons_io
+    implementation packages.rx_java
+    implementation packages.rx_android
     implementation(packages.opencsv) {
         exclude group: 'commons-logging'
     }

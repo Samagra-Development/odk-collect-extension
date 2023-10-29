@@ -97,6 +97,7 @@ import org.odk.collect.android.audio.AudioRecordingControllerFragment;
 import org.odk.collect.android.audio.M4AAppender;
 import org.odk.collect.android.backgroundwork.InstanceSubmitScheduler;
 import org.odk.collect.android.entities.EntitiesRepositoryProvider;
+import org.odk.collect.android.events.FormEventBus;
 import org.odk.collect.android.exception.JavaRosaException;
 import org.odk.collect.android.external.FormsContract;
 import org.odk.collect.android.external.InstancesContract;
@@ -745,9 +746,13 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
             List<Form> candidateForms = formsRepository.getAllByFormIdAndVersion(instance.getFormId(), instance.getFormVersion());
 
             formPath = candidateForms.get(0).getFormFilePath();
+            // WARNING: Custom ODK Changes
+            FormEventBus.INSTANCE.formOpened(instance.getFormId());
         } else if (uriMimeType != null && uriMimeType.equals(FormsContract.CONTENT_ITEM_TYPE)) {
             Form form = formsRepositoryProvider.get().get(ContentUriHelper.getIdFromUri(uri));
             formPath = form.getFormFilePath();
+            // WARNING: Custom ODK Changes
+            FormEventBus.INSTANCE.formOpened(form.getFormId());
 
             /**
              * This is the fill-blank-form code path.See if there is a savepoint for this form
@@ -1776,6 +1781,12 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
                 DialogFragmentUtils.dismissDialog(SaveFormProgressDialogFragment.class, getSupportFragmentManager());
                 DialogFragmentUtils.dismissDialog(ChangesReasonPromptDialogFragment.class, getSupportFragmentManager());
 
+                // WARNING: Custom ODK Changes
+                Instance instance = new InstancesRepositoryProvider(this).get().getOneByPath(getAbsoluteInstancePath());
+                if (instance != null) {
+                    FormEventBus.INSTANCE.formSaved(instance.getFormId(), instance.getInstanceFilePath());
+                }
+
                 if (result.getRequest().viewExiting()) {
                     if (result.getRequest().shouldFinalize()) {
                         instanceSubmitScheduler.scheduleSubmit(currentProjectProvider.getCurrentProject().getUuid());
@@ -1800,6 +1811,12 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
                             + result.getMessage();
                 } else {
                     message = getString(R.string.data_saved_error);
+                }
+
+                // WARNING: Custom ODK Changes
+                instance = new InstancesRepositoryProvider(this).get().getOneByPath(getAbsoluteInstancePath());
+                if (instance != null) {
+                    FormEventBus.INSTANCE.formSaveError(instance.getFormId(), message);
                 }
 
                 showLongToast(this, message);

@@ -2,6 +2,7 @@ package org.odk.collect.android.instancemanagement.autosend
 
 import android.content.Context
 import org.odk.collect.android.R
+import org.odk.collect.android.events.FormEventBus
 import org.odk.collect.android.formmanagement.InstancesAppState
 import org.odk.collect.android.gdrive.GoogleAccountsManager
 import org.odk.collect.android.gdrive.GoogleApiProvider
@@ -43,6 +44,14 @@ class InstanceAutoSender(
 
                 try {
                     val result: Map<Instance, FormUploadException?> = instanceSubmitter.submitInstances(toUpload)
+                    result.entries.stream().forEach { entry ->
+                        if (entry.value == null) {
+                            FormEventBus.formUploaded(entry.key.formId, entry.key.instanceFilePath)
+                        }
+                        else {
+                            FormEventBus.formUploadError(entry.key.formId, entry.value!!.message)
+                        }
+                    }
                     notifier.onSubmission(result, projectDependencyProvider.projectId)
                 } catch (e: SubmitException) {
                     when (e.type) {
