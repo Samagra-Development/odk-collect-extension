@@ -84,6 +84,7 @@ import org.odk.collect.android.upload.InstanceUploader;
 import org.odk.collect.android.utilities.AuthDialogUtility;
 import org.odk.collect.android.utilities.FormsRepositoryProvider;
 import org.odk.collect.android.utilities.InstancesRepositoryProvider;
+import org.odk.collect.android.utilities.MediaUtils;
 import org.odk.collect.android.utilities.ProjectResetter;
 import org.odk.collect.android.utilities.ThemeUtils;
 import org.odk.collect.android.widgets.ExStringWidget;
@@ -334,4 +335,6 @@ public interface AppDependencyComponent {
     ServerFormsDetailsFetcher providesServerFormsDetailsFetcher();
 
     FormDownloader providesFormDownloader();
+
+    MediaUtils providesMediaUtils();
 }

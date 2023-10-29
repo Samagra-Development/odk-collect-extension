@@ -133,7 +133,8 @@ public class SaveFormToDisk {
         }
 
         // close all open databases of external data.
-        Collect.getInstance().getExternalDataManager().close();
+        if (Collect.getInstance().getExternalDataManager() != null)
+            Collect.getInstance().getExternalDataManager().close();
 
         // if there is a meta/instanceName field, be sure we are using the latest value
         // just in case the validate somehow triggered an update.
