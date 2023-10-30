@@ -78,14 +78,11 @@ the specific language governing permissions and limitations under the License.
     <application
         android:name=".application.Collect"
         android:allowBackup="true"
-        android:icon="@drawable/notes"
         android:installLocation="auto"
-        android:label="@string/collect_app_name"
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.Collect">
+        android:usesCleartextTraffic="true">
 
 <!--        Base application should provide this.-->
 <!--        <provider-->

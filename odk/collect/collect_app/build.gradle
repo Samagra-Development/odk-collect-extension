@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-parcelize'
 apply from: '../../config/quality.gradle'
 apply from: '../../config/jacoco.gradle'
 apply from: '../../config/dependencies.gradle'
@@ -221,7 +222,6 @@ dependencies {
     implementation packages.danlew_android_joda
 
     // Android Architecture Components:
-    implementation packages.androidx_lifecycle_extensions
     implementation packages.androidx_lifecycle_runtime_ktx
     implementation packages.androidx_lifecycle_livedata_ktx
     implementation packages.androidx_viewpager2
@@ -249,7 +249,6 @@ dependencies {
 
     // Testing-only dependencies
     testImplementation packages.junit
-    testImplementation packages.mockito_core
     testImplementation packages.mockito_inline
     testImplementation packages.mockito_kotlin
 
@@ -277,7 +276,6 @@ dependencies {
     androidTestImplementation project(':odk:collect:androidtest')
 
     // Used to generate documentation screenshots.
-    androidTestImplementation packages.fastlane_screengrab
     androidTestImplementation packages.mockito_android
     androidTestImplementation packages.androidx_test_ext_junit
     androidTestImplementation packages.androidx_test_espresso_core

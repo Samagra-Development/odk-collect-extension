@@ -59,6 +59,5 @@ dependencies {
     testImplementation packages.androidx_test_core_ktx
     testImplementation packages.androidx_test_rules
     testImplementation packages.androidx_arch_core_testing
-    testImplementation packages.mockito_core
     testImplementation packages.hamcrest
 }

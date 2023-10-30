@@ -37,8 +37,8 @@ tasks.register("pmd", Pmd) {
     exclude '**/gen/**'
 
     reports {
-        xml.enabled = false
-        html.enabled = true
+//        xml.enabled = false
+//        html.enabled = true
         xml {
             setDestination new File("$reportsDir/pmd/pmd.xml")
         }

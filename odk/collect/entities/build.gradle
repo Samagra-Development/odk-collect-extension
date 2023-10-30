@@ -10,6 +10,8 @@ apply from: '../../config/quality.gradle'
 apply from: '../../config/dependencies.gradle'
 
 android {
+    namespace = "org.odk.collect.entities"
+
     compileSdk = versions.android_compile_sdk
 
     defaultConfig {

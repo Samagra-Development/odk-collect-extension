@@ -42,7 +42,6 @@ dependencies {
     testImplementation project(path: ':odk:collect:androidtest')
     testImplementation project(path: ':odk:collect:testshared')
     testImplementation packages.junit
-    testImplementation packages.mockito_core
     testImplementation packages.androidx_test_ext_junit
     testImplementation packages.androidx_arch_core_testing
     testImplementation packages.hamcrest

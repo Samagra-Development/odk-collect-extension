@@ -5,7 +5,6 @@ object Dependencies {
     const val androidx_startup = "androidx.startup:startup-runtime:1.1.1"
     const val androidx_annotations = "androidx.annotation:annotation:1.6.0"
     const val androidx_lifecycle_runtime_ktx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
-    const val androidx_lifecycle_extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
     const val androidx_viewpager2= "androidx.viewpager2:viewpager2:1.0.0"
     const val androidx_lifecycle_livedata_ktx = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
     const val androidx_lifecycle_viewmodel_ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
@@ -81,7 +80,6 @@ object Dependencies {
     // Test dependencies
     const val junit = "junit:junit:4.13.2"
     const val mockito_android = "org.mockito:mockito-android:${Versions.mockito}"
-    const val mockito_core = "org.mockito:mockito-core:${Versions.mockito}"
     const val mockito_inline = "org.mockito:mockito-inline:${Versions.mockito}"
     const val mockito_kotlin = "org.mockito.kotlin:mockito-kotlin:4.1.0"
     const val androidx_fragment_testing = "androidx.fragment:fragment-testing:${Versions.androidx_fragment}"
