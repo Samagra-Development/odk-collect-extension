@@ -28,7 +28,8 @@ class FormsInteractorModule {
         val formsNetworkInteractor = DaggerFormsNetworkInteractorComponent.factory().create(application).getFormsNetworkInteractor()
         val instancesRepository = DaggerAppDependencyComponent.builder().application(application).build().instancesRepositoryProvider().get()
         val formInstanceInteractor = DaggerFormInstanceInteractorComponent.factory().create(application).getFormInstanceInteractor()
+        val formEntryControllerFactory = appDependencyComponent.providesFormEntryControllerFactory()
 
-        return ODKFormsHandler(currentProjectProvider, formsDatabaseInteractor, storagePathProvider, mediaUtils, entitiesRepository, formsNetworkInteractor,instancesRepository,formInstanceInteractor)
+        return ODKFormsHandler(currentProjectProvider, formsDatabaseInteractor, storagePathProvider, mediaUtils, entitiesRepository, formsNetworkInteractor,instancesRepository,formInstanceInteractor, formEntryControllerFactory)
     }
 }

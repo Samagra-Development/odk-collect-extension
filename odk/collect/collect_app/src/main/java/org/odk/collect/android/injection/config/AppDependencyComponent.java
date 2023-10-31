@@ -78,6 +78,7 @@ import org.odk.collect.android.projects.ManualProjectCreatorDialog;
 import org.odk.collect.android.projects.ProjectSettingsDialog;
 import org.odk.collect.android.projects.QrCodeProjectCreatorDialog;
 import org.odk.collect.android.storage.StoragePathProvider;
+import org.odk.collect.android.tasks.FormLoaderTask;
 import org.odk.collect.android.tasks.InstanceServerUploaderTask;
 import org.odk.collect.android.tasks.MediaLoadingTask;
 import org.odk.collect.android.upload.InstanceUploader;
@@ -337,4 +338,6 @@ public interface AppDependencyComponent {
     FormDownloader providesFormDownloader();
 
     MediaUtils providesMediaUtils();
+
+    FormLoaderTask.FormEntryControllerFactory providesFormEntryControllerFactory();
 }

@@ -1,6 +1,7 @@
 package io.samagra.odk.collect.extension.utilities
 
 import android.app.Application
+import android.provider.Settings
 import android.util.Log
 import io.samagra.odk.collect.extension.listeners.ODKProcessListener
 import org.json.JSONException
@@ -11,6 +12,7 @@ import org.odk.collect.android.utilities.ProjectResetter
 import org.odk.collect.android.utilities.ThemeUtils
 import org.odk.collect.projects.Project
 import org.odk.collect.settings.ODKAppSettingsImporter
+import org.odk.collect.settings.importing.SettingsImportingResult
 import java.io.File
 import java.util.*
 
@@ -49,12 +51,12 @@ class ConfigHandler(private val application: Application) {
         }
         val currentSettings = getSettings() ?: settings
         setSettings(currentSettings)
-        val importSuccess = settingsImporter.fromJSON(
+        val importResult = settingsImporter.fromJSON(
             currentSettings,
             currentProjectProvider.getCurrentProject()
         )
         ThemeUtils(application.applicationContext).setDarkModeForCurrentProject()
-        if (importSuccess) {
+        if (importResult == SettingsImportingResult.SUCCESS) {
             File(storagePathProvider.getProjectRootDirPath() + File.separator + currentProjectProvider.getCurrentProject().name).createNewFile()
             Log.d("SETTINGS UPDATE", "Settings Imported!")
         } else {

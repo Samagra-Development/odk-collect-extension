@@ -3,9 +3,9 @@ package io.samagra.odk.collect.extension.handlers
 import android.content.Context
 import android.content.Intent
 import io.samagra.odk.collect.extension.interactors.FormInstanceInteractor
-import org.odk.collect.android.activities.FormEntryActivity
 import org.odk.collect.android.activities.FormHierarchyActivity
 import org.odk.collect.android.events.FormEventBus
+import org.odk.collect.android.external.FormUriActivity
 import org.odk.collect.android.external.InstancesContract
 import org.odk.collect.android.projects.CurrentProjectProvider
 import org.odk.collect.android.utilities.ApplicationConstants
@@ -26,7 +26,7 @@ class FormInstanceHandler(
 
     override fun openInstance(instance: Instance, context: Context) {
         val instanceUri = InstancesContract.getUri(currentProjectProvider.getCurrentProject().uuid, instance.dbId)
-        val intent = Intent(context, FormEntryActivity::class.java)
+        val intent = Intent(context, FormUriActivity::class.java)
         intent.action = Intent.ACTION_EDIT
         intent.data = instanceUri
         intent.putExtra(ApplicationConstants.BundleKeys.FORM_MODE, ApplicationConstants.FormModes.EDIT_SAVED)
@@ -39,7 +39,7 @@ class FormInstanceHandler(
         if (instances.isNotEmpty()) {
             val latestInstance = instances.sortedByDescending { it.lastStatusChangeDate }[0]
             val instanceUri = InstancesContract.getUri(currentProjectProvider.getCurrentProject().uuid, latestInstance.dbId)
-            val intent = Intent(context, FormEntryActivity::class.java)
+            val intent = Intent(context, FormUriActivity::class.java)
             intent.action = Intent.ACTION_EDIT
             intent.data = instanceUri
             intent.putExtra(ApplicationConstants.BundleKeys.FORM_MODE, ApplicationConstants.FormModes.EDIT_SAVED)

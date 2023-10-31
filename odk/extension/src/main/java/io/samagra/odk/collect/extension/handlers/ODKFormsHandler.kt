@@ -14,9 +14,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.javarosa.core.model.FormDef
-import org.odk.collect.android.activities.FormEntryActivity
 import org.odk.collect.android.events.FormEventBus
 import org.odk.collect.android.events.FormStateEvent
+import org.odk.collect.android.external.FormUriActivity
 import org.odk.collect.android.external.FormsContract
 import org.odk.collect.android.formentry.loading.FormInstanceFileCreator
 import org.odk.collect.android.formentry.saving.DiskFormSaver
@@ -24,6 +24,7 @@ import org.odk.collect.android.listeners.FormLoaderListener
 import org.odk.collect.android.projects.CurrentProjectProvider
 import org.odk.collect.android.storage.StoragePathProvider
 import org.odk.collect.android.tasks.FormLoaderTask
+import org.odk.collect.android.tasks.FormLoaderTask.FormEntryControllerFactory
 import org.odk.collect.android.tasks.SaveFormToDisk
 import org.odk.collect.android.utilities.ApplicationConstants
 import org.odk.collect.android.utilities.MediaUtils
@@ -49,7 +50,8 @@ class ODKFormsHandler @Inject constructor(
     private val entitiesRepository: EntitiesRepository,
     private val formsNetworkInteractor: FormsNetworkInteractor,
     private val instancesRepository: InstancesRepository,
-    private val formInstanceInteractor: FormInstanceInteractor
+    private val formInstanceInteractor: FormInstanceInteractor,
+    private val formEntryControllerFactory: FormEntryControllerFactory
 ): FormsInteractor {
 
     override fun openFormWithFormId(formId: String, context: Context) {
@@ -77,7 +79,7 @@ class ODKFormsHandler @Inject constructor(
             val form = formsDatabaseInteractor.getLatestFormById(formId)
             val formInstanceUri = FormsContract.getUri(currentProjectProvider.getCurrentProject().uuid, form?.dbId)
             if (form != null && formInstanceUri != null) {
-                val formLoaderTask = FormLoaderTask(null, null, null)
+                val formLoaderTask = FormLoaderTask(null, null, null, formEntryControllerFactory)
                 formLoaderTask.setFormLoaderListener(object: FormLoaderListener {
                     override fun onProgressStep(stepMessage: String?) {}
                     override fun loadingComplete(task: FormLoaderTask?, fd: FormDef?, warningMsg: String?) {
@@ -91,8 +93,9 @@ class ODKFormsHandler @Inject constructor(
                                 formController.setInstanceFile(instanceFile)
                                 val saveToDiskResult = DiskFormSaver().save(
                                     formInstanceUri, formController, mediaUtils, false,
-                                    false, null, {}, null, arrayListOf(),
-                                    currentProjectProvider.getCurrentProject().uuid, entitiesRepository
+                                    false, null, {}, arrayListOf(),
+                                    currentProjectProvider.getCurrentProject().uuid, entitiesRepository,
+                                    instancesRepository
                                 )
                                 if (saveToDiskResult.saveResult == SaveFormToDisk.SAVED) {
                                     updateForm(instanceFile.absolutePath, tagValueMap, null)
@@ -127,7 +130,7 @@ class ODKFormsHandler @Inject constructor(
 
     private fun openForm(form: Form, context: Context) {
         val contentUri = FormsContract.getUri(currentProjectProvider.getCurrentProject().uuid, form.dbId)
-        val formEntryIntent = Intent(context, FormEntryActivity::class.java)
+        val formEntryIntent = Intent(context, FormUriActivity::class.java)
         formEntryIntent.action = Intent.ACTION_EDIT
         formEntryIntent.data = contentUri
         formEntryIntent.putExtra(
@@ -282,7 +285,7 @@ class ODKFormsHandler @Inject constructor(
                         super.onComplete(downloadedFile)
                         prefillForm(formId, tagValueMap)
                     }
-                });
+                })
             }
         }
     }
