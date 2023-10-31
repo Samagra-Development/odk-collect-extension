@@ -155,6 +155,7 @@
     <string name="form_edits_warning_save_as_draft_and_finalize_enabled">You will not be able to make edits once you finalize. If you need to make changes, \"Save as draft\" until you\'re ready to send.</string>
     <string name="form_edits_warning_save_as_draft_and_finalize_with_auto_send_enabled">You will not be able to make edits once you send. If you need to make changes, \"Save as draft\" until you\'re ready to send.</string>
     <string name="save_as_draft">Save as draft</string>
+    <string name="save_and_exit">Save and Exit</string>
     <string name="finalize">Finalize</string>
     <string name="send">Send</string>
 

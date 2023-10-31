@@ -74,7 +74,22 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/discard_changes"
             app:layout_constraintStart_toStartOf="@id/discard_changes"
-            app:layout_constraintTop_toBottomOf="@id/keep_editing_outlined" />
+            app:layout_constraintTop_toBottomOf="@id/keep_editing_filled" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_and_exit"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/save_and_exit"
+            android:visibility="gone"
+            app:icon="@drawable/ic_edit"
+            app:iconGravity="textStart"
+            app:iconSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/keep_editing_filled" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -89,6 +89,12 @@ object QuitFormDialog {
             onSaveChangesClicked?.run()
         }
 
+        binding.saveAndExit.isVisible = saveByDefault
+
+        binding.saveAndExit.setOnClickListener {
+            onSaveChangesClicked?.run()
+        }
+
         return dialog
     }
 }
