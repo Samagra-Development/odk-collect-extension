@@ -69,12 +69,12 @@ class ODKHandler @Inject constructor(
     override fun openForm(formId: String, context: Context) {
         CoroutineScope(Job()).launch {
             // Delete any saved instances of this form
-            val savedInstances = instancesRepository.getAllByFormId(formId)
+           /* val savedInstances = instancesRepository.getAllByFormId(formId)
             for (instance in savedInstances) {
                 if (instance.status == Instance.STATUS_INCOMPLETE) {
                     instancesRepository.delete(instance.dbId)
                 }
-            }
+            }*/
             val requiredForm = formsDatabaseInteractor.getLatestFormById(formId)
             if (requiredForm == null) {
                 downloadAndOpenForm(formId, context)

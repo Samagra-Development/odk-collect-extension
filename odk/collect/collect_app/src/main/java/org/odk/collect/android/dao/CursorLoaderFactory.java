@@ -1,9 +1,11 @@
 package org.odk.collect.android.dao;
 
 import android.net.Uri;
+import android.text.TextUtils;
 
 import androidx.loader.content.CursorLoader;
 
+import org.jetbrains.annotations.NotNull;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.database.forms.DatabaseFormColumns;
 import org.odk.collect.android.database.instances.DatabaseInstanceColumns;
@@ -55,10 +57,28 @@ public class CursorLoaderFactory {
         return getInstancesCursorLoader(selection, selectionArgs, sortOrder);
     }
 
-    public CursorLoader createEditableInstancesCursorLoader(CharSequence charSequence, String sortOrder) {
+    // WARNING: Custom ODK changes
+    public CursorLoader createEditableInstancesCursorLoader(String sortOrder, @NotNull String[] formIds) {
+        String[] selectionArgs = new String[formIds.length + 2];
+        selectionArgs[0] = Instance.STATUS_SUBMITTED;
+        selectionArgs[1] = Instance.STATUS_SUBMISSION_FAILED;
+        StringBuilder placeholders = new StringBuilder();
+        for (int i = 0; i < formIds.length; i++) {
+            placeholders.append("?,");
+            selectionArgs[i + 2] = formIds[i];
+        }
+        placeholders.deleteCharAt(placeholders.length() - 1);
+        String selection = DatabaseInstanceColumns.STATUS + " !=? " +
+                "and " + DatabaseInstanceColumns.STATUS + " !=? " +
+                "and " + DatabaseInstanceColumns.JR_FORM_ID + " IN (" + placeholders + ") ";
+
+        return getInstancesCursorLoader(selection, selectionArgs, sortOrder);
+    }
+
+    public CursorLoader createEditableInstancesCursorLoader(CharSequence charSequence, String sortOrder, String[] formIds) {
         CursorLoader cursorLoader;
         if (charSequence.length() == 0) {
-            cursorLoader = createEditableInstancesCursorLoader(sortOrder);
+            cursorLoader = formIds != null ? createEditableInstancesCursorLoader(sortOrder, formIds) : createEditableInstancesCursorLoader(sortOrder);
         } else {
             String selection = DatabaseInstanceColumns.STATUS + " !=? " +
                     "and " + DatabaseInstanceColumns.STATUS + " !=? " +
@@ -67,7 +87,19 @@ public class CursorLoaderFactory {
                     Instance.STATUS_SUBMITTED,
                     Instance.STATUS_SUBMISSION_FAILED,
                     "%" + charSequence + "%"};
-
+            if (formIds != null) {
+                StringBuilder placeholders = new StringBuilder();
+                selectionArgs = new String[formIds.length + 3];
+                selectionArgs[0] = Instance.STATUS_SUBMITTED;
+                selectionArgs[1] = Instance.STATUS_SUBMISSION_FAILED;
+                selectionArgs[2] = "%" + charSequence + "%";
+                for (int i = 0; i < formIds.length; i++) {
+                    placeholders.append("?,");
+                    selectionArgs[i + 3] = formIds[i];
+                }
+                placeholders.deleteCharAt(placeholders.length() - 1);
+                selection = selection + " and " + DatabaseInstanceColumns.JR_FORM_ID + " IN (" + placeholders + ")";
+            }
             cursorLoader = getInstancesCursorLoader(selection, selectionArgs, sortOrder);
         }
 

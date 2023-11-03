@@ -36,6 +36,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var deleteFormsButton: Button
     private lateinit var downloadAllFormsButton: Button
     private lateinit var clearAllFormsButton: Button
+    private lateinit var showInbuiltScreens: Button
     private lateinit var showAllForms: Button
     private lateinit var progressBar: ProgressBar
 
@@ -64,24 +65,31 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
         progressBar = findViewById(R.id.form_progress)
         openSavedInput = findViewById(R.id.open_saved_form_input)
         openSavedButton = findViewById(R.id.open_saved_form_button)
+        showInbuiltScreens = findViewById(R.id.show_inbuilt_screens)
 
         ODKProvider.init(application)
         odkInteractor = ODKProvider.getOdkInteractor()
         progressBar.visibility = View.VISIBLE
-        odkInteractor.setupODK(IOUtils.toString(resources.openRawResource(R.raw.settings)), false, object :
-            ODKProcessListener {
-            override fun onProcessComplete() {
-                val currentProjectProvider = DaggerAppDependencyComponent.builder().application(application).build().currentProjectProvider()
-                currentProjectProvider.getCurrentProject().name
-                formsDatabaseInteractor = ODKProvider.getFormsDatabaseInteractor()
-                networkInteractor = ODKProvider.getFormsNetworkInteractor()
-                progressBar.visibility = View.INVISIBLE
-            }
-            override fun onProcessingError(exception: Exception) {
-                exception.printStackTrace()
-                progressBar.visibility = View.INVISIBLE
-            }
-        })
+        odkInteractor.setupODK(
+            IOUtils.toString(resources.openRawResource(R.raw.settings)),
+            false,
+            object :
+                ODKProcessListener {
+                override fun onProcessComplete() {
+                    val currentProjectProvider =
+                        DaggerAppDependencyComponent.builder().application(application).build()
+                            .currentProjectProvider()
+                    currentProjectProvider.getCurrentProject().name
+                    formsDatabaseInteractor = ODKProvider.getFormsDatabaseInteractor()
+                    networkInteractor = ODKProvider.getFormsNetworkInteractor()
+                    progressBar.visibility = View.INVISIBLE
+                }
+
+                override fun onProcessingError(exception: Exception) {
+                    exception.printStackTrace()
+                    progressBar.visibility = View.INVISIBLE
+                }
+            })
 
         openFormsButton.setOnClickListener(this)
         downloadFormsButton.setOnClickListener(this)
@@ -90,6 +98,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
         clearAllFormsButton.setOnClickListener(this)
         showAllForms.setOnClickListener(this)
         openSavedButton.setOnClickListener(this)
+        showInbuiltScreens.setOnClickListener(this)
 
         setListeners()
     }
@@ -98,14 +107,37 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
         compositeDisposable.add(
             FormEventBus.getState().subscribe { event ->
                 when (event) {
-                    is FormStateEvent.OnFormDownloadFailed -> Timber.tag("FORM EVENT").d("Download for form %s failed. Reason: %s", event.formId, event.errorMessage)
-                    is FormStateEvent.OnFormDownloaded -> Timber.tag("FORM EVENT").d("Form downloaded with id: %s", event.formId)
-                    is FormStateEvent.OnFormOpenFailed -> Timber.tag("FORM EVENT").d("Form open failed for form %s. Reason: %s", event.formId, event.errorMessage)
-                    is FormStateEvent.OnFormOpened -> Timber.tag("FORM EVENT").d("Form with id: %s was opened", event.formId)
-                    is FormStateEvent.OnFormSaveError -> Timber.tag("FORM EVENT").d("Form with id: %s could not be saved. Reason: %s", event.formId, event.errorMessage)
-                    is FormStateEvent.OnFormSaved -> Timber.tag("FORM EVENT").d("Form with id: %s was saved. Saved instance path: %s", event.formId, event.instancePath)
-                    is FormStateEvent.OnFormUploadFailed -> Timber.tag("FORM EVENT").d("Form upload failed for form id: %s. Reason: %s", event.formId, event.errorMessage)
-                    is FormStateEvent.OnFormUploaded -> Timber.tag("FORM EVENT").d("Form with id: %s was uploaded", event.formId)
+                    is FormStateEvent.OnFormDownloadFailed -> Timber.tag("FORM EVENT").d(
+                        "Download for form %s failed. Reason: %s",
+                        event.formId,
+                        event.errorMessage
+                    )
+                    is FormStateEvent.OnFormDownloaded -> Timber.tag("FORM EVENT")
+                        .d("Form downloaded with id: %s", event.formId)
+                    is FormStateEvent.OnFormOpenFailed -> Timber.tag("FORM EVENT").d(
+                        "Form open failed for form %s. Reason: %s",
+                        event.formId,
+                        event.errorMessage
+                    )
+                    is FormStateEvent.OnFormOpened -> Timber.tag("FORM EVENT")
+                        .d("Form with id: %s was opened", event.formId)
+                    is FormStateEvent.OnFormSaveError -> Timber.tag("FORM EVENT").d(
+                        "Form with id: %s could not be saved. Reason: %s",
+                        event.formId,
+                        event.errorMessage
+                    )
+                    is FormStateEvent.OnFormSaved -> Timber.tag("FORM EVENT").d(
+                        "Form with id: %s was saved. Saved instance path: %s",
+                        event.formId,
+                        event.instancePath
+                    )
+                    is FormStateEvent.OnFormUploadFailed -> Timber.tag("FORM EVENT").d(
+                        "Form upload failed for form id: %s. Reason: %s",
+                        event.formId,
+                        event.errorMessage
+                    )
+                    is FormStateEvent.OnFormUploaded -> Timber.tag("FORM EVENT")
+                        .d("Form with id: %s was uploaded", event.formId)
                 }
                 progressBar.visibility = View.INVISIBLE
             }
@@ -153,12 +185,13 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.download_all_forms -> {
                 progressBar.visibility = View.VISIBLE
-                networkInteractor.downloadRequiredForms(object: FileDownloadListener {
+                networkInteractor.downloadRequiredForms(object : FileDownloadListener {
                     override fun onProgress(progress: Int) {
                     }
+
                     override fun onComplete(downloadedFile: File) {
                         progressBar.visibility = View.INVISIBLE
-                        runOnUiThread{
+                        runOnUiThread {
                             showToast("Downloaded all forms!")
                         }
                     }
@@ -166,7 +199,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                     override fun onCancelled(exception: Exception) {
                         progressBar.visibility = View.INVISIBLE
                         Timber.e(exception)
-                        runOnUiThread{ showToast(exception.message) }
+                        runOnUiThread { showToast(exception.message) }
                     }
 
                 })
@@ -186,6 +219,9 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                     progressBar.visibility = View.VISIBLE
                     odkInteractor.openSavedForm(formId, context)
                 }
+            }
+            R.id.show_inbuilt_screens -> {
+                startActivity(Intent(this, InBuiltScreensActivity::class.java))
             }
         }
     }

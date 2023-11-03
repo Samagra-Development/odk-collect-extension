@@ -110,6 +110,14 @@
         android:text="Show all Forms"
         android:layout_margin="5dp"/>
 
+    <Button
+        android:id="@+id/show_inbuilt_screens"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/show_all_forms"
+        android:text="Show In-Built Screens"
+        android:layout_margin="5dp"/>
+
     <ProgressBar
         android:id="@+id/form_progress"
         android:layout_width="60dp"
