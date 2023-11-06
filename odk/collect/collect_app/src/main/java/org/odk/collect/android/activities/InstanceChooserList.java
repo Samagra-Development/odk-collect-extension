@@ -27,6 +27,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -82,6 +83,8 @@ public class InstanceChooserList extends AppListActivity implements AdapterView.
 
     private boolean editMode;
 
+    private String[] selectedFormIds;
+
     @Inject
     CurrentProjectProvider currentProjectProvider;
 
@@ -98,6 +101,7 @@ public class InstanceChooserList extends AppListActivity implements AdapterView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.form_chooser_list);
         // WARNING: Custom ODK changes
+        selectedFormIds = getIntent().getStringArrayExtra(ApplicationConstants.BundleKeys.FORM_ID);
         getWindow().setStatusBarColor(getColor(settingsProvider.getUnprotectedSettings().getString(ProjectKeys.FORM_ACTIVITY_PRIMARY_COLOR)));
         Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -258,7 +262,7 @@ public class InstanceChooserList extends AppListActivity implements AdapterView.
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         showProgressBar();
         if (editMode) {
-            return new CursorLoaderFactory(currentProjectProvider).createEditableInstancesCursorLoader(getFilterText(), getSortingOrder());
+            return new CursorLoaderFactory(currentProjectProvider).createEditableInstancesCursorLoader(getFilterText(), getSortingOrder(), selectedFormIds == null ? new String[]{} : selectedFormIds);
         } else {
             return new CursorLoaderFactory(currentProjectProvider).createSentInstancesCursorLoader(getFilterText(), getSortingOrder());
         }

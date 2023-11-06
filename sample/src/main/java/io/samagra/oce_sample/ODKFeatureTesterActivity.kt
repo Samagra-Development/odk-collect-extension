@@ -2,15 +2,14 @@ package io.samagra.oce_sample
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-
 import io.samagra.odk.collect.extension.interactors.FormsDatabaseInteractor
 import io.samagra.odk.collect.extension.interactors.FormsInteractor
 import io.samagra.odk.collect.extension.interactors.FormsNetworkInteractor
@@ -40,6 +39,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var deleteFormsButton: Button
     private lateinit var downloadAllFormsButton: Button
     private lateinit var clearAllFormsButton: Button
+    private lateinit var showInbuiltScreens: Button
     private lateinit var showAllForms: Button
     private lateinit var prefillButton: Button
     private lateinit var progressBar: ProgressBar
@@ -74,6 +74,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
         prefillFormInput = findViewById(R.id.prefill_and_open_form_input)
         prefillTagInput = findViewById(R.id.prefill_and_open_tag_input)
         prefillValueInput = findViewById(R.id.prefill_and_open_value_input)
+        showInbuiltScreens = findViewById(R.id.show_inbuilt_screens)
 
         ODKProvider.init(application)
         odkInteractor = ODKProvider.getOdkInteractor()
@@ -86,17 +87,11 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
             override fun onProcessComplete() {
                 val currentProjectProvider = DaggerAppDependencyComponent.builder().application(application).build().currentProjectProvider()
                 currentProjectProvider.getCurrentProject().name
-                formsDatabaseInteractor = ODKProvider.getFormsDatabaseInteractor()
-                networkInteractor = ODKProvider.getFormsNetworkInteractor()
-                formsInteractor = ODKProvider.getFormsInteractor()
-                downloadFormsButton.isEnabled=true
-                downloadAllFormsButton.isEnabled=true
-                clearAllFormsButton.isEnabled=true
-                progressBar.visibility = View.INVISIBLE
+                initComponents()
             }
             override fun onProcessingError(exception: Exception) {
                 exception.printStackTrace()
-                progressBar.visibility = View.INVISIBLE
+                initComponents()
             }
         })
 
@@ -108,8 +103,19 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
         showAllForms.setOnClickListener(this)
         openSavedButton.setOnClickListener(this)
         prefillButton.setOnClickListener(this)
+        showInbuiltScreens.setOnClickListener(this)
 
         setListeners()
+    }
+
+    private fun initComponents() {
+        formsDatabaseInteractor = ODKProvider.getFormsDatabaseInteractor()
+        networkInteractor = ODKProvider.getFormsNetworkInteractor()
+        formsInteractor = ODKProvider.getFormsInteractor()
+        downloadFormsButton.isEnabled=true
+        downloadAllFormsButton.isEnabled=true
+        clearAllFormsButton.isEnabled=true
+        progressBar.visibility = View.INVISIBLE
     }
 
     private fun setListeners() {
@@ -124,6 +130,15 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                     is FormStateEvent.OnFormSaved -> Timber.tag("FORM EVENT").d("Form with id: %s was saved. Saved instance path: %s", event.formId, event.instancePath)
                     is FormStateEvent.OnFormUploadFailed -> Timber.tag("FORM EVENT").d("Form upload failed for form id: %s. Reason: %s", event.formId, event.errorMessage)
                     is FormStateEvent.OnFormUploaded -> Timber.tag("FORM EVENT").d("Form with id: %s was uploaded", event.formId)
+                    is FormStateEvent.OnFormSubmitted -> {
+                        val i = Intent(this@ODKFeatureTesterActivity, JSONViewActivity::class.java)
+                        i.putExtra("jsonData", event.jsonData)
+                        startActivity(i)
+                        Timber.tag("FORM EVENT").d("Form with id: %s was submitted and converted json data: %s", event.formId, event.jsonData)
+                    }
+                    is FormStateEvent.OnFormCompleted -> {
+                        Timber.tag("FORM EVENT").d("Form completed with path: %s", event.instance.instanceFilePath)
+                    }
                 }
                 progressBar.visibility = View.INVISIBLE
             }
@@ -219,6 +234,9 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                     progressBar.visibility = View.VISIBLE
                     formsInteractor.openSavedForm(formId, context)
                 }
+            }
+            R.id.show_inbuilt_screens -> {
+                startActivity(Intent(this, InBuiltScreensActivity::class.java))
             }
         }
     }

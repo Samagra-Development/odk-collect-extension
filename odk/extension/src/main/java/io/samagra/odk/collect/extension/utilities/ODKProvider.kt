@@ -5,6 +5,7 @@ import android.content.Context
 import io.samagra.odk.collect.extension.components.DaggerFormsDatabaseInteractorComponent
 import io.samagra.odk.collect.extension.components.DaggerFormsInteractorComponent
 import io.samagra.odk.collect.extension.components.DaggerFormsNetworkInteractorComponent
+import io.samagra.odk.collect.extension.components.DaggerODKActivityInteractorComponent
 import io.samagra.odk.collect.extension.components.DaggerODKInteractorComponent
 import io.samagra.odk.collect.extension.interactors.*
 import org.odk.collect.android.injection.config.DaggerAppDependencyComponent
@@ -39,6 +40,7 @@ object ODKProvider {
     private lateinit var permissionProvider: PermissionsProvider
     private lateinit var storagePathProvider: StoragePathProvider
     private lateinit var configHandler: ConfigHandler
+    private lateinit var activityInteractor: ODKActivityInteractor
 
     fun init(application: Application) {
         ODKProvider.application = application
@@ -107,5 +109,13 @@ object ODKProvider {
         if (this::configHandler.isInitialized) return configHandler
         configHandler = ConfigHandler(getApplication())
         return configHandler
+    }
+
+    fun getODKActivityInteractor(): ODKActivityInteractor {
+        if (this::activityInteractor.isInitialized) return activityInteractor
+        activityInteractor = DaggerODKActivityInteractorComponent.factory().create(
+            getApplication()
+        ).getODKActivityInteractor()
+        return activityInteractor
     }
 }

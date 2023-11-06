@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import androidx.loader.content.CursorLoader;
 
+import org.jetbrains.annotations.NotNull;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.database.instances.DatabaseInstanceColumns;
 import org.odk.collect.android.external.InstancesContract;
@@ -43,21 +44,39 @@ public class CursorLoaderFactory {
         return cursorLoader;
     }
 
-    public CursorLoader createEditableInstancesCursorLoader(CharSequence charSequence, String sortOrder) {
+    public CursorLoader createEditableInstancesCursorLoader(CharSequence charSequence, String sortOrder, @NotNull String[] formIds) {
         CursorLoader cursorLoader;
         if (charSequence.length() == 0) {
             String selection = DatabaseInstanceColumns.STATUS + " =? ";
-            String[] selectionArgs = {Instance.STATUS_INCOMPLETE};
-
+            String[] selectionArgs = new String[formIds.length + 1];
+            selectionArgs[0] = Instance.STATUS_INCOMPLETE;
+            if (formIds.length > 0) {
+                StringBuilder placeholders = new StringBuilder();
+                for (int i = 0; i < formIds.length; i++) {
+                    placeholders.append("?,");
+                    selectionArgs[i + 1] = formIds[i];
+                }
+                placeholders.deleteCharAt(placeholders.length() - 1);
+                selection = selection + "and " + DatabaseInstanceColumns.JR_FORM_ID + " IN (" + placeholders + ") ";
+            }
             cursorLoader = getInstancesCursorLoader(selection, selectionArgs, sortOrder);
         } else {
+
             String selection = DatabaseInstanceColumns.STATUS + " =? " +
                     "and " + DatabaseInstanceColumns.DISPLAY_NAME + " LIKE ?";
-            String[] selectionArgs = {
-                    Instance.STATUS_INCOMPLETE,
-                    "%" + charSequence + "%"
-            };
-
+            String[] selectionArgs = new String[formIds.length + 2];
+            selectionArgs[0] =
+                    Instance.STATUS_INCOMPLETE;
+            selectionArgs[1] = "%" + charSequence + "%";
+            if (formIds.length > 0) {
+                StringBuilder placeholders = new StringBuilder();
+                for (int i = 0; i < formIds.length; i++) {
+                    placeholders.append("?,");
+                    selectionArgs[i + 2] = formIds[i];
+                }
+                placeholders.deleteCharAt(placeholders.length() - 1);
+                selection = selection + " and " + DatabaseInstanceColumns.JR_FORM_ID + " IN (" + placeholders + ") ";
+            }
             cursorLoader = getInstancesCursorLoader(selection, selectionArgs, sortOrder);
         }
 

@@ -165,8 +165,10 @@ import org.odk.collect.android.utilities.FormsRepositoryProvider;
 import org.odk.collect.android.utilities.InstancesRepositoryProvider;
 import org.odk.collect.android.utilities.MediaUtils;
 import org.odk.collect.android.utilities.PlayServicesChecker;
+import org.odk.collect.android.utilities.ReadFileUtil;
 import org.odk.collect.android.utilities.ScreenContext;
 import org.odk.collect.android.utilities.SoftKeyboardController;
+import org.odk.collect.android.utilities.XmlToJsonConvertUtil;
 import org.odk.collect.android.widgets.DateTimeWidget;
 import org.odk.collect.android.widgets.QuestionWidget;
 import org.odk.collect.android.widgets.interfaces.WidgetDataReceiver;
@@ -214,7 +216,6 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import timber.log.Timber;
 
 /**
@@ -1784,7 +1785,14 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
                 // WARNING: Custom ODK Changes
                 Instance instance = new InstancesRepositoryProvider(this).get().getOneByPath(getAbsoluteInstancePath());
                 if (instance != null) {
+
+                    File instanceFile = new File(instance.getInstanceFilePath());
+                    String XMLString = ReadFileUtil.FileRead(instanceFile);
+
+                    String convertedJson = XmlToJsonConvertUtil.convertToJson(XMLString,instanceFile);
+                    FormEventBus.INSTANCE.formSubmitted(instance.getFormId(), convertedJson);
                     FormEventBus.INSTANCE.formSaved(instance.getFormId(), instance.getInstanceFilePath());
+                    FormEventBus.INSTANCE.formCompleted(instance);
                 }
 
                 if (result.getRequest().viewExiting()) {
