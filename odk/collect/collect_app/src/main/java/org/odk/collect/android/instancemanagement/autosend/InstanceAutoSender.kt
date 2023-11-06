@@ -14,6 +14,7 @@ import org.odk.collect.android.upload.FormUploadException
 import org.odk.collect.forms.instances.Instance
 import org.odk.collect.metadata.PropertyManager
 import org.odk.collect.permissions.PermissionsProvider
+import org.odk.collect.settings.keys.ProjectKeys
 
 class InstanceAutoSender(
     private val instanceAutoSendFetcher: InstanceAutoSendFetcher,
@@ -43,16 +44,18 @@ class InstanceAutoSender(
                 )
 
                 try {
-                    val result: Map<Instance, FormUploadException?> = instanceSubmitter.submitInstances(toUpload)
-                    result.entries.stream().forEach { entry ->
-                        if (entry.value == null) {
-                            FormEventBus.formUploaded(entry.key.formId, entry.key.instanceFilePath)
+                    if (projectDependencyProvider.generalSettings.getBoolean(ProjectKeys.KEY_SERVER_SUBMISSION_IS_ENABLED)) {
+                        val result: Map<Instance, FormUploadException?> = instanceSubmitter.submitInstances(toUpload)
+                        result.entries.stream().forEach { entry ->
+                            if (entry.value == null) {
+                                FormEventBus.formUploaded(entry.key.formId, entry.key.instanceFilePath)
+                            }
+                            else {
+                                FormEventBus.formUploadError(entry.key.formId, entry.value!!.message)
+                            }
                         }
-                        else {
-                            FormEventBus.formUploadError(entry.key.formId, entry.value!!.message)
-                        }
+                        notifier.onSubmission(result, projectDependencyProvider.projectId)
                     }
-                    notifier.onSubmission(result, projectDependencyProvider.projectId)
                 } catch (e: SubmitException) {
                     when (e.type) {
                         SubmitException.Type.GOOGLE_ACCOUNT_NOT_SET -> {

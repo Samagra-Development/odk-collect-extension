@@ -215,7 +215,7 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
                 HttpURLConnection.HTTP_BAD_REQUEST,
                 "Problem with server configuration");
 
-        if(generalSettings.getBoolean(ProjectKeys.KEY_CUSTOM_SERVER_IS_ENABLED)){
+        if(generalSettings.getBoolean(ProjectKeys.KEY_CUSTOM_SERVER_IS_ENABLED)) {
             String customHeaders = generalSettings.getString(ProjectKeys.KEY_CUSTOM_SERVER_HEADERS);
             Headers.Builder builder = new Headers.Builder();
             if (customHeaders != null && !customHeaders.trim().isEmpty()) {

@@ -64,9 +64,7 @@ class InstanceSubmitter(
                     destinationUrl = uploader.getUrlToSubmitTo(instance, deviceId, null, null)
                 }
 
-                if(generalSettings.getString(ProjectKeys.KEY_SERVER_SUBMISSION_IS_ENABLED) == "true"){
-                    uploader.uploadOneSubmission(instance, destinationUrl)
-                }
+                uploader.uploadOneSubmission(instance, destinationUrl)
 
                 result[instance] = null
 

@@ -32,7 +32,7 @@
           "type": "string"
         },
         "server_submission_enabled": {
-          "type": "string"
+          "type": "boolean"
         },
         "custom_server_url": {
           "type": "string"
