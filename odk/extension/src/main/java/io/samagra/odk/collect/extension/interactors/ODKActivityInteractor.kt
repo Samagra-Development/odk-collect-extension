@@ -11,14 +11,14 @@ interface ODKActivityInteractor {
 
     /**
      * Opens the draft form list screen in ODK Collect.
-     * @param formToFilter A list of form names to filter the draft forms. Can be null to show all draft forms.
+     * @param formsToFilter A list of form names to filter the draft forms. Can be null to show all draft forms.
      * @param ctx The context of the calling activity.
      **/
-    fun openDraftFormList(formToFilter: List<String>?, ctx: Context)
+    fun openDraftFormsList(formsToFilter: List<String>?, ctx: Context)
 
     /**
      * Opens the list of un-submitted forms screen in ODK Collect.
      * @param ctx The context of the calling activity.
      */
-    fun openUnSubmittedFormList(ctx: Context)
+    fun openFinalizedFormsList(ctx: Context)
 }
