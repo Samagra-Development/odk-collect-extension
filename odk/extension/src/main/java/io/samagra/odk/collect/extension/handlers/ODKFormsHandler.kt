@@ -295,6 +295,9 @@ class ODKFormsHandler @Inject constructor(
             override fun onComplete(downloadedFile: File) {
                 openFormWithFormId(formId, context)
             }
+            override fun onCancelled(exception: Exception) {
+                FormEventBus.formDownloadFailed(formId, exception.message ?: "Form Download Failed")
+            }
         })
     }
 
