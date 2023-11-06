@@ -9,7 +9,11 @@ import org.odk.collect.android.gdrive.InstanceGoogleSheetsUploader
 import org.odk.collect.android.upload.FormUploadException
 import org.odk.collect.android.upload.InstanceServerUploader
 import org.odk.collect.android.upload.InstanceUploader
-import org.odk.collect.android.utilities.*
+import org.odk.collect.android.utilities.FormsRepositoryProvider
+import org.odk.collect.android.utilities.InstanceAutoDeleteChecker
+import org.odk.collect.android.utilities.InstanceUploaderUtils
+import org.odk.collect.android.utilities.InstancesRepositoryProvider
+import org.odk.collect.android.utilities.WebCredentialsUtils
 import org.odk.collect.forms.FormsRepository
 import org.odk.collect.forms.instances.Instance
 import org.odk.collect.metadata.PropertyManager

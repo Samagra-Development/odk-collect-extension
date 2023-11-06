@@ -1,10 +1,14 @@
 package org.odk.collect.android.openrosa.okhttp;
 
+import android.webkit.URLUtil;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.odk.collect.android.events.FormEventBus;
 import org.odk.collect.android.openrosa.CaseInsensitiveEmptyHeaders;
 import org.odk.collect.android.openrosa.CaseInsensitiveHeaders;
 import org.odk.collect.android.openrosa.HttpCredentialsInterface;
@@ -206,36 +210,56 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
 
         Response response;
         HttpPostResult postResult;
+        HttpPostResult failedResult = new HttpPostResult(
+                "Form Upload Failed",
+                HttpURLConnection.HTTP_BAD_REQUEST,
+                "Problem with server configuration");
 
-        if(generalSettings.getString(ProjectKeys.KEY_CUSTOM_SERVER_IS_ENABLED).equals("true")){
-
-            JSONObject headersInfo = new JSONObject(generalSettings.getString(ProjectKeys.KEY_CUSTOM_SERVER_HEADERS));
-            OkHttpClient client = new OkHttpClient();
+        if(generalSettings.getBoolean(ProjectKeys.KEY_CUSTOM_SERVER_IS_ENABLED)){
+            String customHeaders = generalSettings.getString(ProjectKeys.KEY_CUSTOM_SERVER_HEADERS);
             Headers.Builder builder = new Headers.Builder();
-
-            Iterator<String> keys = headersInfo.keys();
-
-            // Iterate through the keys
-            while (keys.hasNext()) {
-                String key = keys.next();
-                String value = headersInfo.getString(key);
-                builder.add(key, value);
+            if (customHeaders != null && !customHeaders.trim().isEmpty()) {
+                try {
+                    JSONObject headersInfo = new JSONObject(customHeaders);
+                    Iterator<String> keys = headersInfo.keys();
+                    // Iterate through the keys
+                    while (keys.hasNext()) {
+                        String key = keys.next();
+                        String value = headersInfo.getString(key);
+                        builder.add(key, value);
+                    }
+                }
+                catch (JSONException e) {
+                    FormEventBus.INSTANCE.formUploadError(
+                            // TODO: return formId
+                            "",
+                            String.format("JSON parsing exception: %s.\nPlease check the value for `KEY_CUSTOM_SERVER_HEADERS` in settings.", e)
+                    );
+                    e.printStackTrace();
+                    return failedResult;
+                }
             }
-
-            Headers h = builder.build();
-
+            Headers headers = builder.build();
+            String customServerUrl = generalSettings.getString(ProjectKeys.KEY_CUSTOM_SERVER_URL);
+            if (customServerUrl == null || customServerUrl.isEmpty() || !URLUtil.isValidUrl(customServerUrl)) {
+                FormEventBus.INSTANCE.formUploadError(
+                        // TODO: return formId
+                        "",
+                       "Custom Server URL is invalid! Please check the value for `KEY_CUSTOM_SERVER_URL` in settings."
+                );
+                return failedResult;
+            }
             Request request = new Request.Builder()
-                    .url(generalSettings.getString(ProjectKeys.KEY_CUSTOM_SERVER_URL))
+                    .url(customServerUrl)
                     .post(multipartBody)
-                    .headers(h)
+                    .headers(headers)
                     .build();
 
-
+            OkHttpClient client = new OkHttpClient();
             Call call = client.newCall(request);
             response = call.execute();
-
-        }else{
-
+        }
+        else {
             OpenRosaServerClient httpClient = clientFactory.get(uri.getScheme(), userAgent, credentials);
 
             Request request = new Request.Builder()

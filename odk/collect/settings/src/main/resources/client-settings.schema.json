@@ -41,7 +41,7 @@
           "type": "string"
         },
         "custom_server_enabled": {
-          "type": "string"
+          "type": "boolean"
         },
         "username": {
           "type": "string"

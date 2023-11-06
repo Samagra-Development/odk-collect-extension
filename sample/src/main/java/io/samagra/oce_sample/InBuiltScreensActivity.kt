@@ -16,10 +16,10 @@ class InBuiltScreensActivity : AppCompatActivity() {
         setContentView(R.layout.activity_in_built_screens)
         setSupportActionBar(findViewById(R.id.toolbar))
         findViewById<Button>(R.id.drafts_list_btn).setOnClickListener {
-            odkInteractor.openDraftFormList(null, this)
+            odkInteractor.openDraftFormsList(null, this)
         }
         findViewById<Button>(R.id.unsent_list_btn).setOnClickListener {
-            odkInteractor.openUnSubmittedFormList(this)
+            odkInteractor.openFinalizedFormsList(this)
         }
     }
 
