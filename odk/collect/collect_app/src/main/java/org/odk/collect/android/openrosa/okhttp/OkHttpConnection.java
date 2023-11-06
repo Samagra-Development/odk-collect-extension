@@ -207,7 +207,7 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
         Response response;
         HttpPostResult postResult;
 
-        if(generalSettings.getString(ProjectKeys.KEY_CUSTOM_SERVER_IS_ENABLED).equals("true")){
+        if(generalSettings.getBoolean(ProjectKeys.KEY_CUSTOM_SERVER_IS_ENABLED)){
 
             JSONObject headersInfo = new JSONObject(generalSettings.getString(ProjectKeys.KEY_CUSTOM_SERVER_HEADERS));
             OkHttpClient client = new OkHttpClient();
