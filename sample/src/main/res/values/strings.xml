@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Sample ODK Collect Extensions</string>
+    <string name="title_activity_inbuilt_screens">ODK In-Built Screens</string>
 </resources>

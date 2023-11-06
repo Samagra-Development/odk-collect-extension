@@ -40,6 +40,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var deleteFormsButton: Button
     private lateinit var downloadAllFormsButton: Button
     private lateinit var clearAllFormsButton: Button
+    private lateinit var showInbuiltScreens: Button
     private lateinit var showAllForms: Button
     private lateinit var prefillButton: Button
     private lateinit var progressBar: ProgressBar
@@ -74,6 +75,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
         prefillFormInput = findViewById(R.id.prefill_and_open_form_input)
         prefillTagInput = findViewById(R.id.prefill_and_open_tag_input)
         prefillValueInput = findViewById(R.id.prefill_and_open_value_input)
+        showInbuiltScreens = findViewById(R.id.show_inbuilt_screens)
 
         ODKProvider.init(application)
         odkInteractor = ODKProvider.getOdkInteractor()
@@ -86,17 +88,11 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
             override fun onProcessComplete() {
                 val currentProjectProvider = DaggerAppDependencyComponent.builder().application(application).build().currentProjectProvider()
                 currentProjectProvider.getCurrentProject().name
-                formsDatabaseInteractor = ODKProvider.getFormsDatabaseInteractor()
-                networkInteractor = ODKProvider.getFormsNetworkInteractor()
-                formsInteractor = ODKProvider.getFormsInteractor()
-                downloadFormsButton.isEnabled=true
-                downloadAllFormsButton.isEnabled=true
-                clearAllFormsButton.isEnabled=true
-                progressBar.visibility = View.INVISIBLE
+                initComponents()
             }
             override fun onProcessingError(exception: Exception) {
                 exception.printStackTrace()
-                progressBar.visibility = View.INVISIBLE
+                initComponents()
             }
         })
 
@@ -108,8 +104,19 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
         showAllForms.setOnClickListener(this)
         openSavedButton.setOnClickListener(this)
         prefillButton.setOnClickListener(this)
+        showInbuiltScreens.setOnClickListener(this)
 
         setListeners()
+    }
+
+    private fun initComponents() {
+        formsDatabaseInteractor = ODKProvider.getFormsDatabaseInteractor()
+        networkInteractor = ODKProvider.getFormsNetworkInteractor()
+        formsInteractor = ODKProvider.getFormsInteractor()
+        downloadFormsButton.isEnabled=true
+        downloadAllFormsButton.isEnabled=true
+        clearAllFormsButton.isEnabled=true
+        progressBar.visibility = View.INVISIBLE
     }
 
     private fun setListeners() {
@@ -219,6 +226,9 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                     progressBar.visibility = View.VISIBLE
                     formsInteractor.openSavedForm(formId, context)
                 }
+            }
+            R.id.show_inbuilt_screens -> {
+                startActivity(Intent(this, InBuiltScreensActivity::class.java))
             }
         }
     }
