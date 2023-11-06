@@ -38,14 +38,37 @@ android {
 }
 
 dependencies {
-    
+    api project(':odk:collect:shared')
+    api project(':odk:collect:androidshared')
+    api project(':odk:collect:nbistubs')
+    api project(':odk:collect:icons')
+    api project(':odk:collect:strings')
+    api project(':odk:collect:material')
+    api project(':odk:collect:async')
+    api project(':odk:collect:analytics')
+    api project(':odk:collect:audioclips')
+    api project(':odk:collect:forms')
+    api project(':odk:collect:audiorecorder')
+    api project(':odk:collect:projects')
+    api project(':odk:collect:location')
+    api project(':odk:collect:geo')
+    api project(':odk:collect:imageloader')
+    api project(':odk:collect:errors')
+    api project(':odk:collect:upgrade')
+    api project(':odk:collect:permissions')
+    api(project(':odk:collect:settings')) {
+        exclude group: 'joda-time'
+    }
+    api project(':odk:collect:externalapp')
+    api project(':odk:collect:maps')
+    api project(':odk:collect:osmdroid')
+    api project(':odk:collect:entities')
+    api project(':odk:collect:crash-handler')
+    api project(':odk:collect:selfie-camera')
+    api project(':odk:collect:qr-code')
+    api project(':odk:collect:metadata')
+    api project(":odk:collect:analytics")
     api project(":odk:collect:collect_app")
-    api project(":odk:collect:forms")
-    api project(":odk:collect:projects")
-    api project(":odk:collect:settings")
-    api project(":odk:collect:permissions")
-    api project(":odk:collect:strings")
-    implementation project(":odk:collect:analytics")
 
     implementation packages.androidx_core_ktx
     implementation packages.androidx_appcompat
