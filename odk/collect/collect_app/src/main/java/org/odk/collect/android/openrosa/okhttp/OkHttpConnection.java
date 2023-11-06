@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 import org.odk.collect.android.openrosa.CaseInsensitiveEmptyHeaders;
 import org.odk.collect.android.openrosa.CaseInsensitiveHeaders;
 import org.odk.collect.android.openrosa.HttpCredentialsInterface;
@@ -12,6 +13,8 @@ import org.odk.collect.android.openrosa.HttpHeadResult;
 import org.odk.collect.android.openrosa.HttpPostResult;
 import org.odk.collect.android.openrosa.OpenRosaHttpInterface;
 import org.odk.collect.android.openrosa.OpenRosaServerClient;
+import org.odk.collect.settings.keys.ProjectKeys;
+import org.odk.collect.shared.settings.Settings;
 import org.odk.collect.shared.strings.Md5;
 
 import java.io.ByteArrayInputStream;
@@ -21,13 +24,16 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import okhttp3.Call;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -138,7 +144,7 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
 
     @NonNull
     @Override
-    public HttpPostResult uploadSubmissionAndFiles(@NonNull File submissionFile, @NonNull List<File> fileList, @NonNull URI uri, @Nullable HttpCredentialsInterface credentials, @NonNull long contentLength) throws Exception {
+    public HttpPostResult uploadSubmissionAndFiles(@NonNull File submissionFile, @NonNull List<File> fileList, @NonNull URI uri, @Nullable HttpCredentialsInterface credentials, @NonNull long contentLength, @NonNull Settings generalSettings) throws Exception {
         HttpPostResult postResult = null;
 
         boolean first = true;
@@ -183,7 +189,7 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
             }
 
             MultipartBody multipartBody = multipartBuilder.build();
-            postResult = executePostRequest(uri, credentials, multipartBody);
+            postResult = executePostRequest(uri, credentials, multipartBody, generalSettings);
 
             if (postResult.getResponseCode() != HttpURLConnection.HTTP_CREATED &&
                     postResult.getResponseCode() != HttpURLConnection.HTTP_ACCEPTED) {
@@ -196,14 +202,49 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
     }
 
     @NonNull
-    private HttpPostResult executePostRequest(@NonNull URI uri, @Nullable HttpCredentialsInterface credentials, MultipartBody multipartBody) throws Exception {
-        OpenRosaServerClient httpClient = clientFactory.get(uri.getScheme(), userAgent, credentials);
+    private HttpPostResult executePostRequest(@NonNull URI uri, @Nullable HttpCredentialsInterface credentials, MultipartBody multipartBody, Settings generalSettings) throws Exception {
+
+        Response response;
         HttpPostResult postResult;
-        Request request = new Request.Builder()
-                .url(uri.toURL())
-                .post(multipartBody)
-                .build();
-        Response response = httpClient.makeRequest(request, new Date());
+
+        if(generalSettings.getString(ProjectKeys.KEY_CUSTOM_SERVER_IS_ENABLED).equals("true")){
+
+            JSONObject headersInfo = new JSONObject(generalSettings.getString(ProjectKeys.KEY_CUSTOM_SERVER_HEADERS));
+            OkHttpClient client = new OkHttpClient();
+            Headers.Builder builder = new Headers.Builder();
+
+            Iterator<String> keys = headersInfo.keys();
+
+            // Iterate through the keys
+            while (keys.hasNext()) {
+                String key = keys.next();
+                String value = headersInfo.getString(key);
+                builder.add(key, value);
+            }
+
+            Headers h = builder.build();
+
+            Request request = new Request.Builder()
+                    .url(generalSettings.getString(ProjectKeys.KEY_CUSTOM_SERVER_URL))
+                    .post(multipartBody)
+                    .headers(h)
+                    .build();
+
+
+            Call call = client.newCall(request);
+            response = call.execute();
+
+        }else{
+
+            OpenRosaServerClient httpClient = clientFactory.get(uri.getScheme(), userAgent, credentials);
+
+            Request request = new Request.Builder()
+                    .url(uri.toURL())
+                    .post(multipartBody)
+                    .build();
+            response = httpClient.makeRequest(request, new Date());
+
+        }
 
         if (response.code() == 204) {
             throw new Exception();

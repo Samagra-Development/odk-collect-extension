@@ -8,6 +8,11 @@ object ProjectKeys {
     const val KEY_SERVER_URL = "server_url"
     const val KEY_USERNAME = "username"
     const val KEY_PASSWORD = "password"
+    const val KEY_SERVER_SUBMISSION_IS_ENABLED = "server_submission_enabled"
+
+    const val KEY_CUSTOM_SERVER_URL = "custom_server_url"
+    const val KEY_CUSTOM_SERVER_HEADERS = "custom_server_headers"
+    const val KEY_CUSTOM_SERVER_IS_ENABLED = "custom_server_enabled"
 
     // google_preferences.xml
     const val KEY_SELECTED_GOOGLE_ACCOUNT = "selected_google_account"

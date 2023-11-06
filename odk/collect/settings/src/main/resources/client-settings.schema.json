@@ -31,6 +31,18 @@
         "server_url": {
           "type": "string"
         },
+        "server_submission_enabled": {
+          "type": "string"
+        },
+        "custom_server_url": {
+          "type": "string"
+        },
+        "custom_server_headers": {
+          "type": "string"
+        },
+        "custom_server_enabled": {
+          "type": "string"
+        },
         "username": {
           "type": "string"
         },
