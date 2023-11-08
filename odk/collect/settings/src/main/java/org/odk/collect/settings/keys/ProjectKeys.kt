@@ -91,6 +91,11 @@ object ProjectKeys {
     const val FORM_ACTIVITY_FOOTER_COLOR = "form_activity_footer_color"
     const val FORM_ACTIVITY_NAVIGATION_BACKGROUND_COLOR = "form_activity_navigation_button_background_color"
     const val FORM_ACTIVITY_NAVIGATION_FOREGROUND_COLOR = "form_activity_navigation_button_foreground_color"
+    const val QUIT_DIALOG_DISCARD_TEXT = "quit_dialog_discard_text"
+    const val QUIT_DIALOG_KEEP_EDITING_TEXT = "quit_dialog_keep_editing_text"
+    const val QUIT_DIALOG_SAVE_AS_DRAFT_TEXT = "quit_dialog_save_as_draft_text"
+    const val QUIT_DIALOG_TITLE = "quit_dialog_title"
+    const val QUIT_DIALOG_EXPLANATION = "quit_dialog_explanation"
 
     // Set this variable the same as applicationId
     const val APP_PROVIDER = "com.example.odkshellapp"

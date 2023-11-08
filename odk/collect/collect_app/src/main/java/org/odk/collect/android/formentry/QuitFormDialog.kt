@@ -9,9 +9,8 @@ import org.odk.collect.android.databinding.QuitFormDialogLayoutBinding
 import org.odk.collect.android.events.FormEventBus
 import org.odk.collect.android.formentry.saving.FormSaveViewModel
 import org.odk.collect.settings.SettingsProvider
+import org.odk.collect.settings.keys.ProjectKeys
 import org.odk.collect.settings.keys.ProtectedProjectKeys
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 object QuitFormDialog {
 
@@ -52,19 +51,25 @@ object QuitFormDialog {
         val binding = QuitFormDialogLayoutBinding.inflate(activity.layoutInflater)
         val dialog = MaterialAlertDialogBuilder(activity)
             .setTitle(
+                settingsProvider.getUnprotectedSettings().getString(ProjectKeys.QUIT_DIALOG_TITLE) ?:
                 formSaveViewModel.formName ?: "unnamed form"
             )
             .setView(binding.root)
             .create()
 
-        binding.saveExplanation.text = if (!saveAsDraft) {
-            activity.getString(R.string.confirm_exit_without_save)
-        } else {
-            if (saveByDefault) {
-                activity.getString(R.string.confirm_exit_with_save)
-            }
-            else {
-                activity.getString(R.string.confirm_exit)
+        if (!settingsProvider.getUnprotectedSettings().getString(ProjectKeys.QUIT_DIALOG_EXPLANATION).isNullOrBlank()) {
+            binding.saveExplanation.text = settingsProvider.getUnprotectedSettings().getString(ProjectKeys.QUIT_DIALOG_EXPLANATION)
+        }
+        else {
+            binding.saveExplanation.text = if (!saveAsDraft) {
+                activity.getString(R.string.confirm_exit_without_save)
+            } else {
+                if (saveByDefault) {
+                    activity.getString(R.string.confirm_exit_with_save)
+                }
+                else {
+                    activity.getString(R.string.confirm_exit)
+                }
             }
         }
 
@@ -78,6 +83,10 @@ object QuitFormDialog {
             FormEventBus.formAbandoned(formId)
         }
 
+        if (!settingsProvider.getUnprotectedSettings().getString(ProjectKeys.QUIT_DIALOG_DISCARD_TEXT).isNullOrEmpty()) {
+            binding.discardChanges.text = settingsProvider.getUnprotectedSettings().getString(ProjectKeys.QUIT_DIALOG_DISCARD_TEXT)
+        }
+
         binding.keepEditingOutlined.isVisible = false
         binding.keepEditingFilled.isVisible = true
 
@@ -89,9 +98,17 @@ object QuitFormDialog {
             dialog.dismiss()
         }
 
+        if (!settingsProvider.getUnprotectedSettings().getString(ProjectKeys.QUIT_DIALOG_KEEP_EDITING_TEXT).isNullOrBlank()) {
+            binding.keepEditingFilled.text = settingsProvider.getUnprotectedSettings().getString(ProjectKeys.QUIT_DIALOG_KEEP_EDITING_TEXT)
+        }
+
         binding.saveChanges.isVisible = saveAsDraft
         binding.saveChanges.setOnClickListener {
             onSaveChangesClicked?.run()
+        }
+
+        if (!settingsProvider.getUnprotectedSettings().getString(ProjectKeys.QUIT_DIALOG_SAVE_AS_DRAFT_TEXT).isNullOrBlank()) {
+            binding.saveChanges.text = settingsProvider.getUnprotectedSettings().getString(ProjectKeys.QUIT_DIALOG_SAVE_AS_DRAFT_TEXT)
         }
 
         binding.saveAndExit.isVisible = saveByDefault

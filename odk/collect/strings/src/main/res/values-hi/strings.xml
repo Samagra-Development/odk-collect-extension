@@ -387,7 +387,7 @@
   <string name="buttons_navigation">आगे / पीछे बटन का प्रयोग करें</string>
   <string name="swipe_buttons_navigation">स्वाइप और बटन का प्रयोग करें</string>
   <!--Text for navigation button showed at the bottom of a form that's being filled. Try to use a short word common for navigation.-->
-  <string name="form_forward">आगामी</string>
+  <string name="form_forward">आगे बढ़े</string>
   <!--Text for navigation button showed at the bottom of a form that's being filled. Try to use a short word common for navigation.-->
   <!--Heading for the settings category about updating blank forms-->
   <!--Name of the setting that defines how blank forms are updated from the server.-->

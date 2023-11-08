@@ -241,6 +241,21 @@
         },
         "form_activity_navigation_button_foreground_color": {
           "type": "string"
+        },
+        "quit_dialog_discard_text": {
+          "type": "string"
+        },
+        "quit_dialog_keep_editing_text": {
+          "type": "string"
+        },
+        "quit_dialog_save_as_draft_text": {
+          "type": "string"
+        },
+        "quit_dialog_title": {
+          "type": "string"
+        },
+        "quit_dialog_explanation": {
+          "type": "string"
         }
       }
     },
