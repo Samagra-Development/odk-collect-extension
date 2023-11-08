@@ -401,6 +401,8 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
     private static final String KEY_SESSION_ID = "sessionId";
     private String sessionId;
 
+    private String currentFormId;
+
     /**
      * Called when the activity is first created.
      */
@@ -749,11 +751,13 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
             formPath = candidateForms.get(0).getFormFilePath();
             // WARNING: Custom ODK Changes
             FormEventBus.INSTANCE.formOpened(instance.getFormId());
+            currentFormId = instance.getFormId();
         } else if (uriMimeType != null && uriMimeType.equals(FormsContract.CONTENT_ITEM_TYPE)) {
             Form form = formsRepositoryProvider.get().get(ContentUriHelper.getIdFromUri(uri));
             formPath = form.getFormFilePath();
             // WARNING: Custom ODK Changes
             FormEventBus.INSTANCE.formOpened(form.getFormId());
+            currentFormId = form.getFormId();
 
             /**
              * This is the fill-blank-form code path.See if there is a savepoint for this form
@@ -2073,7 +2077,7 @@ public class FormFillingActivity extends LocalizedActivity implements AnimationL
                     backButton.callOnClick();
                 }
                 else {
-                    QuitFormDialog.show(this, formSaveViewModel, formEntryViewModel, settingsProvider, () -> {
+                    QuitFormDialog.show(this, formSaveViewModel, formEntryViewModel, settingsProvider, currentFormId, () -> {
                         saveForm(true, false, null, true);
                     });
                 }

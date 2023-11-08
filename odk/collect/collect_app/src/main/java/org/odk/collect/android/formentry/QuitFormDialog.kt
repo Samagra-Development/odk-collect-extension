@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.odk.collect.android.R
 import org.odk.collect.android.databinding.QuitFormDialogLayoutBinding
+import org.odk.collect.android.events.FormEventBus
 import org.odk.collect.android.formentry.saving.FormSaveViewModel
 import org.odk.collect.settings.SettingsProvider
 import org.odk.collect.settings.keys.ProtectedProjectKeys
@@ -20,6 +21,7 @@ object QuitFormDialog {
         formSaveViewModel: FormSaveViewModel,
         formEntryViewModel: FormEntryViewModel,
         settingsProvider: SettingsProvider,
+        formId: String,
         onSaveChangesClicked: Runnable?
     ): AlertDialog {
         return create(
@@ -27,6 +29,7 @@ object QuitFormDialog {
             formSaveViewModel,
             formEntryViewModel,
             settingsProvider,
+            formId,
             onSaveChangesClicked
         ).also {
             it.show()
@@ -38,6 +41,7 @@ object QuitFormDialog {
         formSaveViewModel: FormSaveViewModel,
         formEntryViewModel: FormEntryViewModel,
         settingsProvider: SettingsProvider,
+        formId: String,
         onSaveChangesClicked: Runnable?
     ): AlertDialog {
         val saveAsDraft = settingsProvider.getProtectedSettings()
@@ -71,6 +75,7 @@ object QuitFormDialog {
             formEntryViewModel.exit()
             activity.finish()
             dialog.dismiss()
+            FormEventBus.formAbandoned(formId)
         }
 
         binding.keepEditingOutlined.isVisible = false

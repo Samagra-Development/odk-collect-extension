@@ -130,6 +130,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                     is FormStateEvent.OnFormSaved -> Timber.tag("FORM EVENT").d("Form with id: %s was saved. Saved instance path: %s", event.formId, event.instancePath)
                     is FormStateEvent.OnFormUploadFailed -> Timber.tag("FORM EVENT").d("Form upload failed for form id: %s. Reason: %s", event.formId, event.errorMessage)
                     is FormStateEvent.OnFormUploaded -> Timber.tag("FORM EVENT").d("Form with id: %s was uploaded", event.formId)
+                    is FormStateEvent.OnFormAbandoned -> Timber.tag("FORM EVENT").d("Form with id: %s was abandoned", event.formId)
                     is FormStateEvent.OnFormSubmitted -> {
                         val i = Intent(this@ODKFeatureTesterActivity, JSONViewActivity::class.java)
                         i.putExtra("jsonData", event.jsonData)

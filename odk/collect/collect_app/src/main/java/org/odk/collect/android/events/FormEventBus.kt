@@ -47,6 +47,10 @@ object FormEventBus: ODKEventBus<FormStateEvent>() {
     fun formDownloadFailed(formId: String, errorMessage: String) {
         state.onNext(FormStateEvent.OnFormDownloadFailed(formId, errorMessage))
     }
+
+    fun formAbandoned(formId: String) {
+        state.onNext(FormStateEvent.OnFormAbandoned(formId))
+    }
 }
 
 sealed class FormStateEvent {
@@ -79,4 +83,7 @@ sealed class FormStateEvent {
 
     /** Called when a form download fails. */
     data class OnFormDownloadFailed(val formId: String, val errorMessage: String): FormStateEvent()
+
+    /** Called when a form is abandoned midway without saving. */
+    data class OnFormAbandoned(val formId: String): FormStateEvent()
 }
