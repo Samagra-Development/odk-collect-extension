@@ -31,7 +31,10 @@ class FormEndView(
         }
 
         val shouldFormBeSentAutomatically = formEndViewModel.shouldFormBeSentAutomatically()
-        if (shouldFormBeSentAutomatically) {
+        if (formEndViewModel.hasCustomFinalizeButtonText()) {
+            binding.finalize.text = formEndViewModel.customFinalizeButtonText()
+        }
+        else if (shouldFormBeSentAutomatically) {
             binding.finalize.text = context.getString(R.string.send)
         }
 

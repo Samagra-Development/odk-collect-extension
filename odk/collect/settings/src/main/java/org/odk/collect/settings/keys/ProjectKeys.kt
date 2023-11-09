@@ -96,6 +96,7 @@ object ProjectKeys {
     const val QUIT_DIALOG_SAVE_AS_DRAFT_TEXT = "quit_dialog_save_as_draft_text"
     const val QUIT_DIALOG_TITLE = "quit_dialog_title"
     const val QUIT_DIALOG_EXPLANATION = "quit_dialog_explanation"
+    const val FINALIZE_BUTTON_TEXT = "finalize_button_text"
 
     // Set this variable the same as applicationId
     const val APP_PROVIDER = "com.example.odkshellapp"

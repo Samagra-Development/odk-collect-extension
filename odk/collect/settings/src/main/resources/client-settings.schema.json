@@ -256,6 +256,9 @@
         },
         "quit_dialog_explanation": {
           "type": "string"
+        },
+        "finalize_button_text": {
+          "type": "string"
         }
       }
     },
