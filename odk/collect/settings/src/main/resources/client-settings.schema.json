@@ -259,6 +259,9 @@
         },
         "finalize_button_text": {
           "type": "string"
+        },
+        "form_question_text_color": {
+          "type": "string"
         }
       }
     },

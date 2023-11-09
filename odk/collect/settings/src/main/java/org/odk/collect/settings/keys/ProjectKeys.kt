@@ -97,6 +97,7 @@ object ProjectKeys {
     const val QUIT_DIALOG_TITLE = "quit_dialog_title"
     const val QUIT_DIALOG_EXPLANATION = "quit_dialog_explanation"
     const val FINALIZE_BUTTON_TEXT = "finalize_button_text"
+    const val FORM_QUESTION_TEXT_COLOR = "form_question_text_color"
 
     // Set this variable the same as applicationId
     const val APP_PROVIDER = "com.example.odkshellapp"

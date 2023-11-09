@@ -87,13 +87,14 @@ public class AudioVideoImageTextLabel extends RelativeLayout implements View.OnC
         binding.textContainer.addView(textLabel);
     }
 
-    public void setText(String questionText, boolean isRequiredQuestion, float fontSize) {
+    public void setText(String questionText, boolean isRequiredQuestion, float fontSize, int textColor) {
         this.questionText = questionText;
 
         if (questionText != null && !questionText.isEmpty()) {
             textLabel.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontSize);
             textLabel.setText(FormEntryPromptUtils.styledQuestionText(questionText, isRequiredQuestion));
             textLabel.setMovementMethod(LinkMovementMethod.getInstance());
+            textLabel.setTextColor(textColor);
 
             // Wrap to the size of the parent view
             textLabel.setHorizontallyScrolling(false);

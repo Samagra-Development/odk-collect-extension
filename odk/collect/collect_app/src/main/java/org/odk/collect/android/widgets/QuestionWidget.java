@@ -21,6 +21,7 @@ import static org.odk.collect.android.injection.DaggerUtils.getComponent;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.view.View;
@@ -169,7 +170,21 @@ public abstract class QuestionWidget extends FrameLayout implements Widget {
 
     private void setupQuestionLabel() {
         audioVideoImageTextLabel.setTag(getClipID(formEntryPrompt));
-        audioVideoImageTextLabel.setText(formEntryPrompt.getLongText(), formEntryPrompt.isRequired(), questionTextSizeHelper.getHeadline6());
+        int questionTextColor = Color.parseColor("#000000");
+        if (settingsProvider.getUnprotectedSettings().getString(ProjectKeys.FORM_QUESTION_TEXT_COLOR) != null) {
+            try {
+                questionTextColor = Color.parseColor(settingsProvider.getUnprotectedSettings().getString(ProjectKeys.FORM_QUESTION_TEXT_COLOR));
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        audioVideoImageTextLabel.setText(
+                formEntryPrompt.getLongText(),
+                formEntryPrompt.isRequired(),
+                questionTextSizeHelper.getHeadline6(),
+                questionTextColor
+        );
         audioVideoImageTextLabel.setMediaUtils(mediaUtils);
 
         String imageURI = this instanceof SelectImageMapWidget ? null : formEntryPrompt.getImageText();
