@@ -2,6 +2,7 @@ package org.odk.collect.android.formentry.questions;
 
 import static org.odk.collect.settings.keys.ProjectKeys.KEY_FONT_SIZE;
 
+import org.odk.collect.settings.keys.ProjectKeys;
 import org.odk.collect.shared.settings.Settings;
 
 public class QuestionTextSizeHelper {
@@ -21,6 +22,9 @@ public class QuestionTextSizeHelper {
     }
 
     private int getBaseFontSize() {
-        return Integer.parseInt(String.valueOf(generalSettings.getString(KEY_FONT_SIZE)));
+        if (generalSettings.getString(ProjectKeys.FORM_QUESTION_TEXT_SIZE) != null)
+            return Integer.parseInt(String.valueOf(generalSettings.getString(ProjectKeys.FORM_QUESTION_TEXT_SIZE)));
+        else
+            return Integer.parseInt(String.valueOf(generalSettings.getString(KEY_FONT_SIZE)));
     }
 }

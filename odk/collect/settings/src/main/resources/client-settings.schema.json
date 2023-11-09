@@ -262,6 +262,9 @@
         },
         "form_question_text_color": {
           "type": "string"
+        },
+        "form_question_text_size": {
+          "type": "string"
         }
       }
     },
