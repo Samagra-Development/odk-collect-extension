@@ -123,7 +123,7 @@ class ODKFeatureTesterActivity : AppCompatActivity(), View.OnClickListener {
                     is FormStateEvent.OnFormSaveError -> Timber.tag("FORM EVENT").d("Form with id: %s could not be saved. Reason: %s", event.formId, event.errorMessage)
                     is FormStateEvent.OnFormSaved -> Timber.tag("FORM EVENT").d("Form with id: %s was saved. Saved instance path: %s", event.formId, event.instancePath)
                     is FormStateEvent.OnFormUploadFailed -> Timber.tag("FORM EVENT").d("Form upload failed for form id: %s. Reason: %s", event.formId, event.errorMessage)
-                    is FormStateEvent.OnFormUploaded -> Timber.tag("FORM EVENT").d("Form with id: %s was uploaded", event.formId)
+                    is FormStateEvent.OnFormUploaded -> Timber.tag("FORM EVENT").d("Form with id: %s was uploaded. Form response: %s", event.formId, event.submittedData)
                 }
                 progressBar.visibility = View.INVISIBLE
             }

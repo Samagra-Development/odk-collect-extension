@@ -14,6 +14,8 @@ import org.odk.collect.android.projects.ProjectDependencyProvider
 import org.odk.collect.android.upload.FormUploadException
 import org.odk.collect.forms.instances.Instance
 import org.odk.collect.permissions.PermissionsProvider
+import org.odk.collect.utilities.XmlJsonUtility
+import java.io.File
 
 class InstanceAutoSender(
     private val instanceAutoSendFetcher: InstanceAutoSendFetcher,
@@ -46,7 +48,12 @@ class InstanceAutoSender(
                     val result: Map<Instance, FormUploadException?> = instanceSubmitter.submitInstances(toUpload)
                     result.entries.stream().forEach { entry ->
                         if (entry.value == null) {
-                            FormEventBus.formUploaded(entry.key.formId, entry.key.instanceFilePath)
+                            try {
+                                val submittedData = XmlJsonUtility.convertToJson(File(entry.key.instanceFilePath))
+                                FormEventBus.formUploaded(entry.key.formId, submittedData)
+                            } catch (e: Exception) {
+                                FormEventBus.formUploadError(entry.key.formId, e.message ?: "Failed to read submitted data!")
+                            }
                         }
                         else {
                             FormEventBus.formUploadError(entry.key.formId, entry.value!!.message)

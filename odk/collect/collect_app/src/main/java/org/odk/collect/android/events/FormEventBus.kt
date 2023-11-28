@@ -1,5 +1,7 @@
 package org.odk.collect.android.events
 
+import org.json.JSONObject
+
 /**
  * Events exporter class for form events. This class contains all the
  * events that occur during the lifecycle of a form.
@@ -23,8 +25,8 @@ object FormEventBus: ODKEventBus<FormStateEvent>() {
         state.onNext(FormStateEvent.OnFormSaveError(formId, errorMessage))
     }
 
-     fun formUploaded(formId: String, instancePath: String) {
-        state.onNext(FormStateEvent.OnFormUploaded(formId, instancePath))
+    fun formUploaded(formId: String, submittedData: JSONObject) {
+        state.onNext(FormStateEvent.OnFormUploaded(formId, submittedData))
     }
 
      fun formUploadError(formId: String, errorMessage: String) {
@@ -54,7 +56,7 @@ sealed class FormStateEvent {
     data class OnFormSaveError(val formId: String, val errorMessage: String): FormStateEvent()
 
     /** Called when a form upload is successful. */
-    data class OnFormUploaded(val formId: String, val instancePath: String): FormStateEvent()
+    data class OnFormUploaded(val formId: String, val submittedData: JSONObject): FormStateEvent()
 
     /** Called when a form upload fails. */
     data class OnFormUploadFailed(val formId: String, val errorMessage: String): FormStateEvent()
