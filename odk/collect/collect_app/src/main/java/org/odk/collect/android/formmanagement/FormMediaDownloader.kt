@@ -3,20 +3,19 @@ package org.odk.collect.android.formmanagement
 import org.odk.collect.android.utilities.FileUtils.copyFile
 import org.odk.collect.android.utilities.FileUtils.interuptablyWriteFile
 import org.odk.collect.async.OngoingWorkListener
-import org.odk.collect.forms.Form
-import org.odk.collect.forms.FormSource
-import org.odk.collect.forms.FormSourceException
-import org.odk.collect.forms.FormsRepository
-import org.odk.collect.forms.MediaFile
+import org.odk.collect.forms.*
 import org.odk.collect.shared.strings.Md5.getMd5Hash
 import java.io.File
 import java.io.IOException
+import java.util.concurrent.locks.Lock
+import java.util.concurrent.locks.ReentrantLock
 
 class FormMediaDownloader(
     private val formsRepository: FormsRepository,
     private val formSource: FormSource
 ) {
 
+    private val lock: Lock = ReentrantLock()
     @Throws(IOException::class, FormSourceException::class, InterruptedException::class)
     fun download(
         formToDownload: ServerFormDetails,
@@ -39,7 +38,9 @@ class FormMediaDownloader(
                 } else {
                     atLeastOneNewMediaFileDetected = true
                     val file = formSource.fetchMediaFile(mediaFile.downloadUrl)
+                    lock.lock()
                     interuptablyWriteFile(file, tempMediaFile, tempDir, stateListener)
+                    lock.unlock()
                 }
             }
         }

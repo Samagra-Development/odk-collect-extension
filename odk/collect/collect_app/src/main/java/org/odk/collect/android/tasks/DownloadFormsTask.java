@@ -18,6 +18,8 @@ import static org.odk.collect.strings.localization.LocalizedApplicationKt.getLoc
 import static java.util.Collections.emptyMap;
 
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 
 import org.odk.collect.android.R;
 import org.odk.collect.android.application.Collect;
@@ -30,6 +32,9 @@ import org.odk.collect.android.listeners.DownloadFormsTaskListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Background task for downloading a given list of forms. We assume right now that the forms are
@@ -53,33 +58,53 @@ public class DownloadFormsTask extends
     protected Map<ServerFormDetails, FormDownloadException> doInBackground(ArrayList<ServerFormDetails>... values) {
         HashMap<ServerFormDetails, FormDownloadException> results = new HashMap<>();
 
+        ExecutorService executorService = Executors.newCachedThreadPool();
         int index = 1;
         for (ServerFormDetails serverFormDetails : values[0]) {
-            try {
-                String currentFormNumber = String.valueOf(index);
-                String totalForms = String.valueOf(values[0].size());
-                publishProgress(serverFormDetails.getFormName(), currentFormNumber, totalForms);
+            String currentFormNumber = String.valueOf(index);
+            String totalForms = String.valueOf(values[0].size());
+            publishProgress(serverFormDetails.getFormName(), currentFormNumber, totalForms);
 
-                formDownloader.downloadForm(serverFormDetails, count -> {
-                    String message = getLocalizedString(Collect.getInstance(), R.string.form_download_progress,
-                            serverFormDetails.getFormName(),
-                            String.valueOf(count),
-                            String.valueOf(serverFormDetails.getManifest().getMediaFiles().size())
-                    );
+            Thread thread = new Thread() {
+                public void run() {
 
-                    publishProgress(message, currentFormNumber, totalForms);
-                }, this::isCancelled);
+                    try {
+                        formDownloader.downloadForm(serverFormDetails, count -> {
+                            String message = getLocalizedString(Collect.getInstance(), R.string.form_download_progress,
+                                    serverFormDetails.getFormName(),
+                                    String.valueOf(count),
+                                    String.valueOf(serverFormDetails.getManifest().getMediaFiles().size())
+                            );
 
-                results.put(serverFormDetails, null);
-                FormEventBus.INSTANCE.formDownloaded(serverFormDetails.getFormId());
-            } catch (FormDownloadException.DownloadingInterrupted e) {
-                return emptyMap();
-            } catch (FormDownloadException e) {
-                results.put(serverFormDetails, e);
-                FormEventBus.INSTANCE.formDownloadFailed(serverFormDetails.getFormId(), e.getMessage());
-            }
+                            publishProgress(message, currentFormNumber, totalForms);
+
+                        }, DownloadFormsTask.this::isCancelled);
+                    } catch (FormDownloadException e) {
+                        results.put(serverFormDetails, e);
+                        FormEventBus.INSTANCE.formDownloadFailed(serverFormDetails.getFormId(), e.getMessage());
+                        throw new RuntimeException(e);
+                    }
+
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            results.put(serverFormDetails, null);
+                            FormEventBus.INSTANCE.formDownloaded(serverFormDetails.getFormId());
+                        }
+                    });
+                }
+            };
+
+            executorService.submit(thread);
 
             index++;
+        }
+        executorService.shutdown();
+        // Wait for all tasks to complete
+        try {
+            executorService.awaitTermination(1, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         return results;
